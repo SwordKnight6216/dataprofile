@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="526ac5fe-6762-49ac-b87a-f1fd703049e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/datareport/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collect_stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareport/collect_stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/descriptive_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareport/descriptive_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indsdk/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/indsdk/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indsdk/collect_stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/indsdk/collect_stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indsdk/descriptive_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/indsdk/descriptive_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indsdk/var_statistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/indsdk/var_statistics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/var_statistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareport/var_statistics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +35,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareport/descriptive_report.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
+            <state relative-caret-position="-269">
               <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
               <folding>
                 <element signature="e#101#120#0" expanded="true" />
@@ -64,29 +56,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LICENSE">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9900">
+            <state relative-caret-position="8730">
               <caret line="660" column="32" selection-start-line="660" selection-start-column="32" selection-end-line="660" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/setup.py">
+        <entry file="file://$PROJECT_DIR$/tests/data_report/test_collect_stats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+            <state relative-caret-position="105">
+              <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/datareport/__init__.py">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="e#221#263#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="390">
+              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -113,6 +102,8 @@
         <option value="$PROJECT_DIR$/datareport/src/collect_stats.py" />
         <option value="$PROJECT_DIR$/datareport/src/__init__.py" />
         <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/tests/data_report/test_collect_stats.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -141,6 +132,11 @@
               <item name="datareport" type="b2602c69:ProjectViewProjectNode" />
               <item name="datareport" type="462c0819:PsiDirectoryNode" />
               <item name="datareport" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="datareport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="datareport" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -183,16 +179,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571775087351</updated>
-      <workItem from="1571775088724" duration="1625000" />
+      <workItem from="1571775088724" duration="2022000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1625000" />
+    <option name="totallyTimeSpent" value="2022000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2428115" />
@@ -250,7 +245,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datareport/descriptive_report.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="-269">
           <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
           <folding>
             <element signature="e#101#120#0" expanded="true" />
@@ -267,15 +262,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9900">
+        <state relative-caret-position="8730">
           <caret line="660" column="32" selection-start-line="660" selection-start-column="32" selection-end-line="660" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
+    <entry file="file://$PROJECT_DIR$/tests/data_preparation/feature_selection/test_all_feature_selection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+        <state>
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/data_preparation/test_cat_vec_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#77#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -286,6 +292,27 @@
           <folding>
             <element signature="e#221#263#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/data_report/test_collect_stats.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
         </state>
       </provider>
     </entry>

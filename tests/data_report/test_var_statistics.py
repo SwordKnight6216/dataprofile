@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
 
-from ds_pipeline.data_report.var_statistics import common_stats
-from ds_pipeline.data_report.var_statistics import boolean_stats
-from ds_pipeline.data_report.var_statistics import numeric_stats
-from ds_pipeline.data_report.var_statistics import date_stats
-from ds_pipeline.data_report.var_statistics import unique_stats
-from ds_pipeline.data_report.var_statistics import constant_stats
-from ds_pipeline.data_report.var_statistics import categorical_stats
+from datareport.var_statistics import common_stats
+from datareport.var_statistics import boolean_stats
+from datareport.var_statistics import numeric_stats
+from datareport.var_statistics import date_stats
+from datareport.var_statistics import unique_stats
+from datareport.var_statistics import constant_stats
+from datareport.var_statistics import categorical_stats
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
