@@ -4,12 +4,12 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype, is_bool_dtype
 from typing import List, Dict
 
-from ds_pipeline.data_report.var_statistics import constant_stats
-from ds_pipeline.data_report.var_statistics import boolean_stats
-from ds_pipeline.data_report.var_statistics import numeric_stats
-from ds_pipeline.data_report.var_statistics import date_stats
-from ds_pipeline.data_report.var_statistics import unique_stats
-from ds_pipeline.data_report.var_statistics import categorical_stats
+from .var_statistics import constant_stats
+from .var_statistics import boolean_stats
+from .var_statistics import numeric_stats
+from .var_statistics import date_stats
+from .var_statistics import unique_stats
+from .var_statistics import categorical_stats
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:

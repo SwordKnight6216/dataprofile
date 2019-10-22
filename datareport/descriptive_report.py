@@ -4,9 +4,7 @@ import pandas as pd
 from tabulate import tabulate
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from ds_pipeline.data_report.collect_stats import get_variable_stats, get_table_stats, get_a_sample
-from ds_pipeline.viz.feature_viz import get_corr_df
-from ds_pipeline.viz.feature_viz import create_corr_heatmap, plot_feature_distribution_df
+from .collect_stats import get_variable_stats, get_table_stats, get_a_sample
 
 
 class DataReport(BaseEstimator, TransformerMixin):
@@ -23,8 +21,6 @@ class DataReport(BaseEstimator, TransformerMixin):
                      df: pd.DataFrame,
                      prt_table_stats: bool = True,
                      prt_var_stats: bool = True,
-                     prt_corr_stats: bool = True,
-                     prt_plots: bool = True,
                      sample_size: int = 15000,
                      var_per_row: int = 6,
                      random_state: int = 0) -> None:
@@ -44,7 +40,6 @@ class DataReport(BaseEstimator, TransformerMixin):
         sample_df = get_a_sample(df, sample_size, random_state)
 
         var_stats = get_variable_stats(sample_df)
-        corr_stats = get_corr_df(sample_df)
 
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
@@ -59,21 +54,6 @@ class DataReport(BaseEstimator, TransformerMixin):
                     print(tabulate(
                         pd.DataFrame(item).drop('type', axis=1).T.iloc[:, (i) * var_per_row:(i + 1) * var_per_row], \
                         headers='keys', tablefmt='psql'))
-
-        if prt_corr_stats:
-            print('\n===============Variables Correlations=========== \n')
-            print(tabulate(corr_stats, headers='keys', tablefmt='psql'))
-
-        if prt_plots:
-            type_var = {key: [x.name for x in items] for key, items in var_stats.items()}
-            print('\n===============Plots============================= \n')
-            print('Variables Distributions: ')
-            try:
-                plot_feature_distribution_df(sample_df[type_var['Numeric']], [], [])
-            except:
-                print('No numeric variables to print.')
-            print('Correlation Heatmap: ')
-            create_corr_heatmap(corr_stats)
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None, **kwargs) -> pd.DataFrame:
         """
