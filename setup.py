@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="datareport",
-    version="0.1.1",
+    version="0.1.2",
     author="Gordon Chen",
     author_email="GordonChen.GoBlue@gmail.com",
     description="This package is used to extract metadata from any given pandas DataFrame",
