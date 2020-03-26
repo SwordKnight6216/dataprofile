@@ -1,0 +1,2 @@
+DEFAULT_SAMPLE_SIZE = 1_500_000
+AUTHOR = "Gordon Chen"
