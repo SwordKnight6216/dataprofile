@@ -1,13 +1,11 @@
 """Class/Transformer for printing an overall report of statistics and plots for a given dataset."""
 
 from pathlib import Path
-from typing import Optional
 
 import click
 import pandas as pd
 from tabulate import tabulate
 
-# from sklearn.base import BaseEstimator, TransformerMixin
 from config import DEFAULT_SAMPLE_SIZE
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample
 
@@ -99,52 +97,9 @@ def main(path: str, prt_table_stats: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
          var_per_row: int = 6, save_report_to_file: str = '') -> None:
     df = pd.read_csv(Path(path))
-    #report_file = make_report_file(save_report_to_file) if save_report_to_file else ''
     print_report(df, prt_table_stats=prt_table_stats, prt_var_stats=prt_var_stats, sample_size=sample_size,
                  var_per_row=var_per_row, report_file=save_report_to_file)
 
 
 if __name__ == "__main__":
     main()
-
-# class DataReport(BaseEstimator, TransformerMixin):
-#     """
-#     This class is designed to print reports of statistics and plots.
-#
-#     And can be inserted as a middle step in sklearn pipeline.
-#     """
-#
-#     def __init__(self) -> None:
-#         """Initialization."""
-#
-#     def fit(self, X: pd.DataFrame, y: pd.Series = None, **kwargs) -> pd.DataFrame:
-#         """
-#         Run the report and return the same dataset.
-#
-#         :param X: the X of target dataset
-#         :param y: y
-#         :return: the original dataset
-#         """
-#         return X
-#
-#     def transform(self, X: pd.DataFrame, y: pd.Series = None, **kwargs) -> pd.DataFrame:
-#         """
-#         Run the report and return the same dataset.
-#
-#         :param X: the X of target dataset
-#         :param y: y
-#         :return: the original dataset
-#         """
-#         print_report(X, **kwargs)
-#         return X
-#
-#     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None, **kwargs) -> pd.DataFrame:
-#         """
-#         Run the report and return the same dataset.
-#
-#         :param X: the X of target dataset
-#         :param y: y
-#         :return: the original datase
-#         """
-#         self.transform(self.fit(X, **kwargs), **kwargs)
-#         return X
