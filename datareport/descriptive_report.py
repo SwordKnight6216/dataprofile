@@ -1,12 +1,12 @@
-"""Class/Transformer for printing an overall report of statistics and plots for a given dataset."""
+"""print or save a report of overall statistics and detailed statistics for a given dataset."""
 
 from pathlib import Path
-
+from datetime import date
 import click
 import pandas as pd
 from tabulate import tabulate
 
-from config import DEFAULT_SAMPLE_SIZE
+from config import DEFAULT_SAMPLE_SIZE, AUTHOR
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample
 
 
@@ -43,6 +43,7 @@ def print_report(df: pd.DataFrame,
         file = None
 
     try:
+        print(f"\nThe following report is created by {AUTHOR} on {date.today()}", file=file)
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
             print('\n=============Table Statistics ============== \n', file=file)
