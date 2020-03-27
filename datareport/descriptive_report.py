@@ -57,16 +57,17 @@ def print_report(df: pd.DataFrame,
                   file=file)
 
         if prt_var_summary:
-            type_stats = ['type', 'count', 'distinct_count', 'p_missing', 'n_missing', 'p_unique', 'is_unique']
+            type_stats = ['type', 'count', 'distinct_count', 'p_unique', 'n_missing', 'p_missing']
             tmp_df_stats = []
             for key, item in var_stats.items():
                 tmp_df_stats.append(pd.DataFrame(item)[type_stats])
             var_summary = pd.concat(tmp_df_stats)
+            var_summary.index.name = 'name'
             print('\n============= Variable Summary ============== \n', file=file)
             print(tabulate(var_summary, headers='keys', tablefmt='psql'), file=file)
 
         if prt_var_stats:
-            print('\n=============== Variables Statistics ============ ', file=file)
+            print('\n============= Variables Statistics ========== ', file=file)
             for key, item in var_stats.items():
                 print(f'\nSummary of {key} variables: \n', file=file)
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
