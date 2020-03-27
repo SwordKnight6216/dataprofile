@@ -5,7 +5,7 @@ from typing import List, Dict
 import pandas as pd
 from pandas.api.types import is_numeric_dtype, is_bool_dtype
 
-from config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
+from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import boolean_stats
 from .var_statistics import categorical_stats
 from .var_statistics import constant_stats

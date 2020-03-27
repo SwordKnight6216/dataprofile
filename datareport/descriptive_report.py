@@ -9,7 +9,7 @@ import click
 import pandas as pd
 from tabulate import tabulate
 
-from config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
+from datareport.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample
 
 
