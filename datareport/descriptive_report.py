@@ -114,9 +114,13 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('--path', prompt='cvs file path', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
-@click.option('--prt_table_stats', prompt='print table statistics?', required=False, default=True, show_default=True,
-              help='wanna see the overall dataset statistics')
-@click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default=True, show_default=True,
+@click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']), help='wanna see the overall dataset statistics')
+@click.option('--prt_var_summary', prompt='print variable summary?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']),
+              help='wanna see the variable summary')
+@click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']),
               help='wanna see the variable statistics')
 @click.option('--sample_size', prompt='How big is your sample size?', required=False, default=DEFAULT_SAMPLE_SIZE,
               show_default=True,
@@ -128,7 +132,7 @@ def _find_csv_file() -> Optional[Path]:
               required=False, default='', type=click.Choice(['', 'html', 'txt']),
               show_default=True,
               help='file type (html or txt) to store the report, skip if not needed')
-def main(path: str, prt_table_stats: bool = True,
+def main(path: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
          prt_var_stats: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
          var_per_row: int = 6, save_report_to_file: str = '') -> None:
@@ -136,6 +140,7 @@ def main(path: str, prt_table_stats: bool = True,
 
     :param path:
     :param prt_table_stats:
+    :param prt_var_summary:
     :param prt_var_stats:
     :param sample_size:
     :param var_per_row:
@@ -147,9 +152,11 @@ def main(path: str, prt_table_stats: bool = True,
     except FileNotFoundError:
         print("Target file doesn't exist or not CSV format! \nReporting stopped!")
         sys.exit(1)
-    report_file_name = str(path).split('/')[-1].split('.')[
-                           0] + '_report.' + save_report_to_file if save_report_to_file else None
-    print_report(df, prt_table_stats=prt_table_stats, prt_var_stats=prt_var_stats, sample_size=sample_size,
+    report_file_name = 'report_' + str(path).split('/')[-1].split('.')[
+                           0] + '.' + save_report_to_file if save_report_to_file else None
+    print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
+                 prt_var_stats=prt_var_stats == 'y',
+                 sample_size=sample_size,
                  var_per_row=var_per_row, report_file=report_file_name)
 
 
