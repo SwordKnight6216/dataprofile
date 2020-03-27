@@ -15,6 +15,7 @@ from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_
 
 def print_report(df: pd.DataFrame,
                  prt_table_stats: bool = True,
+                 prt_var_summary: bool = True,
                  prt_var_stats: bool = True,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
@@ -25,6 +26,7 @@ def print_report(df: pd.DataFrame,
 
     :param df: the target dataset
     :param prt_table_stats: if print the table statistics
+    :param prt_var_summary: if print the variable summaries
     :param prt_var_stats: if print the variables statistics
     :param prt_corr_stats: if print the correlation table
     :param prt_plots: if print plots
@@ -54,13 +56,22 @@ def print_report(df: pd.DataFrame,
             print(tabulate(pd.DataFrame(pd.Series(table_stats), columns=['count']), headers='keys', tablefmt='psql'),
                   file=file)
 
+        if prt_var_summary:
+            type_stats = ['type', 'count', 'distinct_count', 'p_missing', 'n_missing', 'p_unique', 'is_unique']
+            tmp_df_stats = []
+            for key, item in var_stats.items():
+                tmp_df_stats.append(pd.DataFrame(item)[type_stats])
+            var_summary = pd.concat(tmp_df_stats)
+            print('\n============= Variable Summary ============== \n', file=file)
+            print(tabulate(var_summary, headers='keys', tablefmt='psql'), file=file)
+
         if prt_var_stats:
             print('\n=============== Variables Statistics ============ ', file=file)
             for key, item in var_stats.items():
                 print(f'\nSummary of {key} variables: \n', file=file)
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
                     print(tabulate(
-                        pd.DataFrame(item).drop('type', axis=1).T.iloc[:, (i) * var_per_row:(i + 1) * var_per_row], \
+                        pd.DataFrame(item).drop('type', axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
                         headers='keys', tablefmt='psql'), file=file)
 
         print(f"report saved to {report_file}") if file else None
