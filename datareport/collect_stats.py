@@ -1,15 +1,17 @@
 """Collect the statistics for each variable in the dataset."""
 
-import pandas as pd
-from pandas.api.types import is_numeric_dtype, is_bool_dtype
 from typing import List, Dict
 
-from .var_statistics import constant_stats
+import pandas as pd
+from pandas.api.types import is_numeric_dtype, is_bool_dtype
+
+from config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import boolean_stats
-from .var_statistics import numeric_stats
-from .var_statistics import date_stats
-from .var_statistics import unique_stats
 from .var_statistics import categorical_stats
+from .var_statistics import constant_stats
+from .var_statistics import date_stats
+from .var_statistics import numeric_stats
+from .var_statistics import unique_stats
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
@@ -87,7 +89,8 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     return table_stats
 
 
-def get_a_sample(df: pd.DataFrame, sample_size: int = 15000, random_state: int = 0) -> pd.DataFrame:
+def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
+                 random_state: int = RANDOM_STATE) -> pd.DataFrame:
     """
     Provide the original dataset or a random sample of it.
 
@@ -104,7 +107,8 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = 15000, random_state: int =
         return df
 
 
-def get_data_type(df: pd.DataFrame, sample_size: int = 15000, random_state: int = 0) -> pd.DataFrame:
+def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
+                  random_state: int = RANDOM_STATE) -> pd.DataFrame:
     """
     Provide a summary table of data types of the given dataset.
 

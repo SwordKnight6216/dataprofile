@@ -9,7 +9,7 @@ import click
 import pandas as pd
 from tabulate import tabulate
 
-from config import DEFAULT_SAMPLE_SIZE, AUTHOR
+from config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample
 
 
@@ -19,7 +19,7 @@ def print_report(df: pd.DataFrame,
                  prt_var_stats: bool = True,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
-                 random_state: int = 0,
+                 random_state: int = RANDOM_STATE,
                  report_file: str = '') -> None:
     """
     Print out descriptive analysis report for a given dataset.
