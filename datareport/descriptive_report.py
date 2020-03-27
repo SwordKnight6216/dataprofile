@@ -67,9 +67,9 @@ def print_report(df: pd.DataFrame,
             print(tabulate(var_summary, headers='keys', tablefmt='psql'), file=file)
 
         if prt_var_stats:
-            print('\n============= Variables Statistics ========== ', file=file)
+            print('\n============= Variable Statistics =========== ', file=file)
             for key, item in var_stats.items():
-                print(f'\nSummary of {key} variables: \n', file=file)
+                print(f'\n{key} variables: \n', file=file)
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
                     print(tabulate(
                         pd.DataFrame(item).drop('type', axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],

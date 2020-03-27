@@ -43,7 +43,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
             constant_stats_ls.append(constant_stats(df[col]))
             var_stats['Constant'] = constant_stats_ls
 
-        elif is_bool_dtype(df[col]) or (distinct_count == 2 and is_numeric_dtype(df[col])):
+        elif is_bool_dtype(df[col]) or (distinct_count == 2 and is_numeric_dtype(df[col]) and df[col].max() == 1):
             boolean_stats_ls.append(boolean_stats(df[col]))
             var_stats['Boolean'] = boolean_stats_ls
 
