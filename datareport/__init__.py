@@ -1,4 +1,5 @@
-"""The :mod: `dsdk.data_report` module prints a report including statistics and plots for a given dataset."""
+"""print or save a report of overall statistics and detailed statistics for a given dataset.
+It can be used as a standalone module as well."""
 
 from .descriptive_report import print_report
 from .viz import plot_time_series
