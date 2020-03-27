@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="datareport",
-    version="0.1.3",
+    version="1.0.0",
     author="Gordon Chen",
     author_email="GordonChen.GoBlue@gmail.com",
     description="This package generates statistical reports for given pandas DataFrames or CSV files in standalone model",
