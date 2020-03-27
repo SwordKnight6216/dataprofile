@@ -1,7 +1,10 @@
 """print or save a report of overall statistics and detailed statistics for a given dataset."""
 
-from pathlib import Path
+import sys
 from datetime import date
+from pathlib import Path
+from typing import Optional
+
 import click
 import pandas as pd
 from tabulate import tabulate
@@ -37,34 +40,39 @@ def print_report(df: pd.DataFrame,
     var_stats = get_variable_stats(sample_df)
 
     if report_file:
-        report_file = make_report_file(report_file)
+        report_file = _make_report_file(report_file)
         file = open(report_file, 'w', encoding="UTF-8")
     else:
         file = None
 
     try:
+        print('\n============= Beginning of report ============ ', file=file)
         print(f"\nThe following report is created by {AUTHOR} on {date.today()}", file=file)
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
-            print('\n=============Table Statistics ============== \n', file=file)
+            print('\n============= Table Statistics ============== \n', file=file)
             print(tabulate(pd.DataFrame(pd.Series(table_stats), columns=['count']), headers='keys', tablefmt='psql'),
                   file=file)
 
         if prt_var_stats:
-            print('\n===============Variables Statistics ============ ', file=file)
+            print('\n=============== Variables Statistics ============ ', file=file)
             for key, item in var_stats.items():
                 print(f'\nSummary of {key} variables: \n', file=file)
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
                     print(tabulate(
                         pd.DataFrame(item).drop('type', axis=1).T.iloc[:, (i) * var_per_row:(i + 1) * var_per_row], \
                         headers='keys', tablefmt='psql'), file=file)
+
+        print(f"report saved to {report_file}") if file else None
+        print('\n=============== End of report ============ ', file=file)
+
     except:
         print('Report not finished successfully!')
     finally:
         file.close() if file else None
 
 
-def make_report_file(file: str) -> Path:
+def _make_report_file(file: str) -> Path:
     """
     create a file for store the report
     :param file:
@@ -76,9 +84,18 @@ def make_report_file(file: str) -> Path:
     return path
 
 
+def _find_csv_file() -> Optional[Path]:
+    """
+    return the first CSV file found in the current directory
+    :return:
+    """
+    csv_lt = list(Path().glob('*.csv'))
+    return csv_lt[0] if csv_lt else None
+
+
 @click.command()
-@click.option('--path', '-p', prompt='cvs file path', required=True, help='cvs format is required',
-              default='/Users/gordonchen/Documents/projects/dataviz/data/raw/population/industry_sex_employment.csv',
+@click.option('--path', prompt='cvs file path', required=True, help='cvs format is required',
+              default=_find_csv_file(),
               show_default=True)
 @click.option('--prt_table_stats', prompt='print table statistics?', required=False, default=True, show_default=True,
               help='wanna see the overall dataset statistics')
@@ -90,14 +107,28 @@ def make_report_file(file: str) -> Path:
 @click.option('--var_per_row', prompt='How many variables to show per row?', required=False, default=6,
               show_default=True,
               help='number of variables to show per row')
-@click.option('--save_report_to_file', prompt='save report to a file', required=False, default='',
+@click.option('--save_report_to_file', prompt='file to store the report', required=False, default='',
               show_default=True,
-              help='save report to a file')
+              help='file to store the report')
 def main(path: str, prt_table_stats: bool = True,
          prt_var_stats: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
          var_per_row: int = 6, save_report_to_file: str = '') -> None:
-    df = pd.read_csv(Path(path))
+    """
+
+    :param path:
+    :param prt_table_stats:
+    :param prt_var_stats:
+    :param sample_size:
+    :param var_per_row:
+    :param save_report_to_file:
+    :return:
+    """
+    try:
+        df = pd.read_csv(Path(path))
+    except FileNotFoundError:
+        print("Target file doesn't exist or not CSV format! \nReporting stopped!")
+        sys.exit(1)
     print_report(df, prt_table_stats=prt_table_stats, prt_var_stats=prt_var_stats, sample_size=sample_size,
                  var_per_row=var_per_row, report_file=save_report_to_file)
 
