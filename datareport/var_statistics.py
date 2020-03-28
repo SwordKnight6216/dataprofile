@@ -18,9 +18,9 @@ def common_stats(series: pd.Series) -> pd.Series:
     stats = {}
     stats['count'] = leng
     stats['distinct_count'] = distinct_count
-    stats['p_missing'] = round(1 - count * 1.0 / leng, 4)
     stats['n_missing'] = leng - count
-    stats['is_unique'] = distinct_count == leng
+    stats['p_missing'] = round(1 - count * 1.0 / leng, 4)
+    stats['n_unique'] = series.nunique()
     stats['p_unique'] = round(distinct_count * 1.0 / count, 4)
 
     return pd.Series(stats, name=series.name)
