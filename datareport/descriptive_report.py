@@ -111,7 +111,7 @@ def _find_csv_file() -> Optional[Path]:
 
 
 @click.command()
-@click.option('-p', '--file', prompt='target cvs file', required=True, help='cvs format is required',
+@click.option('-f', '--file', prompt='target cvs file', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
 @click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
