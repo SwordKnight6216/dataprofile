@@ -6,7 +6,7 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype, is_bool_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
-from .var_statistics import boolean_stats
+from .var_statistics import binary_stats
 from .var_statistics import categorical_stats
 from .var_statistics import constant_stats
 from .var_statistics import date_stats
@@ -25,7 +25,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
 
     col_with_no_values = []
     constant_stats_ls = []
-    boolean_stats_ls = []
+    binary_stats_ls = []
     numeric_stats_ls = []
     date_stats_ls = []
     unique_stats_ls = []
@@ -43,9 +43,9 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
             constant_stats_ls.append(constant_stats(df[col]))
             var_stats['Constant'] = constant_stats_ls
 
-        elif is_bool_dtype(df[col]) or (distinct_count == 2 and is_numeric_dtype(df[col]) and df[col].max() == 1):
-            boolean_stats_ls.append(boolean_stats(df[col]))
-            var_stats['Boolean'] = boolean_stats_ls
+        elif distinct_count == 2:
+            binary_stats_ls.append(binary_stats(df[col]))
+            var_stats['Binary'] = binary_stats_ls
 
         elif pd.api.types.is_numeric_dtype(df[col]):
             numeric_stats_ls.append(numeric_stats(df[col]))
@@ -60,8 +60,13 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
             var_stats['Unique'] = unique_stats_ls
 
         else:
-            categorical_stats_ls.append(categorical_stats(df[col]))
-            var_stats['Categorical'] = categorical_stats_ls
+            try:
+                converted = pd.to_datetime(df[col])
+                date_stats_ls.append(date_stats(converted))
+                var_stats['Date'] = date_stats_ls
+            except:
+                categorical_stats_ls.append(categorical_stats(df[col]))
+                var_stats['Categorical'] = categorical_stats_ls
 
     if col_with_no_values:
         print(f'ATTN: Completely empty variables {col_with_no_values} are skipped in statistical calculation.')

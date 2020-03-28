@@ -96,7 +96,7 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     return stats_common.append(pd.Series(stats, name=series.name))
 
 
-def boolean_stats(series: pd.Series) -> pd.Series:
+def binary_stats(series: pd.Series) -> pd.Series:
     """
     Compute summary statistics of a boolean variable.
 
@@ -104,10 +104,14 @@ def boolean_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats = {}
-    stats['type'] = 'Boolean'
-    stats['mode'] = series.mode()[0]
-    stats['mode_freq'] = series.value_counts().max()
-    stats['mean'] = series.mean()
+    aggr = series.value_counts()
+    stats['type'] = 'Binary'
+    stats['value1'] = aggr.index[0]
+    stats['n_value1'] = aggr[stats['value1']]
+    stats['p_value1'] = stats['n_value1']/len(series)
+    stats['value2'] = aggr.index[1]
+    stats['n_value2'] = aggr[stats['value2']]
+    stats['p_value2'] = stats['n_value2']/len(series)
 
     stats_common = common_stats(series)
     return stats_common.append(pd.Series(stats, name=series.name))
