@@ -62,7 +62,7 @@ def print_report(df: pd.DataFrame,
                   file=file, end=line_ending)
 
         if prt_var_summary:
-            type_stats = ['type', 'count', 'distinct_count', 'p_unique', 'n_missing', 'p_missing']
+            type_stats = ['type', 'count', 'n_unique', 'p_unique', 'n_missing', 'p_missing']
             tmp_df_stats = []
             for key, item in var_stats.items():
                 tmp_df_stats.append(pd.DataFrame(item)[type_stats])
@@ -111,7 +111,7 @@ def _find_csv_file() -> Optional[Path]:
 
 
 @click.command()
-@click.option('--path', prompt='cvs file path', required=True, help='cvs format is required',
+@click.option('-p', '--file', prompt='target cvs file', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
 @click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
@@ -128,17 +128,18 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('--var_per_row', prompt='How many variables to show per row?', required=False, default=6,
               show_default=True,
               help='number of variables to show per row')
-@click.option('--save_report_to_file', prompt='file type to store the report, skip if not needed or choose one from',
+@click.option('-t', '--save_report_to_file',
+              prompt='file type to store the report, skip if not needed or choose one from',
               required=False, default='', type=click.Choice(['', 'html', 'txt']),
               show_default=True,
               help='file type (html or txt) to store the report, skip if not needed')
-def main(path: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
+def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
          prt_var_stats: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
          var_per_row: int = 6, save_report_to_file: str = '') -> None:
     """
 
-    :param path:
+    :param file:
     :param prt_table_stats:
     :param prt_var_summary:
     :param prt_var_stats:
@@ -148,12 +149,12 @@ def main(path: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     :return:
     """
     try:
-        df = pd.read_csv(Path(path))
+        df = pd.read_csv(Path(file))
     except FileNotFoundError:
         print("Target file doesn't exist or not CSV format! \nReporting stopped!")
         sys.exit(1)
-    report_file_name = 'report_' + str(path).split('/')[-1].split('.')[
-                           0] + '.' + save_report_to_file if save_report_to_file else None
+    report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
+        0] + '.' + save_report_to_file if save_report_to_file else None
     print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
                  prt_var_stats=prt_var_stats == 'y',
                  sample_size=sample_size,
