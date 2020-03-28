@@ -125,7 +125,7 @@ def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     sample_df = get_a_sample(df, sample_size, random_state)
     var_stats = get_variable_stats(sample_df)
 
-    type_stats = ['type', 'count', 'n_missing', 'p_missing', 'n_unique',  'p_unique', 'is_unique']
+    type_stats = ['type', 'count', 'n_missing', 'p_missing', 'n_unique',  'p_unique']
     tmp_df_stats = []
     for key, item in var_stats.items():
         tmp_df_stats.append(pd.DataFrame(item)[type_stats])

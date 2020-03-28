@@ -4,7 +4,7 @@ import pandas as pd
 from pandas.testing import assert_series_equal
 
 from datareport.var_statistics import common_stats
-from datareport.var_statistics import boolean_stats
+from datareport.var_statistics import binary_stats
 from datareport.var_statistics import numeric_stats
 from datareport.var_statistics import date_stats
 from datareport.var_statistics import unique_stats
@@ -18,38 +18,39 @@ test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
 def test_common_stats():
     output = common_stats(test_df['Cabin'])
     expected_result = pd.Series({'count': 891,
-                                 'distinct_count': 147,
+                                 'n_unique': 147,
                                  'p_missing': 0.771,
                                  'n_missing': 687,
-                                 'is_unique': False,
                                  'p_unique': 0.7206})
     expected_result.name = 'Cabin'
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
-def test_boolean_stats():
+def test_binary_stats():
     test_series = pd.Series([None, False, np.nan, True, False, True])
-    output = boolean_stats(test_series)
+    output = binary_stats(test_series)
+    print(output)
     expected_result = pd.Series({'count': 6,
-                                 'distinct_count': 3,
+                                 'n_unique': 3,
                                  'p_missing': 0.3333,
                                  'n_missing': 2,
-                                 'is_unique': False,
                                  'p_unique': 0.75,
-                                 'type': 'Boolean',
-                                 'mode': False,
-                                 'mode_freq': 2,
-                                 'mean': 0.5})
+                                 'type': 'Binary',
+                                 'value1': True,
+                                 'n_value1': 2,
+                                 'p_value1': 0.333333,
+                                 'value2': False,
+                                 'n_value2': 2,
+                                 'p_value2': 0.333333})
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
 def test_numeric_stats():
     output = numeric_stats(test_df['Age'])
     expected_result = pd.Series({'count': 891,
-                                 'distinct_count': 88,
+                                 'n_unique': 88,
                                  'p_missing': 0.1987,
                                  'n_missing': 177,
-                                 'is_unique': False,
                                  'p_unique': 0.1232,
                                  'type': 'Numeric',
                                  'mean': 29.6991,
@@ -87,10 +88,9 @@ def test_date_stats():
                                             '10/1/2018']))
     output = date_stats(test_series)
     expected_result = pd.Series({'count': 9,
-                                 'distinct_count': 4,
+                                 'n_unique': 4,
                                  'p_missing': 0.3333,
                                  'n_missing': 3,
-                                 'is_unique': False,
                                  'p_unique': 0.6667,
                                  'type': 'Date',
                                  'min': pd.to_datetime('2018-07-29 00:00:00'),
@@ -103,10 +103,9 @@ def test_constant_stats():
     test_series = pd.Series([1, 1, np.nan, 1, None, 1, 1, 1, 1])
     output = constant_stats(test_series)
     expected_result = pd.Series({'count': 9,
-                                 'distinct_count': 1,
+                                 'n_unique': 1,
                                  'p_missing': 0.2222,
                                  'n_missing': 2,
-                                 'is_unique': False,
                                  'p_unique': 0.1429,
                                  'type': 'Constant'})
     assert_series_equal(output.sort_index(), expected_result.sort_index())
@@ -115,10 +114,9 @@ def test_constant_stats():
 def test_unique_stats():
     output = unique_stats(test_df['Name'])
     expected_result = pd.Series({'count': 891,
-                                 'distinct_count': 891,
+                                 'n_unique': 891,
                                  'p_missing': 0.0,
                                  'n_missing': 0,
-                                 'is_unique': True,
                                  'p_unique': 1.0,
                                  'type': 'Unique'})
     expected_result.name = 'Name'
@@ -128,10 +126,9 @@ def test_unique_stats():
 def test_categorical_stats():
     output = categorical_stats(test_df['Embarked'])
     expected_result = pd.Series({'count': 891,
-                                 'distinct_count': 3,
+                                 'n_unique': 3,
                                  'p_missing': 0.0022,
                                  'n_missing': 2,
-                                 'is_unique': False,
                                  'p_unique': 0.0034,
                                  'type': 'Categorical',
                                  'mode': 'S',

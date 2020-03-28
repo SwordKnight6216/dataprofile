@@ -15,12 +15,12 @@ test_df['no_values'] = None
 
 def test_get_variable_stats():
     var_stats = get_variable_stats(test_df)
-    assert list(var_stats.keys()) == ['Numeric', 'Boolean', 'Unique', 'Categorical']
+    assert list(var_stats.keys()) == ['Numeric', 'Binary', 'Unique', 'Categorical']
     # check some statistics randomly
     assert len(var_stats['Numeric']) == 6
-    assert len(var_stats['Boolean']) == 1
+    assert len(var_stats['Binary']) == 2
     assert len(var_stats['Unique']) == 1
-    assert len(var_stats['Categorical']) == 4
+    assert len(var_stats['Categorical']) == 3
     assert is_numeric_dtype(test_df[var_stats['Numeric'][1].name])
 
 
@@ -31,9 +31,9 @@ def test_get_table_stats():
                        'n_missing': 1757,
                        'n_duplicated': 0,
                        'n_Numeric': 6,
-                       'n_Boolean': 1,
+                       'n_Binary': 2,
                        'n_Unique': 1,
-                       'n_Categorical': 4}
+                       'n_Categorical': 3}
     assert table_stats == expected_result
 
 
@@ -51,9 +51,9 @@ def test_get_data_type():
                        'SibSp': 'Numeric',
                        'Parch': 'Numeric',
                        'Fare': 'Numeric',
-                       'Survived': 'Boolean',
+                       'Survived': 'Binary',
                        'Name': 'Unique',
-                       'Sex': 'Categorical',
+                       'Sex': 'Binary',
                        'Ticket': 'Categorical',
                        'Cabin': 'Categorical',
                        'Embarked': 'Categorical'}
