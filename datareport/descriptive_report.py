@@ -149,9 +149,15 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     :return:
     """
     try:
-        df = pd.read_csv(Path(file))
+        df = pd.read_csv(Path(file), engine='python')
     except FileNotFoundError:
-        print("Target file doesn't exist or not CSV format! \nReporting stopped!")
+        print("\nTarget file doesn't exist!\nReporting stopped!")
+        sys.exit(1)
+    except UnicodeDecodeError:
+        print("\nTarget file is not encoded appropriately! \nReporting stopped!")
+        sys.exit(1)
+    except Exception:
+        print("\nUnknown file reading error happened! \nReporting stopped!")
         sys.exit(1)
     report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
         0] + '.' + save_report_to_file if save_report_to_file else None
