@@ -62,7 +62,7 @@ def numeric_stats(series: pd.Series) -> pd.Series:
     return stats_common.append(pd.Series(stats, name=series.name))
 
 
-def date_stats(series: pd.Series) -> pd.Series:
+def datetime_stats(series: pd.Series) -> pd.Series:
     """
     Compute summary statistics of a date variable.
 

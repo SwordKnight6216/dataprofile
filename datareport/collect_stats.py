@@ -9,7 +9,7 @@ from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats
 from .var_statistics import categorical_stats
 from .var_statistics import constant_stats
-from .var_statistics import date_stats
+from .var_statistics import datetime_stats
 from .var_statistics import numeric_stats
 from .var_statistics import unique_stats
 
@@ -62,7 +62,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         else:
             try:
                 converted = pd.to_datetime(df[col])
-                date_stats_ls.append(date_stats(converted))
+                date_stats_ls.append(datetime_stats(converted))
                 var_stats['Date'] = date_stats_ls
             except:
                 categorical_stats_ls.append(categorical_stats(df[col]))

@@ -6,7 +6,7 @@ from pandas.testing import assert_series_equal
 from datareport.var_statistics import common_stats
 from datareport.var_statistics import binary_stats
 from datareport.var_statistics import numeric_stats
-from datareport.var_statistics import date_stats
+from datareport.var_statistics import datetime_stats
 from datareport.var_statistics import unique_stats
 from datareport.var_statistics import constant_stats
 from datareport.var_statistics import categorical_stats
@@ -76,7 +76,7 @@ def test_numeric_stats():
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
-def test_date_stats():
+def test_datetime_stats():
     test_series = pd.to_datetime(pd.Series(['9/16/2018',
                                             '8/30/2018',
                                             '7/29/2018',
@@ -86,7 +86,7 @@ def test_date_stats():
                                             '8/30/2018',
                                             '7/29/2018',
                                             '10/1/2018']))
-    output = date_stats(test_series)
+    output = datetime_stats(test_series)
     expected_result = pd.Series({'count': 9,
                                  'n_unique': 4,
                                  'p_missing': 0.3333,
