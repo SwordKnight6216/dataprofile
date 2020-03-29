@@ -3,7 +3,7 @@
 from typing import List, Dict
 
 import pandas as pd
-from pandas.api.types import is_numeric_dtype, is_bool_dtype
+from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats
@@ -52,7 +52,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
             var_stats['Numeric'] = numeric_stats_ls
 
         elif pd.api.types.is_datetime64_dtype(df[col]):
-            date_stats_ls.append(date_stats(df[col]))
+            date_stats_ls.append(datetime_stats(df[col]))
             var_stats['Date'] = date_stats_ls
 
         elif distinct_count == leng:
