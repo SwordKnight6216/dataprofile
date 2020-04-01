@@ -27,8 +27,6 @@ def print_report(df: pd.DataFrame,
     :param prt_table_stats: if print the table statistics
     :param prt_var_summary: if print the variable summaries
     :param prt_var_stats: if print the variables statistics
-    :param prt_corr_stats: if print the correlation table
-    :param prt_plots: if print plots
     :param sample_size: Number of rows to sample from the target dataframe
     :param var_per_row: number of columns of stats to print per row
     :param random_state: Random seed for the row sampler
