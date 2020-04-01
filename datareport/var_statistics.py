@@ -19,8 +19,8 @@ def common_stats(series: pd.Series) -> pd.Series:
     stats['count'] = leng
     stats['n_missing'] = leng - count
     stats['p_missing'] = f"{1 - count * 1.0 / leng:.2%}"
-    stats['n_unique'] = distinct_count
-    stats['p_unique'] = f"{distinct_count * 1.0 / count:.2%}"
+    stats['n_unique'] = distinct_count if distinct_count else 'N/A'
+    stats['p_unique'] = f"{distinct_count * 1.0 / count:.2%}" if distinct_count else 'N/A'
 
     return pd.Series(stats, name=series.name)
 
