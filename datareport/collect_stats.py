@@ -1,18 +1,14 @@
 """Collect the statistics for each variable in the dataset."""
 
+from collections import defaultdict
 from typing import List, Dict
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
-from .var_statistics import binary_stats
-from .var_statistics import categorical_stats
-from .var_statistics import constant_stats
-from .var_statistics import datetime_stats
-from .var_statistics import empty_stats
-from .var_statistics import numeric_stats
-from .var_statistics import unique_stats
+from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, numeric_stats, \
+    unique_stats
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
@@ -22,15 +18,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
     :param df: the target dataset
     :return: a dictionary contains statistics of all variables
     """
-    var_stats = {}
-
-    empty_stats_ls = []
-    constant_stats_ls = []
-    binary_stats_ls = []
-    numeric_stats_ls = []
-    date_stats_ls = []
-    unique_stats_ls = []
-    categorical_stats_ls = []
+    var_stats = defaultdict(list)
 
     for col in df:
 
@@ -38,37 +26,23 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         leng = len(df[col])
 
         if distinct_count == 0:
-            empty_stats_ls.append(empty_stats(df[col]))
-            var_stats['Empty'] = empty_stats_ls
-
+            var_stats['Empty'].append(empty_stats(df[col]))
         elif distinct_count == 1:
-            constant_stats_ls.append(constant_stats(df[col]))
-            var_stats['Constant'] = constant_stats_ls
-
+            var_stats['Constant'].append(constant_stats(df[col]))
         elif distinct_count == 2:
-            binary_stats_ls.append(binary_stats(df[col]))
-            var_stats['Binary'] = binary_stats_ls
-
+            var_stats['Binary'].append(binary_stats(df[col]))
         elif pd.api.types.is_numeric_dtype(df[col]):
-            numeric_stats_ls.append(numeric_stats(df[col]))
-            var_stats['Numeric'] = numeric_stats_ls
-
+            var_stats['Numeric'].append(numeric_stats(df[col]))
         elif pd.api.types.is_datetime64_dtype(df[col]):
-            date_stats_ls.append(datetime_stats(df[col]))
-            var_stats['Date'] = date_stats_ls
-
+            var_stats['Date'].append(datetime_stats(df[col]))
         elif distinct_count == leng:
-            unique_stats_ls.append(unique_stats(df[col]))
-            var_stats['Unique'] = unique_stats_ls
-
+            var_stats['Unique'].append(unique_stats(df[col]))
         else:
             try:
                 converted = pd.to_datetime(df[col])
-                date_stats_ls.append(datetime_stats(converted))
-                var_stats['Date'] = date_stats_ls
+                var_stats['Date'].append(datetime_stats(converted))
             except:
-                categorical_stats_ls.append(categorical_stats(df[col]))
-                var_stats['Categorical'] = categorical_stats_ls
+                var_stats['Categorical'].append(categorical_stats(df[col]))
 
     return var_stats
 

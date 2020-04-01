@@ -29,13 +29,13 @@ def test_get_table_stats():
     table_stats = get_table_stats(test_df, get_variable_stats(test_df))
     expected_result = {'n_row': 891,
                        'n_col': 13,
-                       'n_missing': 1757,
-                       'n_duplicated': 0,
-                       'n_Numeric': 6,
-                       'n_Binary': 2,
-                       'n_Unique': 1,
-                       'n_Categorical': 3,
-                       'n_Empty': 1}
+                       'n_missing_cell': 1757,
+                       'n_duplicated_row': 0,
+                       'n_Numeric_var': 6,
+                       'n_Binary_var': 2,
+                       'n_Unique_var': 1,
+                       'n_Categorical_var': 3,
+                       'n_Empty_var': 1}
     assert table_stats == expected_result
 
 
