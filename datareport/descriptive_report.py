@@ -1,6 +1,5 @@
 """print or save a report of overall statistics and detailed statistics for a given dataset."""
 
-import sys
 from datetime import date
 from pathlib import Path
 from typing import Optional
@@ -152,19 +151,17 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
         df = pd.read_csv(Path(file), engine='python')
     except FileNotFoundError:
         print("\nTarget file doesn't exist!\nReporting stopped!")
-        sys.exit(1)
     except UnicodeDecodeError:
         print("\nTarget file is not encoded appropriately! \nReporting stopped!")
-        sys.exit(1)
-    except Exception:
-        print("\nUnknown file reading error happened! \nReporting stopped!")
-        sys.exit(1)
-    report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
-        0] + '.' + save_report_to_file if save_report_to_file else None
-    print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
-                 prt_var_stats=prt_var_stats == 'y',
-                 sample_size=sample_size,
-                 var_per_row=var_per_row, report_file=report_file_name)
+    except Exception as e:
+        print(f"{e} \nReporting stopped!")
+    else:
+        report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
+            0] + '.' + save_report_to_file if save_report_to_file else None
+        print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
+                     prt_var_stats=prt_var_stats == 'y',
+                     sample_size=sample_size,
+                     var_per_row=var_per_row, report_file=report_file_name)
 
 
 if __name__ == "__main__":
