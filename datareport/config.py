@@ -1,3 +1,5 @@
+import os
+
 DEFAULT_SAMPLE_SIZE = -1
-AUTHOR = "Gordon Chen"
+AUTHOR = os.environ["USER"]
 RANDOM_STATE = 0
