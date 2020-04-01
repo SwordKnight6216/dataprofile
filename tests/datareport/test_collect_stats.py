@@ -15,12 +15,13 @@ test_df['no_values'] = None
 
 def test_get_variable_stats():
     var_stats = get_variable_stats(test_df)
-    assert list(var_stats.keys()) == ['Numeric', 'Binary', 'Unique', 'Categorical']
+    assert list(var_stats.keys()) == ['Numeric', 'Binary', 'Unique', 'Categorical', 'Empty']
     # check some statistics randomly
     assert len(var_stats['Numeric']) == 6
     assert len(var_stats['Binary']) == 2
     assert len(var_stats['Unique']) == 1
     assert len(var_stats['Categorical']) == 3
+    assert len(var_stats['Empty']) == 1
     assert is_numeric_dtype(test_df[var_stats['Numeric'][1].name])
 
 
@@ -33,7 +34,8 @@ def test_get_table_stats():
                        'n_Numeric': 6,
                        'n_Binary': 2,
                        'n_Unique': 1,
-                       'n_Categorical': 3}
+                       'n_Categorical': 3,
+                       'n_Empty': 1}
     assert table_stats == expected_result
 
 
@@ -56,5 +58,6 @@ def test_get_data_type():
                        'Sex': 'Binary',
                        'Ticket': 'Categorical',
                        'Cabin': 'Categorical',
-                       'Embarked': 'Categorical'}
+                       'Embarked': 'Categorical',
+                       'no_values': 'Empty'}
     assert dict(data_type['type']) == expected_result

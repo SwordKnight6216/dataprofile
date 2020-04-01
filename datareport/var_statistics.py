@@ -107,10 +107,10 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['type'] = 'Binary'
     stats['value1'] = aggr.index[0]
     stats['n_value1'] = aggr[stats['value1']]
-    stats['p_value1'] = stats['n_value1']/len(series)
+    stats['p_value1'] = f"{stats['n_value1']/len(series):.2%}"
     stats['value2'] = aggr.index[1]
     stats['n_value2'] = aggr[stats['value2']]
-    stats['p_value2'] = stats['n_value2']/len(series)
+    stats['p_value2'] = f"{stats['n_value2']/len(series):.2%}"
 
     stats_common = common_stats(series)
     return stats_common.append(pd.Series(stats, name=series.name))
