@@ -80,8 +80,8 @@ def print_report(df: pd.DataFrame,
         print(f"report saved to {report_file}") if file else None
         print('\n=============== End of report ============ ', file=file, end=line_ending)
 
-    except:
-        print('Report not finished successfully!')
+    except Exception as e:
+        print(f'{e}\nReport not finished successfully!')
     finally:
         file.close() if file else None
 
