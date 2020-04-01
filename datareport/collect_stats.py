@@ -12,6 +12,7 @@ from .var_statistics import constant_stats
 from .var_statistics import datetime_stats
 from .var_statistics import numeric_stats
 from .var_statistics import unique_stats
+from .var_statistics import empty_stats
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
@@ -23,7 +24,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
     """
     var_stats = {}
 
-    col_with_no_values = []
+    empty_stats_ls = []
     constant_stats_ls = []
     binary_stats_ls = []
     numeric_stats_ls = []
@@ -37,7 +38,8 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         leng = len(df[col])
 
         if distinct_count == 0:
-            col_with_no_values.append(col)
+            empty_stats_ls.append(empty_stats(df[col]))
+            var_stats['Empty'] = empty_stats_ls
 
         elif distinct_count == 1:
             constant_stats_ls.append(constant_stats(df[col]))
@@ -67,9 +69,6 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
             except:
                 categorical_stats_ls.append(categorical_stats(df[col]))
                 var_stats['Categorical'] = categorical_stats_ls
-
-    if col_with_no_values:
-        print(f'ATTN: Completely empty variables {col_with_no_values} are skipped in statistical calculation.')
 
     return var_stats
 

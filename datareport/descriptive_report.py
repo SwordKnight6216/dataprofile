@@ -51,7 +51,7 @@ def print_report(df: pd.DataFrame,
 
     try:
         print('\n============= Beginning of report ============ ', file=file, end=line_ending)
-        print(f"\nThe following report is created by {AUTHOR} on {date.today()}", file=file, end=line_ending)
+        print(f"\nThis following report is created by {AUTHOR} on {date.today()}", file=file, end=line_ending)
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
             print('\n============= Table Statistics ============== \n', file=file, end=line_ending)
@@ -146,7 +146,7 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     :return:
     """
     try:
-        df = pd.read_csv(Path(file), engine='python')
+        df = pd.read_csv(Path(file))
     except FileNotFoundError:
         print("\nTarget file doesn't exist!\nReporting stopped!")
     except UnicodeDecodeError:

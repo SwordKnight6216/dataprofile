@@ -136,3 +136,14 @@ def unique_stats(series: pd.Series) -> pd.Series:
     """
     stats_common = common_stats(series)
     return stats_common.append(pd.Series(['Unique'], index=['type'], name=series.name))
+
+
+def empty_stats(series: pd.Series) -> pd.Series:
+    """
+    Compute summary statistics of a empty variable.
+
+    :param series: The variable to describe
+    :return: descriptive statistics
+    """
+    stats_common = common_stats(series)
+    return stats_common.append(pd.Series(['Empty'], index=['type'], name=series.name))
