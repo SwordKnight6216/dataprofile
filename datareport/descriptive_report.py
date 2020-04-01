@@ -45,13 +45,14 @@ def print_report(df: pd.DataFrame,
     else:
         file = None
 
-    sample_df = get_a_sample(df, sample_size, random_state) if sample_size > 0 else df
+    print('\n============= Beginning of report ============ ', file=file, end=line_ending)
+    print(f"\nThis following report is created by {AUTHOR} on {date.today()}", file=file, end=line_ending)
+
+    sample_df = get_a_sample(df, sample_size, random_state, file, line_ending) if sample_size > 0 else df
 
     var_stats = get_variable_stats(sample_df)
 
     try:
-        print('\n============= Beginning of report ============ ', file=file, end=line_ending)
-        print(f"\nThis following report is created by {AUTHOR} on {date.today()}", file=file, end=line_ending)
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
             print('\n============= Table Statistics ============== \n', file=file, end=line_ending)

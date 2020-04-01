@@ -10,9 +10,9 @@ from .var_statistics import binary_stats
 from .var_statistics import categorical_stats
 from .var_statistics import constant_stats
 from .var_statistics import datetime_stats
+from .var_statistics import empty_stats
 from .var_statistics import numeric_stats
 from .var_statistics import unique_stats
-from .var_statistics import empty_stats
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
@@ -93,21 +93,30 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
-                 random_state: int = RANDOM_STATE) -> pd.DataFrame:
+                 random_state: int = RANDOM_STATE, file: str = None, line_ending: str = '\n') -> pd.DataFrame:
     """
     Provide the original dataset or a random sample of it.
 
+    :param line_ending:
+    :param file:
     :param df: the target dataset
     :param sample_size: Number of rows to sample from the target dataframe
     :param random_state: Random seed for the row sampler
     :return: the original dataset or a sample of it
     """
-    if sample_size < df.shape[0]:
+    try:
         sample_df = df.sample(sample_size, random_state=random_state)
-        print(f'ATTN: The following calculation are based on a {sample_size} sample. \n')
-        return sample_df
-    else:
-        return df
+        print(
+            f'\nATTN: The following statistics are based on a {sample_size} sample out of {df.shape[0]} in the population. ',
+            file=file, end=line_ending)
+
+    except ValueError:
+        print(
+            f"\nSample size {sample_size} is larger than the population size {df.shape[0]}. using population instead.",
+            file=file, end=line_ending)
+        sample_df = df
+
+    return sample_df
 
 
 def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
@@ -123,7 +132,7 @@ def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     sample_df = get_a_sample(df, sample_size, random_state)
     var_stats = get_variable_stats(sample_df)
 
-    type_stats = ['type', 'count', 'n_missing', 'p_missing', 'n_unique',  'p_unique']
+    type_stats = ['type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
     tmp_df_stats = []
     for key, item in var_stats.items():
         tmp_df_stats.append(pd.DataFrame(item)[type_stats])
