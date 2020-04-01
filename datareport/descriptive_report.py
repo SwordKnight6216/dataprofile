@@ -45,7 +45,7 @@ def print_report(df: pd.DataFrame,
     else:
         file = None
 
-    sample_df = get_a_sample(df, sample_size, random_state)
+    sample_df = get_a_sample(df, sample_size, random_state) if sample_size > 0 else df
 
     var_stats = get_variable_stats(sample_df)
 
@@ -119,7 +119,8 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
               type=click.Choice(['y', 'n']),
               help='wanna see the variable statistics')
-@click.option('--sample_size', prompt='How big is your sample size?', required=False, default=DEFAULT_SAMPLE_SIZE,
+@click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
+              default=DEFAULT_SAMPLE_SIZE,
               show_default=True,
               help='the size of sample in the analysis')
 @click.option('--var_per_row', prompt='How many variables to show per row?', required=False, default=6,

@@ -81,7 +81,6 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     :param var_stats: statistics from each variable
     :return: a dictionary contains statistics of the target dataset
     """
-    var_stats = var_stats
 
     table_stats = {}
     table_stats['n_row'] = df.shape[0]
