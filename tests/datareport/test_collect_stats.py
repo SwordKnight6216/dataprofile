@@ -45,15 +45,15 @@ def test_get_a_sample():
 
 def test_get_data_type():
     data_type = get_data_type(test_df)
-    expected_result = {'PassengerId': 'Unique',
+    expected_result = {'PassengerId': 'Numerical',
                        'Pclass': 'Numerical',
                        'Age': 'Numerical',
                        'SibSp': 'Numerical',
                        'Parch': 'Numerical',
                        'Fare': 'Numerical',
-                       'Survived': 'Binary',
-                       'Name': 'Unique',
-                       'Sex': 'Binary',
+                       'Survived': 'Numerical',
+                       'Name': 'Categorical',
+                       'Sex': 'Categorical',
                        'Ticket': 'Categorical',
                        'Cabin': 'Categorical',
                        'Embarked': 'Categorical',

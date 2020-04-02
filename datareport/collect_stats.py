@@ -7,8 +7,23 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
-from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, numerical_stats, \
+from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, \
+    numerical_stats, \
     unique_stats
+
+
+def _get_actual_dtype(series:pd.Series) -> str:
+    """
+
+    :param series:
+    :return: the name of actual data type in the given series
+    """
+    if pd.api.types.is_numeric_dtype(series):
+        return 'Numerical'
+    elif pd.api.types.is_bool_dtype(series):
+        return 'Boolean'
+    else:
+        return 'Categorical'
 
 
 def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
@@ -33,16 +48,19 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         elif distinct_count == 1:
             dty_constant = constant_stats(df[col])
             dty_constant['type'] = 'Useless'
+            dty_constant['data_type'] = _get_actual_dtype(df[col])
             var_stats['Useless'].append(dty_constant)
 
         elif distinct_count == leng:
             dty_unique = unique_stats(df[col])
             dty_unique['type'] = 'Useless'
+            dty_unique['data_type'] = _get_actual_dtype(df[col])
             var_stats['Useless'].append(dty_unique)
 
         elif distinct_count == 2:
             dty_binary = binary_stats(df[col])
             dty_binary['type'] = 'Binary'
+            dty_binary['data_type'] = _get_actual_dtype(df[col])
             var_stats['Binary'].append(dty_binary)
 
         elif pd.api.types.is_numeric_dtype(df[col]):
@@ -60,6 +78,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
                 converted = pd.to_datetime(df[col])
                 dty_datetime = datetime_stats(converted)
                 dty_datetime['type'] = 'Datetime'
+                dty_datetime['data_type'] = _get_actual_dtype(df[col])
                 var_stats['Datetime'].append(dty_datetime)
             except:
                 dty_categorical = categorical_stats(df[col])
