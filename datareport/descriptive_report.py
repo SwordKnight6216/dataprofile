@@ -58,8 +58,10 @@ def print_report(df: pd.DataFrame,
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
             report.append(' Table Statistics '.center(padding_size2, '='))
+            dt = pd.DataFrame(pd.Series(table_stats), columns=['count'])
             report.append(
-                tabulate(pd.DataFrame(pd.Series(table_stats), columns=['count']), headers='keys', tablefmt=table_fmt))
+                tabulate(dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
+
             report.append(f'{line_breaker}')
 
         if prt_var_summary:
@@ -70,7 +72,8 @@ def print_report(df: pd.DataFrame,
             var_summary = pd.concat(tmp_df_stats)
             var_summary.index.name = 'name'
             report.append(' Variable Summary '.center(padding_size2, '='))
-            report.append(tabulate(var_summary, headers='keys', tablefmt=table_fmt))
+            report.append(tabulate(var_summary, headers='keys',
+                                   tablefmt=table_fmt) if table_fmt != 'html' else var_summary.to_html())
             report.append(f'{line_breaker}')
 
         if prt_var_stats:
@@ -78,9 +81,10 @@ def print_report(df: pd.DataFrame,
             for key, item in var_stats.items():
                 report.append(f'{line_breaker}{key} variables:')
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
+                    dt = pd.DataFrame(item).drop(['data_type', 'type'], axis=1).T.iloc[:,
+                         i * var_per_row:(i + 1) * var_per_row]
                     report.append(tabulate(
-                        pd.DataFrame(item).drop(['data_type','type'], axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
-                        headers='keys', tablefmt=table_fmt))
+                        dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
             report.append(f'{line_breaker}')
 
         if prt_conf_matrix:
@@ -91,7 +95,8 @@ def print_report(df: pd.DataFrame,
                     confusion_matrix = pd.crosstab(sample_df[a], sample_df[b])
                     report.append(f"row:{a} - col:{b}")
                     report.append(tabulate(confusion_matrix, headers=confusion_matrix.columns,
-                                           showindex=confusion_matrix.index.to_list(), tablefmt=table_fmt))
+                                           showindex=confusion_matrix.index.to_list(),
+                                           tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
 
         report.append(' End of report '.center(padding_size, '='))
 
@@ -113,4 +118,3 @@ def _make_report_file(file: str) -> Path:
     if not path.exists():
         path.touch()
     return path
-
