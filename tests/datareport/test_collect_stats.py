@@ -5,7 +5,7 @@ from pandas.api.types import is_numeric_dtype
 from datareport.collect_stats import get_variable_stats
 from datareport.collect_stats import get_table_stats
 from datareport.collect_stats import get_a_sample
-from datareport.collect_stats import get_data_type
+from datareport.collect_stats import get_var_summary
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
@@ -44,7 +44,7 @@ def test_get_a_sample():
 
 
 def test_get_data_type():
-    data_type = get_data_type(test_df)
+    data_type = get_var_summary(df=test_df)
     expected_result = {'PassengerId': 'Unique',
                        'Pclass': 'Numerical',
                        'Age': 'Numerical',

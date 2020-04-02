@@ -3,11 +3,11 @@ It can be used as a standalone module as well."""
 
 from .descriptive_report import print_report
 from .viz import plot_time_series
-from .collect_stats import get_data_type, get_variable_stats
+from .collect_stats import get_var_summary, get_variable_stats
 
 __all__ = [
     'print_report',
-    'get_data_type',
+    'get_var_summary',
     'get_variable_stats',
     'plot_time_series'
 ]

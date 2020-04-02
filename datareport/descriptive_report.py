@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 from tabulate import tabulate
 
-from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample
+from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
 from datareport.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 
 
@@ -65,11 +65,7 @@ def print_report(df: pd.DataFrame,
             report.append(f'{line_breaker}')
 
         if prt_var_summary:
-            type_stats = ['type', 'data_type', 'count', 'n_unique', 'p_unique', 'n_missing', 'p_missing']
-            tmp_df_stats = []
-            for key, item in var_stats.items():
-                tmp_df_stats.append(pd.DataFrame(item)[type_stats])
-            var_summary = pd.concat(tmp_df_stats)
+            var_summary = get_var_summary(var_stats)
             report.append(' Variable Summary '.center(padding_size2, '='))
             report.append(tabulate(var_summary, headers='keys',
                                    tablefmt=table_fmt) if table_fmt != 'html' else var_summary.to_html())

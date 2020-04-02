@@ -1,7 +1,7 @@
 """Collect the statistics for each variable in the dataset."""
 
 from collections import defaultdict
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -133,18 +133,21 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     return sample_df
 
 
-def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
-                  random_state: int = RANDOM_STATE) -> pd.DataFrame:
+def get_var_summary(var_stats: Optional[Dict[str, List[pd.Series]]] = None, df: Optional[pd.DataFrame] = None,
+                    sample_size: int = DEFAULT_SAMPLE_SIZE,
+                    random_state: int = RANDOM_STATE) -> pd.DataFrame:
     """
     Provide a summary table of data types of the given dataset.
 
+    :param var_stats: already get variable statistics
     :param df: the target dataset
     :param sample_size: Number of rows to sample from the target dataframe
     :param random_state: Random seed for the row sampler
     :return: a summary table of data types of the given dataset
     """
-    sample_df = get_a_sample(df, sample_size, random_state)
-    var_stats = get_variable_stats(sample_df)
+    if not var_stats:
+        sample_df = get_a_sample(df, sample_size, random_state)
+        var_stats = get_variable_stats(sample_df)
 
     type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
     tmp_df_stats = []
