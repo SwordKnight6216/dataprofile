@@ -48,13 +48,11 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         elif distinct_count == 1:
             dty_constant = constant_stats(df[col])
             dty_constant['type'] = 'Useless'
-            dty_constant['data_type'] = _get_actual_dtype(df[col])
             var_stats['Useless'].append(dty_constant)
 
         elif distinct_count == leng:
             dty_unique = unique_stats(df[col])
             dty_unique['type'] = 'Useless'
-            dty_unique['data_type'] = _get_actual_dtype(df[col])
             var_stats['Useless'].append(dty_unique)
 
         elif distinct_count == 2:
