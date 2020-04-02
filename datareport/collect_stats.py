@@ -7,12 +7,10 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
-from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, \
-    numerical_stats, \
-    unique_stats
+from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
 
 
-def _get_actual_dtype(series:pd.Series) -> str:
+def _get_actual_dtype(series: pd.Series) -> str:
     """
 
     :param series:
@@ -41,18 +39,21 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         leng = len(df[col])
 
         if distinct_count == 0:
-            dty_empty = empty_stats(df[col])
+            dty_empty = base_stats(df[col])
             dty_empty['type'] = 'Useless'
+            dty_empty['data_type'] = 'Empty'
             var_stats['Useless'].append(dty_empty)
 
         elif distinct_count == 1:
-            dty_constant = constant_stats(df[col])
+            dty_constant = base_stats(df[col])
             dty_constant['type'] = 'Useless'
+            dty_constant['data_type'] = 'Constant'
             var_stats['Useless'].append(dty_constant)
 
         elif distinct_count == leng:
-            dty_unique = unique_stats(df[col])
+            dty_unique = base_stats(df[col])
             dty_unique['type'] = 'Useless'
+            dty_unique['data_type'] = 'Unique'
             var_stats['Useless'].append(dty_unique)
 
         elif distinct_count == 2:

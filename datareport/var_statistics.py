@@ -111,36 +111,3 @@ def binary_stats(series: pd.Series) -> pd.Series:
 
     stats_common = base_stats(series)
     return stats_common.append(pd.Series(stats, name=series.name))
-
-
-def constant_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a constant variable.
-
-    :param series: The variable to describe
-    :return: descriptive statistics
-    """
-    stats_common = base_stats(series)
-    return stats_common.append(pd.Series(['Constant'], index=['data_type'], name=series.name))
-
-
-def unique_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a unique variable.
-
-    :param series: The variable to describe
-    :return: descriptive statistics
-    """
-    stats_common = base_stats(series)
-    return stats_common.append(pd.Series(['Unique'], index=['data_type'], name=series.name))
-
-
-def empty_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a empty variable.
-
-    :param series: The variable to describe
-    :return: descriptive statistics
-    """
-    stats_common = base_stats(series)
-    return stats_common.append(pd.Series(['Empty'], index=['data_type'], name=series.name))

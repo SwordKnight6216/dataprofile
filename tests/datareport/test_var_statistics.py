@@ -1,15 +1,14 @@
 import os
+
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
 
 from datareport.var_statistics import base_stats
 from datareport.var_statistics import binary_stats
-from datareport.var_statistics import numerical_stats
-from datareport.var_statistics import datetime_stats
-from datareport.var_statistics import unique_stats
-from datareport.var_statistics import constant_stats
 from datareport.var_statistics import categorical_stats
+from datareport.var_statistics import datetime_stats
+from datareport.var_statistics import numerical_stats
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
@@ -101,24 +100,22 @@ def test_datetime_stats():
 
 def test_constant_stats():
     test_series = pd.Series([1, 1, np.nan, 1, None, 1, 1, 1, 1])
-    output = constant_stats(test_series)
+    output = base_stats(test_series)
     expected_result = pd.Series({'count': 9,
                                  'n_unique': 1,
                                  'p_missing': '22.22%',
                                  'n_missing': 2,
-                                 'p_unique': '14.29%',
-                                 'data_type': 'Constant'})
+                                 'p_unique': '14.29%', })
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
 def test_unique_stats():
-    output = unique_stats(test_df['Name'])
+    output = base_stats(test_df['Name'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 891,
                                  'p_missing': '0.00%',
                                  'n_missing': 0,
-                                 'p_unique': '100.00%',
-                                 'data_type': 'Unique'})
+                                 'p_unique': '100.00%', })
     expected_result.name = 'Name'
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
