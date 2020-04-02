@@ -65,7 +65,7 @@ def print_report(df: pd.DataFrame,
             report.append(f'{line_breaker}')
 
         if prt_var_summary:
-            type_stats = ['data_type', 'count', 'n_unique', 'p_unique', 'n_missing', 'p_missing']
+            type_stats = ['type', 'data_type', 'count', 'n_unique', 'p_unique', 'n_missing', 'p_missing']
             tmp_df_stats = []
             for key, item in var_stats.items():
                 tmp_df_stats.append(pd.DataFrame(item)[type_stats])
@@ -81,7 +81,7 @@ def print_report(df: pd.DataFrame,
                 report.append(f'{line_breaker}{key} variables:')
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
                     report.append(tabulate(
-                        pd.DataFrame(item).drop('data_type', axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
+                        pd.DataFrame(item).drop(['data_type','type'], axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
                         headers='keys', tablefmt=table_fmt))
             report.append(f'{line_breaker}')
 
