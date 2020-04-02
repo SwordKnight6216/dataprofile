@@ -70,7 +70,6 @@ def print_report(df: pd.DataFrame,
             for key, item in var_stats.items():
                 tmp_df_stats.append(pd.DataFrame(item)[type_stats])
             var_summary = pd.concat(tmp_df_stats)
-            var_summary.index.name = 'name'
             report.append(' Variable Summary '.center(padding_size2, '='))
             report.append(tabulate(var_summary, headers='keys',
                                    tablefmt=table_fmt) if table_fmt != 'html' else var_summary.to_html())
