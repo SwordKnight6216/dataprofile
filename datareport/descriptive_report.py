@@ -49,7 +49,7 @@ def print_report(df: pd.DataFrame,
         file = None
 
     report.append(' Beginning of report '.center(padding_size, '='))
-    report.append(f"{line_breaker}This following report is created by {AUTHOR} on {date.today()}{line_breaker}")
+    report.append(f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%b,%d %Y}{line_breaker}")
 
     sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
     var_stats = get_variable_stats(sample_df)
