@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
 
-from datareport.var_statistics import common_stats
+from datareport.var_statistics import base_stats
 from datareport.var_statistics import binary_stats
 from datareport.var_statistics import numerical_stats
 from datareport.var_statistics import datetime_stats
@@ -15,8 +15,8 @@ TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
 
 
-def test_common_stats():
-    output = common_stats(test_df['Cabin'])
+def test_base_stats():
+    output = base_stats(test_df['Cabin'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 147,
                                  'p_missing': '77.10%',

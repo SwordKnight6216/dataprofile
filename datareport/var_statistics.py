@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def common_stats(series: pd.Series) -> pd.Series:
+def base_stats(series: pd.Series) -> pd.Series:
     """
     Compute common summary statistics of a variable.
 
@@ -58,8 +58,7 @@ def numerical_stats(series: pd.Series) -> pd.Series:
         except:
             pass
 
-    stats_common = common_stats(series)
-    return stats_common.append(pd.Series(stats, name=series.name))
+    return base_stats(series).append(pd.Series(stats, name=series.name))
 
 
 def datetime_stats(series: pd.Series) -> pd.Series:
@@ -75,8 +74,7 @@ def datetime_stats(series: pd.Series) -> pd.Series:
     stats['max'] = series.max()
     stats['range'] = stats['max'] - stats['min']
 
-    stats_common = common_stats(series)
-    return stats_common.append(pd.Series(stats, name=series.name))
+    return base_stats(series).append(pd.Series(stats, name=series.name))
 
 
 def categorical_stats(series: pd.Series) -> pd.Series:
@@ -91,8 +89,7 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     stats['mode'] = series.mode()[0]
     stats['mode_freq'] = series.value_counts().max()
 
-    stats_common = common_stats(series)
-    return stats_common.append(pd.Series(stats, name=series.name))
+    return base_stats(series).append(pd.Series(stats, name=series.name))
 
 
 def binary_stats(series: pd.Series) -> pd.Series:
@@ -112,7 +109,7 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['n_value2'] = aggr[stats['value2']]
     stats['p_value2'] = f"{stats['n_value2']/len(series):.2%}"
 
-    stats_common = common_stats(series)
+    stats_common = base_stats(series)
     return stats_common.append(pd.Series(stats, name=series.name))
 
 
@@ -123,7 +120,7 @@ def constant_stats(series: pd.Series) -> pd.Series:
     :param series: The variable to describe
     :return: descriptive statistics
     """
-    stats_common = common_stats(series)
+    stats_common = base_stats(series)
     return stats_common.append(pd.Series(['Constant'], index=['data_type'], name=series.name))
 
 
@@ -134,7 +131,7 @@ def unique_stats(series: pd.Series) -> pd.Series:
     :param series: The variable to describe
     :return: descriptive statistics
     """
-    stats_common = common_stats(series)
+    stats_common = base_stats(series)
     return stats_common.append(pd.Series(['Unique'], index=['data_type'], name=series.name))
 
 
@@ -145,5 +142,5 @@ def empty_stats(series: pd.Series) -> pd.Series:
     :param series: The variable to describe
     :return: descriptive statistics
     """
-    stats_common = common_stats(series)
+    stats_common = base_stats(series)
     return stats_common.append(pd.Series(['Empty'], index=['data_type'], name=series.name))
