@@ -1,6 +1,7 @@
 """print or save a report of overall statistics and detailed statistics for a given dataset."""
 
 from datetime import date
+from itertools import combinations
 from pathlib import Path
 from typing import Optional
 
@@ -16,6 +17,7 @@ def print_report(df: pd.DataFrame,
                  prt_table_stats: bool = True,
                  prt_var_summary: bool = True,
                  prt_var_stats: bool = True,
+                 prt_conf_matrix: bool = True,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
                  random_state: int = RANDOM_STATE,
@@ -27,6 +29,7 @@ def print_report(df: pd.DataFrame,
     :param prt_table_stats: if print the table statistics
     :param prt_var_summary: if print the variable summaries
     :param prt_var_stats: if print the variables statistics
+    :param prt_conf_matrix: if print the confusion matrix for binary varilables
     :param sample_size: Number of rows to sample from the target dataframe
     :param var_per_row: number of columns of stats to print per row
     :param random_state: Random seed for the row sampler
@@ -80,7 +83,17 @@ def print_report(df: pd.DataFrame,
                     report.append(tabulate(
                         pd.DataFrame(item).drop('type', axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
                         headers='keys', tablefmt=table_fmt))
+            report.append(f'{line_breaker}')
 
+        if prt_conf_matrix:
+            binary_vars = [var.name for var in var_stats['Binary']]
+            if len(binary_vars) > 1:
+                report.append(' Confusion Matrix '.center(padding_size2, '='))
+                for a, b in combinations(binary_vars, 2):
+                    confusion_matrix = pd.crosstab(sample_df[a], sample_df[b])
+                    report.append(f"row:{a} - col:{b}")
+                    report.append(tabulate(confusion_matrix, headers=confusion_matrix.columns,
+                                           showindex=confusion_matrix.index.to_list(), tablefmt=table_fmt))
 
         report.append(' End of report '.center(padding_size, '='))
 
@@ -125,6 +138,10 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
               type=click.Choice(['y', 'n']),
               help='wanna see the variable statistics')
+@click.option('--prt_conf_matrix', prompt='print confusion matrix for binary variables?', required=False, default='y',
+              show_default=True,
+              type=click.Choice(['y', 'n']),
+              help='wanna see the confusion matrix for binary variables')
 @click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
               default=DEFAULT_SAMPLE_SIZE,
               show_default=True,
@@ -138,7 +155,7 @@ def _find_csv_file() -> Optional[Path]:
               show_default=True,
               help='file type (html or txt) to store the report, skip if not needed')
 def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
-         prt_var_stats: bool = True,
+         prt_var_stats: bool = True, prt_conf_matrix: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
          var_per_row: int = 6, save_report_to_file: str = '') -> None:
     """
@@ -147,6 +164,7 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     :param prt_table_stats:
     :param prt_var_summary:
     :param prt_var_stats:
+    :param prt_conf_matrix:
     :param sample_size:
     :param var_per_row:
     :param save_report_to_file:
@@ -164,7 +182,7 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None
         print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
-                     prt_var_stats=prt_var_stats == 'y',
+                     prt_var_stats=prt_var_stats == 'y', prt_conf_matrix=prt_conf_matrix == 'y',
                      sample_size=sample_size,
                      var_per_row=var_per_row, report_file=report_file_name)
 
