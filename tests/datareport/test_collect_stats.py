@@ -15,14 +15,13 @@ test_df['no_values'] = None
 
 def test_get_variable_stats():
     var_stats = get_variable_stats(test_df)
-    assert list(var_stats.keys()) == ['Numeric', 'Binary', 'Unique', 'Categorical', 'Empty']
+    assert set(var_stats.keys()) == set(['Interval', 'Binary', 'Useless', 'Nominal'])
     # check some statistics randomly
-    assert len(var_stats['Numeric']) == 6
+    assert len(var_stats['Interval']) == 5
     assert len(var_stats['Binary']) == 2
-    assert len(var_stats['Unique']) == 1
-    assert len(var_stats['Categorical']) == 3
-    assert len(var_stats['Empty']) == 1
-    assert is_numeric_dtype(test_df[var_stats['Numeric'][1].name])
+    assert len(var_stats['Nominal']) == 3
+    assert len(var_stats['Useless']) == 3
+    assert is_numeric_dtype(test_df[var_stats['Interval'][1].name])
 
 
 def test_get_table_stats():
@@ -31,11 +30,10 @@ def test_get_table_stats():
                        'n_col': 13,
                        'n_missing_cell': 1757,
                        'n_duplicated_row': 0,
-                       'n_Numeric_var': 6,
+                       'n_Interval_var': 5,
                        'n_Binary_var': 2,
-                       'n_Unique_var': 1,
-                       'n_Categorical_var': 3,
-                       'n_Empty_var': 1}
+                       'n_Useless_var': 3,
+                       'n_Nominal_var': 3,}
     assert table_stats == expected_result
 
 
@@ -47,12 +45,12 @@ def test_get_a_sample():
 
 def test_get_data_type():
     data_type = get_data_type(test_df)
-    expected_result = {'PassengerId': 'Numeric',
-                       'Pclass': 'Numeric',
-                       'Age': 'Numeric',
-                       'SibSp': 'Numeric',
-                       'Parch': 'Numeric',
-                       'Fare': 'Numeric',
+    expected_result = {'PassengerId': 'Unique',
+                       'Pclass': 'Numerical',
+                       'Age': 'Numerical',
+                       'SibSp': 'Numerical',
+                       'Parch': 'Numerical',
+                       'Fare': 'Numerical',
                        'Survived': 'Binary',
                        'Name': 'Unique',
                        'Sex': 'Binary',
@@ -60,4 +58,4 @@ def test_get_data_type():
                        'Cabin': 'Categorical',
                        'Embarked': 'Categorical',
                        'no_values': 'Empty'}
-    assert dict(data_type['type']) == expected_result
+    assert dict(data_type['data_type']) == expected_result

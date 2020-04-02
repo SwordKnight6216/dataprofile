@@ -7,7 +7,7 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
-from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, numeric_stats, \
+from .var_statistics import binary_stats, categorical_stats, constant_stats, datetime_stats, empty_stats, numerical_stats, \
     unique_stats
 
 
@@ -26,23 +26,37 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         leng = len(df[col])
 
         if distinct_count == 0:
-            var_stats['Empty'].append(empty_stats(df[col]))
+            dty_empty = empty_stats(df[col])
+            var_stats['Useless'].append(dty_empty)
+
         elif distinct_count == 1:
-            var_stats['Constant'].append(constant_stats(df[col]))
-        elif distinct_count == 2:
-            var_stats['Binary'].append(binary_stats(df[col]))
-        elif pd.api.types.is_numeric_dtype(df[col]):
-            var_stats['Numeric'].append(numeric_stats(df[col]))
-        elif pd.api.types.is_datetime64_dtype(df[col]):
-            var_stats['Date'].append(datetime_stats(df[col]))
+            dty_constant = constant_stats(df[col])
+            var_stats['Useless'].append(dty_constant)
+
         elif distinct_count == leng:
-            var_stats['Unique'].append(unique_stats(df[col]))
+            dty_unique = unique_stats(df[col])
+            var_stats['Useless'].append(dty_unique)
+
+        elif distinct_count == 2:
+            dty_binary = binary_stats(df[col])
+            var_stats['Binary'].append(dty_binary)
+
+        elif pd.api.types.is_numeric_dtype(df[col]):
+            dty_numerical = numerical_stats(df[col])
+            var_stats['Interval'].append(dty_numerical)
+
+        elif pd.api.types.is_datetime64_dtype(df[col]):
+            dty_datetime = datetime_stats(df[col])
+            var_stats['Datetime'].append(dty_datetime)
+
         else:
             try:
                 converted = pd.to_datetime(df[col])
-                var_stats['Date'].append(datetime_stats(converted))
+                dty_datetime = datetime_stats(converted)
+                var_stats['Datetime'].append(dty_datetime)
             except:
-                var_stats['Categorical'].append(categorical_stats(df[col]))
+                dty_categorical = categorical_stats(df[col])
+                var_stats['Nominal'].append(dty_categorical)
 
     return var_stats
 
@@ -106,7 +120,7 @@ def get_data_type(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     sample_df = get_a_sample(df, sample_size, random_state)
     var_stats = get_variable_stats(sample_df)
 
-    type_stats = ['type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
+    type_stats = ['data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
     tmp_df_stats = []
     for key, item in var_stats.items():
         tmp_df_stats.append(pd.DataFrame(item)[type_stats])

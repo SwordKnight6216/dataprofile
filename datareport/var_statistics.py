@@ -25,7 +25,7 @@ def common_stats(series: pd.Series) -> pd.Series:
     return pd.Series(stats, name=series.name)
 
 
-def numeric_stats(series: pd.Series) -> pd.Series:
+def numerical_stats(series: pd.Series) -> pd.Series:
     """
     Compute summary statistics of a numerical variable.
 
@@ -33,7 +33,7 @@ def numeric_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats = {}
-    stats['type'] = 'Numeric'
+    stats['data_type'] = 'Numerical'
     stats['mean'] = series.mean()
     stats['std'] = series.std()
     stats['variance'] = series.var()
@@ -70,7 +70,7 @@ def datetime_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats = {}
-    stats['type'] = 'Date'
+    stats['data_type'] = 'Datetime'
     stats['min'] = series.min()
     stats['max'] = series.max()
     stats['range'] = stats['max'] - stats['min']
@@ -87,7 +87,7 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats = {}
-    stats['type'] = 'Categorical'
+    stats['data_type'] = 'Categorical'
     stats['mode'] = series.mode()[0]
     stats['mode_freq'] = series.value_counts().max()
 
@@ -104,7 +104,7 @@ def binary_stats(series: pd.Series) -> pd.Series:
     """
     stats = {}
     aggr = series.value_counts()
-    stats['type'] = 'Binary'
+    stats['data_type'] = 'Binary'
     stats['value1'] = aggr.index[0]
     stats['n_value1'] = aggr[stats['value1']]
     stats['p_value1'] = f"{stats['n_value1']/len(series):.2%}"
@@ -124,7 +124,7 @@ def constant_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats_common = common_stats(series)
-    return stats_common.append(pd.Series(['Constant'], index=['type'], name=series.name))
+    return stats_common.append(pd.Series(['Constant'], index=['data_type'], name=series.name))
 
 
 def unique_stats(series: pd.Series) -> pd.Series:
@@ -135,7 +135,7 @@ def unique_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats_common = common_stats(series)
-    return stats_common.append(pd.Series(['Unique'], index=['type'], name=series.name))
+    return stats_common.append(pd.Series(['Unique'], index=['data_type'], name=series.name))
 
 
 def empty_stats(series: pd.Series) -> pd.Series:
@@ -146,4 +146,4 @@ def empty_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats_common = common_stats(series)
-    return stats_common.append(pd.Series(['Empty'], index=['type'], name=series.name))
+    return stats_common.append(pd.Series(['Empty'], index=['data_type'], name=series.name))
