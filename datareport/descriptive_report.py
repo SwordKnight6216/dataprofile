@@ -33,33 +33,33 @@ def print_report(df: pd.DataFrame,
     :param report_file: store the report to a file
     :return: None
     """
+    report = []
     table_fmt = 'psql'
-    line_break = '\n'
+    line_breaker = '\n'
+    padding_size, padding_size2 = 100, 50
 
     if report_file:
         if report_file.split('.')[-1] == 'html':
             table_fmt = 'html'
-            line_break = '<br>'
+            line_breaker = '<br>'
         report_file = _make_report_file(report_file)
         file = open(report_file, 'w', encoding="UTF-8")
     else:
         file = None
 
-    string = []
-    padding_size, padding_size2 = 100, 50
-    string.append(' Beginning of report '.center(padding_size, '='))
-    string.append(f"{line_break}This following report is created by {AUTHOR} on {date.today()}{line_break}")
+    report.append(' Beginning of report '.center(padding_size, '='))
+    report.append(f"{line_breaker}This following report is created by {AUTHOR} on {date.today()}{line_breaker}")
 
-    sample_df = get_a_sample(df, sample_size, random_state, file, line_break) if sample_size > 0 else df
+    sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
     var_stats = get_variable_stats(sample_df)
 
     try:
         if prt_table_stats:
             table_stats = get_table_stats(sample_df, var_stats)
-            string.append(' Table Statistics '.center(padding_size2, '='))
-            string.append(
+            report.append(' Table Statistics '.center(padding_size2, '='))
+            report.append(
                 tabulate(pd.DataFrame(pd.Series(table_stats), columns=['count']), headers='keys', tablefmt=table_fmt))
-            string.append(f'{line_break}')
+            report.append(f'{line_breaker}')
 
         if prt_var_summary:
             type_stats = ['type', 'count', 'n_unique', 'p_unique', 'n_missing', 'p_missing']
@@ -68,22 +68,23 @@ def print_report(df: pd.DataFrame,
                 tmp_df_stats.append(pd.DataFrame(item)[type_stats])
             var_summary = pd.concat(tmp_df_stats)
             var_summary.index.name = 'name'
-            string.append(' Variable Summary '.center(padding_size2, '='))
-            string.append(tabulate(var_summary, headers='keys', tablefmt=table_fmt))
-            string.append(f'{line_break}')
+            report.append(' Variable Summary '.center(padding_size2, '='))
+            report.append(tabulate(var_summary, headers='keys', tablefmt=table_fmt))
+            report.append(f'{line_breaker}')
 
         if prt_var_stats:
-            string.append(' Variable Statistics '.center(padding_size2, '='))
+            report.append(' Variable Statistics '.center(padding_size2, '='))
             for key, item in var_stats.items():
-                string.append(f'{line_break}{key} variables:')
+                report.append(f'{line_breaker}{key} variables:')
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
-                    string.append(tabulate(
+                    report.append(tabulate(
                         pd.DataFrame(item).drop('type', axis=1).T.iloc[:, i * var_per_row:(i + 1) * var_per_row],
                         headers='keys', tablefmt=table_fmt))
 
-        string.append(' End of report '.center(padding_size, '='))
 
-        print(line_break.join(string), file=file)
+        report.append(' End of report '.center(padding_size, '='))
+
+        print(line_breaker.join(report), file=file)
         print(f"report saved to {report_file}") if file else None
     except Exception as e:
         print(f'{e}\nReport not finished successfully!')
