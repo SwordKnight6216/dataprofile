@@ -8,8 +8,10 @@ from tabulate import tabulate
 
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
 from datareport.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
+from scripts.monitor import monitor_time_memory
 
 
+@monitor_time_memory
 def print_report(df: pd.DataFrame,
                  prt_table_stats: bool = True,
                  prt_var_summary: bool = True,
@@ -47,7 +49,8 @@ def print_report(df: pd.DataFrame,
         file = None
 
     report.append(' Beginning of report '.center(padding_size, '='))
-    report.append(f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%b,%d %Y}{line_breaker}")
+    report.append(
+        f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%b,%d %Y}{line_breaker}")
 
     sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
     var_stats = get_variable_stats(sample_df)
