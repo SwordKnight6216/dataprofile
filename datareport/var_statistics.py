@@ -38,10 +38,10 @@ def numerical_stats(series: pd.Series) -> pd.Series:
     stats['std'] = series.std()
     stats['variance'] = series.var()
     stats['min'] = series.min()
-    stats['max'] = series.max()
-    stats['range'] = stats['max'] - stats['min']
     stats.update({"{:.0%}".format(percentile): series.dropna().quantile(percentile)
                   for percentile in [0.05, 0.25, 0.5, 0.75, 0.95]})
+    stats['max'] = series.max()
+    stats['range'] = stats['max'] - stats['min']
     stats['iqr'] = stats['75%'] - stats['25%']
     stats['kurtosis'] = series.kurt()
     stats['skewness'] = series.skew()
@@ -71,6 +71,8 @@ def datetime_stats(series: pd.Series) -> pd.Series:
     stats = {}
     stats['data_type'] = 'Datetime'
     stats['min'] = series.min()
+    stats.update({"{:.0%}".format(percentile): series.dropna().quantile(percentile)
+                  for percentile in [0.05, 0.25, 0.5, 0.75, 0.95]})
     stats['max'] = series.max()
     stats['range'] = stats['max'] - stats['min']
 
