@@ -62,7 +62,7 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     :return:
     """
     try:
-        df = pd.read_csv(Path(file))
+        df = pd.read_csv(Path(file), low_memory=False)
     except FileNotFoundError:
         print("\nTarget file doesn't exist!\nReporting stopped!")
     except UnicodeDecodeError:
