@@ -1,7 +1,7 @@
 """Compute summary statistics for various data types."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
 def base_stats(series: pd.Series) -> pd.Series:
@@ -75,6 +75,11 @@ def datetime_stats(series: pd.Series) -> pd.Series:
                   for percentile in [0.05, 0.25, 0.5, 0.75, 0.95]})
     stats['max'] = series.max()
     stats['range'] = stats['max'] - stats['min']
+    day_of_week = series.dt.dayofweek
+    stats['n_weekday'] = sum(day_of_week < 5)
+    stats['p_weekday'] = f"{stats['n_weekday'] / len(series):.2%}"
+    stats['n_weekend'] = sum(day_of_week > 4)
+    stats['p_weekend'] = f"{stats['n_weekend'] / len(series):.2%}"
 
     return base_stats(series).append(pd.Series(stats, name=series.name))
 
@@ -106,10 +111,10 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['data_type'] = 'Binary'
     stats['value1'] = aggr.index[0]
     stats['n_value1'] = aggr[stats['value1']]
-    stats['p_value1'] = f"{stats['n_value1']/len(series):.2%}"
+    stats['p_value1'] = f"{stats['n_value1'] / len(series):.2%}"
     stats['value2'] = aggr.index[1]
     stats['n_value2'] = aggr[stats['value2']]
-    stats['p_value2'] = f"{stats['n_value2']/len(series):.2%}"
+    stats['p_value2'] = f"{stats['n_value2'] / len(series):.2%}"
 
     stats_common = base_stats(series)
     return stats_common.append(pd.Series(stats, name=series.name))
