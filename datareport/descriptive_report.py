@@ -2,7 +2,6 @@
 
 from datetime import date
 from itertools import combinations
-from pathlib import Path
 
 import pandas as pd
 from tabulate import tabulate
@@ -43,7 +42,6 @@ def print_report(df: pd.DataFrame,
         if report_file.split('.')[-1] == 'html':
             table_fmt = 'html'
             line_breaker = '<br>'
-        report_file = _make_report_file(report_file)
         file = open(report_file, 'w', encoding="UTF-8")
     else:
         file = None
@@ -101,15 +99,3 @@ def print_report(df: pd.DataFrame,
         print(f'{e}\nReport not finished successfully!')
     finally:
         file.close() if file else None
-
-
-def _make_report_file(file: str) -> Path:
-    """
-    create a file for store the report
-    :param file:
-    :return: created file
-    """
-    path = Path(file)
-    if not path.exists():
-        path.touch()
-    return path
