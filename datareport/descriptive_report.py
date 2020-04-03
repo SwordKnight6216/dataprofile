@@ -62,7 +62,6 @@ def print_report(df: pd.DataFrame,
             dt = pd.DataFrame(pd.Series(table_stats), columns=['count'])
             report.append(
                 tabulate(dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
-
             report.append(f'{line_breaker}')
 
         if prt_var_summary:
@@ -93,7 +92,6 @@ def print_report(df: pd.DataFrame,
                     report.append(tabulate(confusion_matrix, headers=confusion_matrix.columns,
                                            showindex=confusion_matrix.index.to_list(),
                                            tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
-
         report.append(' End of report '.center(padding_size, '='))
 
         print(line_breaker.join(report), file=file)
