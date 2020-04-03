@@ -8,7 +8,7 @@ from tabulate import tabulate
 
 from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
 from datareport.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
-from scripts.monitor import monitor_time_memory
+from scripts import monitor_time_memory
 
 
 @monitor_time_memory
