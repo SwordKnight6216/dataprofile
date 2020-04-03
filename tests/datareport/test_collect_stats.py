@@ -29,6 +29,7 @@ def test_get_table_stats():
     expected_result = {'n_row': 891,
                        'n_col': 13,
                        'n_missing_cell': 1757,
+                       'n_empty_row': 0,
                        'n_duplicated_row': 0,
                        'n_Interval_var': 5,
                        'n_Binary_var': 2,

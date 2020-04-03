@@ -116,5 +116,4 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['n_value2'] = aggr[stats['value2']]
     stats['p_value2'] = f"{stats['n_value2'] / len(series):.2%}"
 
-    stats_common = base_stats(series)
-    return stats_common.append(pd.Series(stats, name=series.name))
+    return base_stats(series).append(pd.Series(stats, name=series.name))
