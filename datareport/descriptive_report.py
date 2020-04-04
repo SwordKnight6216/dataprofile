@@ -41,7 +41,7 @@ def print_report(df: pd.DataFrame,
     padding_size, padding_size2 = 100, 50
 
     if report_file:
-        fmt = report_file.split('.')[-1]
+        fmt = str(report_file).split('.')[-1]
         if fmt == 'html':
             table_fmt = 'html'
             line_breaker = '<br>'
