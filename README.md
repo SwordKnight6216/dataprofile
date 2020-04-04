@@ -1,5 +1,5 @@
 # datareport
-> This package is used to generate statistical reports for CSV files. The reports can be saved as txt, markdown, or html formats.
+> This package is used to render statistical reports for CSV files. The reports can be saved as txt, markdown, or html format.
 
 ## Sample reports
 

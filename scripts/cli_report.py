@@ -5,7 +5,7 @@ import click
 import pandas as pd
 
 from datareport.config import DEFAULT_SAMPLE_SIZE
-from datareport.descriptive_report import print_report
+from datareport.descriptive_report import render_report
 
 
 def _find_csv_file() -> Optional[Path]:
@@ -21,18 +21,18 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('-f', '--file', prompt='target cvs file', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
-@click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
-              type=click.Choice(['y', 'n']), help='wanna see the overall dataset statistics')
-@click.option('--prt_var_summary', prompt='print variable summary?', required=False, default='y', show_default=True,
-              type=click.Choice(['y', 'n']),
-              help='wanna see the variable summary')
-@click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
-              type=click.Choice(['y', 'n']),
-              help='wanna see the variable statistics')
-@click.option('--prt_conf_matrix', prompt='print confusion matrix for binary variables?', required=False, default='y',
-              show_default=True,
-              type=click.Choice(['y', 'n']),
-              help='wanna see the confusion matrix for binary variables')
+# @click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
+#               type=click.Choice(['y', 'n']), help='wanna see the overall dataset statistics')
+# @click.option('--prt_var_summary', prompt='print variable summary?', required=False, default='y', show_default=True,
+#               type=click.Choice(['y', 'n']),
+#               help='wanna see the variable summary')
+# @click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
+#               type=click.Choice(['y', 'n']),
+#               help='wanna see the variable statistics')
+# @click.option('--prt_conf_matrix', prompt='print confusion matrix for binary variables?', required=False, default='y',
+#               show_default=True,
+#               type=click.Choice(['y', 'n']),
+#               help='wanna see the confusion matrix for binary variables')
 @click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
               default=DEFAULT_SAMPLE_SIZE,
               show_default=True,
@@ -72,10 +72,10 @@ def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None
-        print_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
-                     prt_var_stats=prt_var_stats == 'y', prt_conf_matrix=prt_conf_matrix == 'y',
-                     sample_size=sample_size,
-                     var_per_row=var_per_row, report_file=report_file_name)
+        render_report(df, prt_table_stats=prt_table_stats == 'y', prt_var_summary=prt_var_summary == 'y',
+                      prt_var_stats=prt_var_stats == 'y', prt_conf_matrix=prt_conf_matrix == 'y',
+                      sample_size=sample_size,
+                      var_per_row=var_per_row, report_file=report_file_name, is_return_stats=False)
 
 
 if __name__ == "__main__":
