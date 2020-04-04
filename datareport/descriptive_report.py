@@ -41,9 +41,13 @@ def print_report(df: pd.DataFrame,
     padding_size, padding_size2 = 100, 50
 
     if report_file:
-        if report_file.split('.')[-1] == 'html':
+        fmt = report_file.split('.')[-1]
+        if fmt == 'html':
             table_fmt = 'html'
             line_breaker = '<br>'
+        elif fmt == 'md':
+            table_fmt = 'pipe'
+            line_breaker = '\n\n'
         file = open(report_file, 'w', encoding="UTF-8")
     else:
         file = None

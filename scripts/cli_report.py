@@ -42,7 +42,7 @@ def _find_csv_file() -> Optional[Path]:
               help='number of variables to show per row')
 @click.option('-t', '--save_report_to_file',
               prompt='file type to store the report, skip if not needed or choose one from',
-              required=False, default='', type=click.Choice(['', 'html', 'txt']),
+              required=False, default='', type=click.Choice(['', 'html', 'txt', 'md']),
               show_default=True,
               help='file type (html or txt) to store the report, skip if not needed')
 def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
