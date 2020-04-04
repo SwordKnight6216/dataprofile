@@ -94,9 +94,10 @@ def print_report(df: pd.DataFrame,
                                            tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
         report.append(' End of report '.center(padding_size, '='))
 
-        print(line_breaker.join(report), file=file)
-        print(f"report saved to {report_file}") if file else None
     except Exception as e:
         print(f'{e}\nReport not finished successfully!')
+    else:
+        print(line_breaker.join(report), file=file)
+        print(f"report saved to {report_file}") if file else None
     finally:
         file.close() if file else None
