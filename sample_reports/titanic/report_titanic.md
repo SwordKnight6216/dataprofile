@@ -1,8 +1,8 @@
-======================================= Beginning of report ========================================
+================================== Beginning of report ===================================
 
 
 
-This following report is created by gordonchen on Apr,04 2020
+This following report is created by gordonchen on Saturday, Apr 04, 2020
 
 
 
@@ -135,4 +135,4 @@ row:Survived - col:Sex
 |  0 |       81 |    468 |
 |  1 |      233 |    109 |
 
-========================================== End of report ===========================================
+===================================== End of report ======================================

@@ -2,6 +2,8 @@
 
 from datetime import date
 from itertools import combinations
+from typing import Optional, Union
+from pathlib import Path, PurePath
 
 import pandas as pd
 from tabulate import tabulate
@@ -20,7 +22,7 @@ def print_report(df: pd.DataFrame,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
                  random_state: int = RANDOM_STATE,
-                 report_file: str = '') -> None:
+                 report_file: Optional[Union[str, Path]] = None) -> None:
     """
     Print out descriptive analysis report for a given dataset.
 
@@ -38,10 +40,10 @@ def print_report(df: pd.DataFrame,
     report = []
     table_fmt = 'psql'
     line_breaker = '\n'
-    padding_size, padding_size2 = 100, 50
+    padding_size, padding_size2 = 90, 50
 
     if report_file:
-        fmt = str(report_file).split('.')[-1]
+        fmt = PurePath(report_file).suffix.split('.')[-1]
         if fmt == 'html':
             table_fmt = 'html'
             line_breaker = '<br>'
@@ -54,7 +56,7 @@ def print_report(df: pd.DataFrame,
 
     report.append(' Beginning of report '.center(padding_size, '='))
     report.append(
-        f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%b,%d %Y}{line_breaker}")
+        f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%A, %b %d, %Y}{line_breaker}")
 
     sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
     var_stats = get_variable_stats(sample_df)

@@ -44,7 +44,7 @@ def _find_csv_file() -> Optional[Path]:
               prompt='file type to store the report, skip if not needed or choose one from',
               required=False, default='', type=click.Choice(['', 'html', 'txt', 'md']),
               show_default=True,
-              help='file type (html or txt) to store the report, skip if not needed')
+              help='file type (html ,txt, or markdown) to store the report, skip if not needed')
 def main(file: str, prt_table_stats: bool = True, prt_var_summary: bool = True,
          prt_var_stats: bool = True, prt_conf_matrix: bool = True,
          sample_size: int = DEFAULT_SAMPLE_SIZE,
