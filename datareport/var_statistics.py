@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 
+from datareport.config import MAX_STRING_SIZE
+
 
 def base_stats(series: pd.Series) -> pd.Series:
     """
@@ -93,7 +95,7 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     """
     stats = {}
     stats['data_type'] = 'Categorical'
-    stats['mode'] = series.mode()[0]
+    stats['mode'] = _str_truncate(series.mode()[0])
     stats['mode_freq'] = series.value_counts().max()
 
     return base_stats(series).append(pd.Series(stats, name=series.name))
@@ -117,3 +119,13 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['p_value2'] = f"{stats['n_value2'] / len(series):.2%}"
 
     return base_stats(series).append(pd.Series(stats, name=series.name))
+
+
+def _str_truncate(s: str, max_size: int = MAX_STRING_SIZE) -> str:
+    """
+    Truncate a string if it is very long
+    :param s:
+    :param max_size:
+    :return:
+    """
+    return f"{s[:max_size]}..." if len(s) > max_size else s
