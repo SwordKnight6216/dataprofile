@@ -2,7 +2,7 @@
 
 
 
-This following report is created by gordonchen on Saturday, Apr 04, 2020
+This following report is created by Gordon Chen on Saturday, Apr 04, 2020
 
 
 
