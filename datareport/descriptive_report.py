@@ -2,7 +2,7 @@
 
 from datetime import date
 from itertools import combinations
-from pathlib import Path, PurePath
+from pathlib import Path
 from typing import Optional, Union, Dict
 
 import pandas as pd
@@ -46,12 +46,11 @@ def render_report(df: pd.DataFrame,
     padding_size, padding_size2 = 90, 50
 
     if report_file:
-        fmt = PurePath(report_file).suffix
-        if fmt == '.html':
+        if str(report_file).endswith('.html'):
             table_fmt = 'html'
             line_breaker = '<br>'
-        elif fmt == '.md':
-            table_fmt = 'pipe'
+        elif str(report_file).endswith('md'):
+            table_fmt = '.pipe'
             line_breaker = '\n\n'
         file = open(report_file, 'w', encoding="UTF-8")
     else:
@@ -116,4 +115,4 @@ def render_report(df: pd.DataFrame,
     finally:
         file.close() if file else None
 
-    return return_stats if return_stats else None
+    return return_stats if is_return_stats else None
