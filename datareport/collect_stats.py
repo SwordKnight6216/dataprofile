@@ -4,7 +4,6 @@ from collections import defaultdict
 from typing import List, Dict, Optional
 
 import pandas as pd
-from pandas.api.types import is_numeric_dtype
 
 from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
