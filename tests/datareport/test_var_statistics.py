@@ -139,6 +139,10 @@ def test_categorical_stats():
                                  'p_unique': '0.34%',
                                  'data_type': 'Categorical',
                                  'mode': 'S',
-                                 'mode_freq': 644})
+                                 'mode_freq': 644,
+                                 '2nd_freq_value': 'C',
+                                 '2nd_freq': 168,
+                                 '3rd_freq_value': 'Q',
+                                 '3rd_freq': 77})
     expected_result.name = 'Embarked'
     assert_series_equal(output.sort_index(), expected_result.sort_index())

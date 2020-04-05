@@ -21,18 +21,18 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('-f', '--file', prompt='target cvs file', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
-# @click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
-#               type=click.Choice(['y', 'n']), help='wanna see the overall dataset statistics')
-# @click.option('--prt_var_summary', prompt='print variable summary?', required=False, default='y', show_default=True,
-#               type=click.Choice(['y', 'n']),
-#               help='wanna see the variable summary')
-# @click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
-#               type=click.Choice(['y', 'n']),
-#               help='wanna see the variable statistics')
-# @click.option('--prt_conf_matrix', prompt='print confusion matrix for binary variables?', required=False, default='y',
-#               show_default=True,
-#               type=click.Choice(['y', 'n']),
-#               help='wanna see the confusion matrix for binary variables')
+@click.option('--prt_table_stats', prompt='print table statistics?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']), help='wanna see the overall dataset statistics')
+@click.option('--prt_var_summary', prompt='print variable summary?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']),
+              help='wanna see the variable summary')
+@click.option('--prt_var_stats', prompt='print variable statistics?', required=False, default='y', show_default=True,
+              type=click.Choice(['y', 'n']),
+              help='wanna see the variable statistics')
+@click.option('--prt_conf_matrix', prompt='print confusion matrix for binary variables?', required=False, default='y',
+              show_default=True,
+              type=click.Choice(['y', 'n']),
+              help='wanna see the confusion matrix for binary variables')
 @click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
               default=DEFAULT_SAMPLE_SIZE,
               show_default=True,

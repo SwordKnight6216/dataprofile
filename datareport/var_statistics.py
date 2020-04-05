@@ -94,9 +94,15 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     :return: descriptive statistics
     """
     stats = {}
+    aggr = series.value_counts()
     stats['data_type'] = 'Categorical'
-    stats['mode'] = _str_truncate(series.mode()[0])
-    stats['mode_freq'] = series.value_counts().max()
+    stats['mode'] = _str_truncate(aggr.index[0])
+    stats['mode_freq'] = aggr[0]
+    stats['2nd_freq_value'] = _str_truncate(aggr.index[1])
+    stats['2nd_freq'] = aggr[1]
+    if len(aggr) > 2:
+        stats['3rd_freq_value'] = _str_truncate(aggr.index[2])
+        stats['3rd_freq'] = aggr[2]
 
     return base_stats(series).append(pd.Series(stats, name=series.name))
 
