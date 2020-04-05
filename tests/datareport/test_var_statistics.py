@@ -101,10 +101,9 @@ def test_datetime_stats():
                                  '95%': pd.to_datetime('2018-09-27 06:00:00'),
                                  'max': pd.to_datetime('2018-10-01 00:00:00'),
                                  'range': pd.to_timedelta('64 days 00:00:00'),
-                                 'n_weekday': 3,
-                                 'p_weekday': '33.33%',
-                                 'n_weekend': 3,
-                                 'p_weekend': '33.33%'})
+                                 'n_Monday': 1,
+                                 'n_Thursday': 2,
+                                 'n_Sunday': 3})
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 

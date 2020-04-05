@@ -78,10 +78,10 @@ def datetime_stats(series: pd.Series) -> pd.Series:
     stats['max'] = series.max()
     stats['range'] = stats['max'] - stats['min']
     day_of_week = series.dt.dayofweek
-    stats['n_weekday'] = sum(day_of_week < 5)
-    stats['p_weekday'] = f"{stats['n_weekday'] / len(series):.2%}"
-    stats['n_weekend'] = sum(day_of_week > 4)
-    stats['p_weekend'] = f"{stats['n_weekend'] / len(series):.2%}"
+    wd_map = {0: 'n_Monday', 1: 'n_Tuesday', 2: 'n_Wednesday', 3: 'n_Thursday', 4: 'n_Friday', 5: 'n_Saturday',
+              6: 'n_Sunday'}
+    day_of_week_sum = day_of_week.value_counts().sort_index().rename(wd_map)
+    stats.update(day_of_week_sum)
 
     return base_stats(series).append(pd.Series(stats, name=series.name))
 
