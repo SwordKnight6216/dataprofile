@@ -49,8 +49,8 @@ def render_report(df: pd.DataFrame,
         if str(report_file).endswith('.html'):
             table_fmt = 'html'
             line_breaker = '<br>'
-        elif str(report_file).endswith('md'):
-            table_fmt = '.pipe'
+        elif str(report_file).endswith('.md'):
+            table_fmt = 'pipe'
             line_breaker = '\n\n'
         file = open(report_file, 'w', encoding="UTF-8")
     else:
