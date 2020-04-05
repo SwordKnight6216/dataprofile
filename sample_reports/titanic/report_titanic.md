@@ -119,11 +119,11 @@ Nominal variables:
 | p_missing      | 0.00%    | 77.10%      | 0.22%      |
 | n_unique       | 681      | 147         | 3          |
 | p_unique       | 76.43%   | 72.06%      | 0.34%      |
-| mode           | 1601     | G6          | S          |
+| mode           | CA. 2343 | C23 C25 C27 | S          |
 | mode_freq      | 7        | 4           | 644        |
-| 2nd_freq_value | CA. 2343 | B96 B98     | C          |
+| 2nd_freq_value | 347082   | B96 B98     | C          |
 | 2nd_freq       | 7        | 4           | 168        |
-| 3rd_freq_value | 347082   | C23 C25 C27 | Q          |
+| 3rd_freq_value | 1601     | G6          | Q          |
 | 3rd_freq       | 7        | 4           | 77         |
 
 

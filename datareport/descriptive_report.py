@@ -46,11 +46,11 @@ def render_report(df: pd.DataFrame,
     padding_size, padding_size2 = 90, 50
 
     if report_file:
-        fmt = PurePath(report_file).suffix.split('.')[-1]
-        if fmt == 'html':
+        fmt = PurePath(report_file).suffix
+        if fmt == '.html':
             table_fmt = 'html'
             line_breaker = '<br>'
-        elif fmt == 'md':
+        elif fmt == '.md':
             table_fmt = 'pipe'
             line_breaker = '\n\n'
         file = open(report_file, 'w', encoding="UTF-8")
