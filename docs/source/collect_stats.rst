@@ -1,7 +1,7 @@
 collect\_stats module
 ---------------------
 
-.. automodule:: datareport.collect_stats
+.. automodule:: dataprofile.collect_stats
    :members:
    :undoc-members:
    :show-inheritance:

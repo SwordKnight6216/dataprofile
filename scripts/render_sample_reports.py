@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from datareport.descriptive_report import render_report
+from dataprofile.descriptive_report import render_report
 
 sample_folder = Path(Path().absolute().parent, 'sample_reports', 'titanic')
 sample_data = Path(Path().absolute().parent, 'data', 'titanic', 'train.csv')

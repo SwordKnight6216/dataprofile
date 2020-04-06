@@ -1,7 +1,7 @@
 descriptive\_report module
 --------------------------
 
-.. automodule:: datareport.descriptive_report
+.. automodule:: dataprofile.descriptive_report
    :members:
    :undoc-members:
    :show-inheritance:

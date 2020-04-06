@@ -1,10 +1,10 @@
-datareport
-==========
+dataprofile
+===========
 
 .. toctree::
    :maxdepth: 4
 
-   datareport
+   dataprofile
    descriptive_report
    collect_stats
    var_statistics

@@ -5,7 +5,7 @@ from typing import List, Dict, Optional
 
 import pandas as pd
 
-from datareport.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
+from dataprofile.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
 
 

@@ -1,7 +1,7 @@
 viz module
 ----------
 
-.. automodule:: datareport.viz
+.. automodule:: dataprofile.viz
    :members:
    :undoc-members:
    :show-inheritance:

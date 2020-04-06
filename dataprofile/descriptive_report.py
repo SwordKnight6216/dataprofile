@@ -8,8 +8,8 @@ from typing import Optional, Union, Dict
 import pandas as pd
 from tabulate import tabulate
 
-from datareport.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
-from datareport.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
+from dataprofile.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
+from dataprofile.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from scripts import monitor_time_memory
 
 

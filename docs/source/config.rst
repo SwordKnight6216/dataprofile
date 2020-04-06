@@ -1,7 +1,7 @@
 config file
 -----------
 
-.. automodule:: datareport.config
+.. automodule:: dataprofile.config
    :members:
    :undoc-members:
    :show-inheritance:

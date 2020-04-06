@@ -4,8 +4,8 @@ from typing import Optional
 import click
 import pandas as pd
 
-from datareport.config import DEFAULT_SAMPLE_SIZE
-from datareport.descriptive_report import render_report
+from dataprofile.config import DEFAULT_SAMPLE_SIZE
+from dataprofile.descriptive_report import render_report
 
 
 def _find_csv_file() -> Optional[Path]:

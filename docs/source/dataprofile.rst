@@ -1,7 +1,7 @@
 package contents
 -------------------
 
-.. automodule:: datareport
+.. automodule:: dataprofile
    :members:
    :undoc-members:
    :show-inheritance:

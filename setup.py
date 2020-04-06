@@ -7,7 +7,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setuptools.setup(
-    name="datareport",
+    name="dataprofile",
     version="1.0.0",
     author="Gordon Chen",
     author_email="GordonChen.GoBlue@gmail.com",
