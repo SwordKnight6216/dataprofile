@@ -86,7 +86,6 @@ def test_datetime_stats():
                                             '7/29/2018',
                                             '10/1/2018']))
     output = datetime_stats(test_series)
-    print(output)
     expected_result = pd.Series({'count': 9,
                                  'n_unique': 4,
                                  'p_missing': '33.33%',
@@ -102,7 +101,11 @@ def test_datetime_stats():
                                  'max': pd.to_datetime('2018-10-01 00:00:00'),
                                  'range': pd.to_timedelta('64 days 00:00:00'),
                                  'n_Monday': 1,
+                                 'n_Tuesday': 0,
+                                 'n_Wednesday': 0,
                                  'n_Thursday': 2,
+                                 'n_Friday': 0,
+                                 'n_Saturday': 0,
                                  'n_Sunday': 3})
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 

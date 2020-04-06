@@ -10,7 +10,7 @@
 ## Installation
 
 ```sh
-pip install datareport
+pip install dataprofile
 ```
 ## Documentation
 
