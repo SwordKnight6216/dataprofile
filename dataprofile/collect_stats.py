@@ -74,7 +74,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
         else:
             try:
                 converted = pd.to_datetime(df[col])
-                dty_datetime = datetime_stats(converted)
+                dty_datetime = datetime_stats(pd.Series(converted))
                 dty_datetime['type'] = 'Datetime'
                 dty_datetime['data_type'] = _get_actual_dtype(df[col])
                 var_stats['Datetime'].append(dty_datetime)
