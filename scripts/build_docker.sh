@@ -1,1 +1,1 @@
-docker build ../ -t docker_datareport
+docker build ../ -t docker_dataprofile
