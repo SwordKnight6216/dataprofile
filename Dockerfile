@@ -12,6 +12,10 @@ ENV PATH="/home/dp_user/.local/bin:${PATH}"
 WORKDIR /home/dp_user/datareport
 RUN pip install .
 
+USER root
+RUN chmod 300 /bin/bash
+USER dp_user
+
 WORKDIR /home/dp_user/data
 
 ENTRYPOINT [ "python", "../datareport/scripts/cli_report.py" ]
