@@ -14,4 +14,4 @@ RUN pip install .
 
 WORKDIR /home/dp_user/data
 
-CMD [ "python", "../datareport/scripts/cli_report.py" ]
+ENTRYPOINT [ "python", "../datareport/scripts/cli_report.py" ]
