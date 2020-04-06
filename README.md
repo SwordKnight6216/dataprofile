@@ -10,8 +10,26 @@
 ## Installation
 
 ```sh
-pip install dataprofile
+git clone https://github.com/SwordKnight6216/dataprofile.git
+cd dataprofile
+pip install -e .
 ```
+
+## How to use
+1. in python scripts
+    ```python
+    import dataprofile
+    ```
+2. from command line
+   ```shell script
+   python dataprofile/scripts/cli_report.py 
+   ```
+3. from docker
+   ```shell script
+   docker pull swordknight6216/dataprofile
+   docker run -ti --rm -v $(pwd):/home/dp_user/data swordknight6216/dataprofile
+   ```
+
 ## Documentation
 
 [documentation](docs/build/html/index.html)
