@@ -1,2 +1,2 @@
-#run the below code in the data directory
+#run the below code in the target data directory
 docker run -ti -v $(pwd):/home/dp_user/data docker_datareport
