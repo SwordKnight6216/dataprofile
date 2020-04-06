@@ -1,0 +1,6 @@
+/data
+/sample_reports
+/tests
+/.vscode
+/.pytest_cache
+/*egg-info
