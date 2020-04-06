@@ -3,4 +3,5 @@
 /tests
 /.vscode
 /.pytest_cache
+/docs
 /*egg-info

@@ -14,7 +14,7 @@ setuptools.setup(
     description="This package generates statistical reports for given pandas DataFrames or CSV files in standalone model",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/SwordKnight6216/datareport",
+    url="https://github.com/SwordKnight6216/dataprofile",
     packages=setuptools.find_packages(),
     install_requires=required,
     classifiers=[

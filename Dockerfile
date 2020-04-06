@@ -11,9 +11,12 @@ ENV PATH="/home/dp_user/.local/bin:${PATH}"
 
 WORKDIR /home/dp_user/datareport
 RUN pip install .
+RUN rm -r /home/dp_user/datareport/dataprofile
+RUN rm -r /home/dp_user/datareport/Dockerfile
 
 USER root
 RUN chmod 300 /bin/bash
+RUN chmod 300 /bin/sh
 USER dp_user
 
 WORKDIR /home/dp_user/data
