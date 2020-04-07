@@ -6,12 +6,14 @@ from pathlib import Path
 from typing import Optional, Union, Dict
 
 import pandas as pd
-from colorama import Fore
+from colorama import Fore, init
 from tabulate import tabulate
 
 from dataprofile.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
 from dataprofile.config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from scripts import monitor_time_memory
+
+init(autoreset=True)
 
 
 @monitor_time_memory
@@ -109,10 +111,10 @@ def render_report(df: pd.DataFrame,
         report_str.append(' End of report '.center(padding_size, '='))
 
     except Exception as e:
-        print(Fore.RED + f'{e}\nReport not rendered successfully!' + Fore.RESET)
+        print(Fore.RED + f'{e}\nReport not rendered successfully!')
     else:
         print(line_breaker.join(report_str), file=file)
-        print(Fore.GREEN + f"report saved to {report_file}" + Fore.RESET) if file else None
+        print(Fore.GREEN + f"report saved to {report_file}") if file else None
     finally:
         file.close() if file else None
 

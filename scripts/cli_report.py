@@ -3,10 +3,12 @@ from typing import Optional
 
 import click
 import pandas as pd
-from colorama import Fore
+from colorama import Fore, init
 
 from dataprofile.config import DEFAULT_SAMPLE_SIZE
 from dataprofile.descriptive_report import render_report
+
+init(autoreset=True)
 
 
 def _find_csv_file() -> Optional[Path]:
@@ -51,12 +53,12 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
     try:
         df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
     except FileNotFoundError:
-        print(Fore.RED + "\nTarget file doesn't exist!\nReporting stopped!" + Fore.RESET)
+        print(Fore.RED + "\nTarget file doesn't exist!\nReporting stopped!")
     except UnicodeDecodeError:
         print(
-            Fore.RED + f"\nThis file is not encoded in {encoding}! Correct encoding is required! \nReporting stopped!" + Fore.RESET)
+            Fore.RED + f"\nThis file is not encoded in {encoding}! Correct encoding is required! \nReporting stopped!")
     except Exception as e:
-        print(Fore.RED + f"{e} \nReporting stopped!" + Fore.RESET)
+        print(Fore.RED + f"{e} \nReporting stopped!")
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None
