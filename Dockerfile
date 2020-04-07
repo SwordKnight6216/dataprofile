@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7-slim
 
 LABEL Author="Gordon Chen"
 LABEL Email="GordonChen.GoBlue@gmail.com"
