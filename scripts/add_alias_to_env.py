@@ -3,7 +3,7 @@ from pathlib import Path
 
 py_path = sys.executable
 current_path = Path('.').absolute()
-cmd = f"alias datareport=\"{py_path} {Path(current_path, 'cli_report.py')}\""
+cmd = f"alias datareport=\"{py_path} -m dataprofile.cli_report\""
 
 dotfiles = ['.zshrc', '.bashrc', '.bash_profile']
 
