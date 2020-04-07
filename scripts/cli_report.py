@@ -3,6 +3,7 @@ from typing import Optional
 
 import click
 import pandas as pd
+from colorama import Fore
 
 from dataprofile.config import DEFAULT_SAMPLE_SIZE
 from dataprofile.descriptive_report import render_report
@@ -46,11 +47,11 @@ def main(file: str, sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6
     try:
         df = pd.read_csv(Path(file), low_memory=False)
     except FileNotFoundError:
-        print("\nTarget file doesn't exist!\nReporting stopped!")
+        print(Fore.RED + "\nTarget file doesn't exist!\nReporting stopped!" + Fore.RESET)
     except UnicodeDecodeError:
-        print("\nTarget file is not encoded appropriately! \nReporting stopped!")
+        print(Fore.RED + "\nTarget file is not encoded appropriately! \nReporting stopped!" + Fore.RESET)
     except Exception as e:
-        print(f"{e} \nReporting stopped!")
+        print(Fore.RED + f"{e} \nReporting stopped!" + Fore.RESET)
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None

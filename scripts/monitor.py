@@ -2,9 +2,10 @@ import time
 import tracemalloc
 from functools import wraps
 
+from colorama import Fore
+
 
 def monitor_time_memory(original_func):
-
     @wraps(original_func)
     def wrapped_func(*args, **kwargs):
         time_start = time.time()
@@ -14,9 +15,9 @@ def monitor_time_memory(original_func):
 
         current, peak = tracemalloc.get_traced_memory()
         time_end = time.time() - time_start
-        print(
-            f"{original_func.__name__} finished in {time_end:.2f} sec, Current memory usage is {current / 10 ** 6}MB; "
-            f"Peak memory usage was {peak / 10 ** 6}MB")
+        print(Fore.BLUE +
+              f"{original_func.__name__} finished in {time_end:.2f} sec, Current memory usage is {current / 10 ** 6}MB; "
+              f"Peak memory usage was {peak / 10 ** 6}MB" + Fore.RESET)
         tracemalloc.stop()
         return func
 

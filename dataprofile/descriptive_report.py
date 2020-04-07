@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Optional, Union, Dict
 
 import pandas as pd
+from colorama import Fore
 from tabulate import tabulate
 
 from dataprofile.collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
@@ -78,7 +79,7 @@ def render_report(df: pd.DataFrame,
             return_stats['var_summary'] = var_summary
             report_str.append(' Variable Summary '.center(padding_size2, '='))
             report_str.append(tabulate(var_summary, headers='keys',
-                                   tablefmt=table_fmt) if table_fmt != 'html' else var_summary.to_html())
+                                       tablefmt=table_fmt) if table_fmt != 'html' else var_summary.to_html())
             report_str.append(f'{line_breaker}')
 
         if prt_var_stats:
@@ -103,15 +104,15 @@ def render_report(df: pd.DataFrame,
                     return_stats['conf_matrix'].append(confusion_matrix)
                     report_str.append(f"row:{a} - col:{b}")
                     report_str.append(tabulate(confusion_matrix, headers=confusion_matrix.columns,
-                                           showindex=confusion_matrix.index.to_list(),
-                                           tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
+                                               showindex=confusion_matrix.index.to_list(),
+                                               tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
         report_str.append(' End of report '.center(padding_size, '='))
 
     except Exception as e:
-        print(f'{e}\nReport not rendered successfully!')
+        print(Fore.RED + f'{e}\nReport not rendered successfully!' + Fore.RESET)
     else:
         print(line_breaker.join(report_str), file=file)
-        print(f"report saved to {report_file}") if file else None
+        print(Fore.GREEN + f"report saved to {report_file}" + Fore.RESET) if file else None
     finally:
         file.close() if file else None
 

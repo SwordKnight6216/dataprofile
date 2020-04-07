@@ -4,6 +4,7 @@ from collections import defaultdict
 from typing import List, Dict, Optional
 
 import pandas as pd
+from progress.bar import Bar
 
 from dataprofile.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
@@ -31,6 +32,7 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
     :return: a dictionary contains statistics of all variables
     """
     var_stats = defaultdict(list)
+    bar = Bar('Profiling variables', max=df.shape[1])
 
     for col in df:
 
@@ -83,6 +85,8 @@ def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
                 dty_categorical['type'] = 'Nominal'
                 var_stats['Nominal'].append(dty_categorical)
 
+        bar.next()
+    bar.finish()
     return var_stats
 
 

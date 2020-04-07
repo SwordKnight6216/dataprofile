@@ -4,3 +4,5 @@ pandas
 tabulate
 matplotlib
 click
+progress
+colorama
