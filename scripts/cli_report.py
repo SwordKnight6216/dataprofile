@@ -22,6 +22,9 @@ def _find_csv_file() -> Optional[Path]:
 @click.option('-f', '--file', prompt='target cvs file', required=True, help='cvs format is required',
               default=_find_csv_file(),
               show_default=True)
+@click.option('-e', '--encoding', prompt='file encoding type', required=False, help='correct encoding is required',
+              default='utf8',
+              show_default=True)
 @click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
               default=DEFAULT_SAMPLE_SIZE,
               show_default=True,
@@ -34,10 +37,11 @@ def _find_csv_file() -> Optional[Path]:
               required=False, default='', type=click.Choice(['', 'html', 'txt', 'md']),
               show_default=True,
               help='file type (html ,txt, or markdown) to store the report, skip if not needed')
-def main(file: str, sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6,
+def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6,
          save_report_to_file: str = '') -> None:
     """
 
+    :param encoding:
     :param file:
     :param sample_size:
     :param var_per_row:
@@ -45,11 +49,12 @@ def main(file: str, sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6
     :return:
     """
     try:
-        df = pd.read_csv(Path(file), low_memory=False)
+        df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
     except FileNotFoundError:
         print(Fore.RED + "\nTarget file doesn't exist!\nReporting stopped!" + Fore.RESET)
     except UnicodeDecodeError:
-        print(Fore.RED + "\nTarget file is not encoded appropriately! \nReporting stopped!" + Fore.RESET)
+        print(
+            Fore.RED + f"\nThis file is not encoded in {encoding}! Correct encoding is required! \nReporting stopped!" + Fore.RESET)
     except Exception as e:
         print(Fore.RED + f"{e} \nReporting stopped!" + Fore.RESET)
     else:
