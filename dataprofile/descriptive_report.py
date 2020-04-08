@@ -44,22 +44,18 @@ def render_report(df: pd.DataFrame,
     :param num_works: number of cpu cores for multiprocessing
     :return: None or a dictionary including all stats
     """
-    report_str = []
-    return_stats = {}
-    table_fmt = 'psql'
-    line_breaker = '\n'
+    report_str, return_stats = [], {}
     padding_size, padding_size2 = 90, 50
 
-    if report_file:
-        if str(report_file).endswith('.html'):
-            table_fmt = 'html'
-            line_breaker = '<br>'
-        elif str(report_file).endswith('.md'):
-            table_fmt = 'pipe'
-            line_breaker = '\n\n'
-        file = open(report_file, 'w', encoding="UTF-8")
+    if str(report_file).endswith('.html'):
+        table_fmt = 'html'
+        line_breaker = '<br>'
+    elif str(report_file).endswith('.md'):
+        table_fmt = 'pipe'
+        line_breaker = '\n\n'
     else:
-        file = None
+        table_fmt = 'psql'
+        line_breaker = '\n'
 
     report_str.append(' Beginning of report '.center(padding_size, '='))
     report_str.append(
@@ -114,10 +110,13 @@ def render_report(df: pd.DataFrame,
 
     except Exception as e:
         print(Fore.RED + f'{e}\nReport not rendered successfully!')
+
     else:
-        print(line_breaker.join(report_str), file=file)
+        if report_file:
+            with open(report_file, 'w', encoding="UTF-8") as file:
+                print(line_breaker.join(report_str), file=file)
+        else:
+            print(line_breaker.join(report_str))
         print(Fore.GREEN + f"report saved to {report_file}") if file else None
-    finally:
-        file.close() if file else None
 
     return return_stats if is_return_stats else None
