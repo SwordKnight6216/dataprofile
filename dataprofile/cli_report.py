@@ -4,6 +4,7 @@ from typing import Optional
 import click
 import pandas as pd
 from colorama import Fore, init
+from loguru import logger
 
 from .config import DEFAULT_SAMPLE_SIZE
 from .descriptive_report import render_report
@@ -51,14 +52,15 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
     :return:
     """
     try:
+        logger.info(f"Loading data from {file}...")
         df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
     except FileNotFoundError:
-        print(Fore.RED + "\nTarget file doesn't exist!\nReporting stopped!")
+        logger.critical(Fore.RED + "Target file doesn't exist! Reporting stopped!")
     except UnicodeDecodeError:
-        print(
-            Fore.RED + f"\nThis file is not encoded in {encoding}! Correct encoding is required! \nReporting stopped!")
+        logger.critical(
+            Fore.RED + f"This file is not encoded in {encoding}! Correct encoding is required! Reporting stopped!")
     except Exception as e:
-        print(Fore.RED + f"{e} \nReporting stopped!")
+        logger.critical(Fore.RED + f"{e}! Reporting stopped!")
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None

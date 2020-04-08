@@ -76,10 +76,9 @@ def render_report(df: pd.DataFrame,
 
     if sample_size > 0:
         sample_df, msg = get_a_sample(df, sample_size, random_state, line_breaker)
-        report_str.append(msg)
+        report_str.append(msg) if msg else None
     else:
         sample_df = df
-    logger.info("Calculating statistics of each variable ...")
     var_stats = get_variable_stats(sample_df, num_works)
 
     try:
@@ -106,6 +105,7 @@ def render_report(df: pd.DataFrame,
             logger.info("Getting 'Variable Statistics' ready...")
             report_str.append(' Variable Statistics '.center(padding_size2, '='))
             for key, item in var_stats.items():
+                logger.debug(f"Rendering statistics for {key} variables...")
                 report_str.append(f'{line_breaker}{key} variables:')
                 return_stats[f'var_stats_{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1).T
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
@@ -122,6 +122,7 @@ def render_report(df: pd.DataFrame,
                 report_str.append(' Confusion Matrix '.center(padding_size2, '='))
                 return_stats['conf_matrix'] = []
                 for a, b in combinations(binary_vars, 2):
+                    logger.debug(f"Calculating confusion matrix of {a} and {b}")
                     confusion_matrix = pd.crosstab(sample_df[a], sample_df[b])
                     return_stats['conf_matrix'].append(confusion_matrix)
                     report_str.append(f"row:{a} - col:{b}")

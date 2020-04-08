@@ -4,6 +4,7 @@ import multiprocessing
 from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 
+from loguru import logger
 import pandas as pd
 import tqdm
 
@@ -93,6 +94,7 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
 
+    logger.info("Calculating statistics of each variable ...")
     with multiprocessing.Pool(num_works) as executor:
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1]))
 
@@ -135,11 +137,14 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     """
     try:
         sample_df = df.sample(sample_size, random_state=random_state)
-        msg = f'ATTN: The following statistics are based on {sample_size} samples out of {df.shape[0]} of the population.{line_ending}'
+        msg = f'ATTN: The following statistics are based on {sample_size} samples ' \
+              f'out of {df.shape[0]} of the population.{line_ending}'
 
     except ValueError:
-        msg = f"Sample size {sample_size} is larger than the population size {df.shape[0]}. using population instead.{line_ending}"
+        logger.warning(f"Sample size {sample_size} is larger than the population size {df.shape[0]}. "
+                       f"using population instead.")
         sample_df = df
+        msg = ""
 
     return sample_df, msg
 
