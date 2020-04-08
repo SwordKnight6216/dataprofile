@@ -1,5 +1,5 @@
 """print or save a report of overall statistics and detailed statistics for a given dataset."""
-
+import sys
 from datetime import date
 from itertools import combinations
 from pathlib import Path
@@ -7,6 +7,7 @@ from typing import Optional, Union, Dict, Tuple
 
 import pandas as pd
 from colorama import Fore, init
+from loguru import logger
 from tabulate import tabulate
 
 from .collect_stats import get_variable_stats, get_table_stats, get_a_sample, get_var_summary
@@ -14,6 +15,8 @@ from .config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from .monitor import monitor_time_memory
 
 init(autoreset=True)
+logger.remove()
+logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}", level="INFO")
 
 
 def _str_format(f_name: str) -> Tuple[str, str]:
@@ -76,10 +79,12 @@ def render_report(df: pd.DataFrame,
         report_str.append(msg)
     else:
         sample_df = df
+    logger.info("Calculating statistics of each variable ...")
     var_stats = get_variable_stats(sample_df, num_works)
 
     try:
         if prt_table_stats:
+            logger.info("Getting 'Table statistics' ready...")
             table_stats = get_table_stats(sample_df, var_stats)
             report_str.append(' Table Statistics '.center(padding_size2, '='))
             dt = pd.DataFrame(pd.Series(table_stats), columns=['count'])
@@ -89,6 +94,7 @@ def render_report(df: pd.DataFrame,
             report_str.append(f'{line_breaker}')
 
         if prt_var_summary:
+            logger.info("Getting 'Variable Summary' ready...")
             var_summary = get_var_summary(var_stats)
             return_stats['var_summary'] = var_summary
             report_str.append(' Variable Summary '.center(padding_size2, '='))
@@ -97,6 +103,7 @@ def render_report(df: pd.DataFrame,
             report_str.append(f'{line_breaker}')
 
         if prt_var_stats:
+            logger.info("Getting 'Variable Statistics' ready...")
             report_str.append(' Variable Statistics '.center(padding_size2, '='))
             for key, item in var_stats.items():
                 report_str.append(f'{line_breaker}{key} variables:')
@@ -111,6 +118,7 @@ def render_report(df: pd.DataFrame,
         if prt_conf_matrix:
             binary_vars = [var.name for var in var_stats['Binary']]
             if len(binary_vars) > 1:
+                logger.info("Getting 'Confusion Matrix' ready...")
                 report_str.append(' Confusion Matrix '.center(padding_size2, '='))
                 return_stats['conf_matrix'] = []
                 for a, b in combinations(binary_vars, 2):
@@ -123,14 +131,15 @@ def render_report(df: pd.DataFrame,
         report_str.append(' End of report '.center(padding_size, '='))
 
     except Exception as e:
-        print(Fore.RED + f'{e}\nReport not rendered successfully!')
+        logger.exception(Fore.RED + f'{e}\nReport not rendered successfully!', backtrace=False, diagnose=False)
 
     else:
         if report_file:
             with open(report_file, 'w', encoding="UTF-8") as f:
-                f.write(line_breaker.join(report_str)+'\n')
-                print(Fore.GREEN + f"report saved to {report_file}")
+                f.write(line_breaker.join(report_str) + '\n')
+                logger.info(Fore.GREEN + f"report saved to {report_file}")
         else:
             print(line_breaker.join(report_str))
+        logger.info("Report successfully rendered!")
 
     return return_stats if is_return_stats else None

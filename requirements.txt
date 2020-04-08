@@ -6,3 +6,4 @@ tabulate
 click
 tqdm
 colorama
+loguru
