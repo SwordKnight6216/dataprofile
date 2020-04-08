@@ -26,7 +26,8 @@ def render_report(df: pd.DataFrame,
                   var_per_row: int = 6,
                   random_state: int = RANDOM_STATE,
                   report_file: Optional[Union[str, Path]] = None,
-                  is_return_stats: bool = True) -> Optional[Dict[str, Union[pd.DataFrame, list]]]:
+                  is_return_stats: bool = True,
+                  num_works: int = -1) -> Optional[Dict[str, Union[pd.DataFrame, list]]]:
     """
     Print out descriptive analysis report for a given dataset.
 
@@ -40,6 +41,7 @@ def render_report(df: pd.DataFrame,
     :param random_state: Random seed for the row sampler
     :param report_file: store the report to a file
     :param is_return_stats:
+    :param num_works: number of cpu cores for multiprocessing
     :return: None or a dictionary including all stats
     """
     report_str = []
@@ -64,7 +66,7 @@ def render_report(df: pd.DataFrame,
         f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%A, %b %d, %Y}{line_breaker}")
 
     sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
-    var_stats = get_variable_stats(sample_df)
+    var_stats = get_variable_stats(sample_df, num_works)
 
     try:
         if prt_table_stats:
