@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from dataprofile.config import MAX_STRING_SIZE
+from .config import MAX_STRING_SIZE
 
 
 def base_stats(series: pd.Series) -> pd.Series:

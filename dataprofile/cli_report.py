@@ -5,8 +5,8 @@ import click
 import pandas as pd
 from colorama import Fore, init
 
-from dataprofile.config import DEFAULT_SAMPLE_SIZE
-from dataprofile.descriptive_report import render_report
+from .config import DEFAULT_SAMPLE_SIZE
+from .descriptive_report import render_report
 
 init(autoreset=True)
 
