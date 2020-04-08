@@ -55,12 +55,12 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
         logger.info(f"Loading data from {file}...")
         df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
     except FileNotFoundError:
-        logger.critical(Fore.RED + "Target file doesn't exist! Reporting stopped!")
+        logger.error(Fore.RED + "Target file doesn't exist! Reporting stopped!")
     except UnicodeDecodeError:
-        logger.critical(
+        logger.error(
             Fore.RED + f"This file is not encoded in {encoding}! Correct encoding is required! Reporting stopped!")
     except Exception as e:
-        logger.critical(Fore.RED + f"{e}! Reporting stopped!")
+        logger.error(Fore.RED + f"{e}! Reporting stopped!")
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None
