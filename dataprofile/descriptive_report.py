@@ -3,7 +3,7 @@
 from datetime import date
 from itertools import combinations
 from pathlib import Path
-from typing import Optional, Union, Dict
+from typing import Optional, Union, Dict, Tuple
 
 import pandas as pd
 from colorama import Fore, init
@@ -14,6 +14,25 @@ from .config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from .monitor import monitor_time_memory
 
 init(autoreset=True)
+
+
+def _str_format(f_name: str) -> Tuple[str, str]:
+    """
+    Base on the name of the file to store output, return correct table and line breaker format
+
+    :param f_name:
+    :return: table and line breaker format
+    """
+    if f_name.endswith('.html'):
+        table_fmt = 'html'
+        line_breaker = '<br>'
+    elif f_name.endswith('.md'):
+        table_fmt = 'pipe'
+        line_breaker = '\n\n'
+    else:
+        table_fmt = 'psql'
+        line_breaker = '\n'
+    return table_fmt, line_breaker
 
 
 @monitor_time_memory
@@ -46,16 +65,7 @@ def render_report(df: pd.DataFrame,
     """
     report_str, return_stats = [], {}
     padding_size, padding_size2 = 90, 50
-
-    if str(report_file).endswith('.html'):
-        table_fmt = 'html'
-        line_breaker = '<br>'
-    elif str(report_file).endswith('.md'):
-        table_fmt = 'pipe'
-        line_breaker = '\n\n'
-    else:
-        table_fmt = 'psql'
-        line_breaker = '\n'
+    table_fmt, line_breaker = _str_format(str(report_file))
 
     report_str.append(' Beginning of report '.center(padding_size, '='))
     report_str.append(
@@ -118,7 +128,7 @@ def render_report(df: pd.DataFrame,
     else:
         if report_file:
             with open(report_file, 'w', encoding="UTF-8") as f:
-                f.write(line_breaker.join(report_str))
+                f.write(line_breaker.join(report_str)+'\n')
                 print(Fore.GREEN + f"report saved to {report_file}")
         else:
             print(line_breaker.join(report_str))
