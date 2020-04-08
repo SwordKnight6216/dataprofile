@@ -61,7 +61,11 @@ def render_report(df: pd.DataFrame,
     report_str.append(
         f"{line_breaker}This following report is created by {AUTHOR} on {date.today():%A, %b %d, %Y}{line_breaker}")
 
-    sample_df = get_a_sample(df, sample_size, random_state, file, line_breaker) if sample_size > 0 else df
+    if sample_size > 0:
+        sample_df, msg = get_a_sample(df, sample_size, random_state, line_breaker)
+        report_str.append(msg)
+    else:
+        sample_df = df
     var_stats = get_variable_stats(sample_df, num_works)
 
     try:
@@ -113,10 +117,10 @@ def render_report(df: pd.DataFrame,
 
     else:
         if report_file:
-            with open(report_file, 'w', encoding="UTF-8") as file:
-                print(line_breaker.join(report_str), file=file)
+            with open(report_file, 'w', encoding="UTF-8") as f:
+                f.write(line_breaker.join(report_str))
+                print(Fore.GREEN + f"report saved to {report_file}")
         else:
             print(line_breaker.join(report_str))
-        print(Fore.GREEN + f"report saved to {report_file}") if file else None
 
     return return_stats if is_return_stats else None

@@ -1,11 +1,12 @@
-import pandas as pd
 import os
+
+import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
-from dataprofile.collect_stats import get_variable_stats
-from dataprofile.collect_stats import get_table_stats
 from dataprofile.collect_stats import get_a_sample
+from dataprofile.collect_stats import get_table_stats
 from dataprofile.collect_stats import get_var_summary
+from dataprofile.collect_stats import get_variable_stats
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
@@ -34,12 +35,12 @@ def test_get_table_stats():
                        'n_Interval_var': 5,
                        'n_Binary_var': 2,
                        'n_Useless_var': 3,
-                       'n_Nominal_var': 3,}
+                       'n_Nominal_var': 3, }
     assert table_stats == expected_result
 
 
 def test_get_a_sample():
-    sample = get_a_sample(test_df, 100, 2018)
+    sample, _ = get_a_sample(test_df, 100, 2018)
     assert sample.shape == (100, 13)
     assert sample.iloc[10, 5] == 21
 

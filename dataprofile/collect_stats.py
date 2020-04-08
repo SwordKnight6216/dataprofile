@@ -123,12 +123,11 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
-                 random_state: int = RANDOM_STATE, file: str = None, line_ending: str = '\n') -> pd.DataFrame:
+                 random_state: int = RANDOM_STATE, line_ending: str = '\n') -> Tuple[pd.DataFrame, str]:
     """
     Provide the original dataset or a random sample of it.
 
     :param line_ending:
-    :param file:
     :param df: the target dataset
     :param sample_size: Number of rows to sample from the target dataframe
     :param random_state: Random seed for the row sampler
@@ -136,17 +135,13 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     """
     try:
         sample_df = df.sample(sample_size, random_state=random_state)
-        print(
-            f'\nATTN: The following statistics are based on a {sample_size} sample out of {df.shape[0]} in the population. ',
-            file=file, end=line_ending)
+        msg = f'ATTN: The following statistics are based on {sample_size} samples out of {df.shape[0]} of the population.{line_ending}'
 
     except ValueError:
-        print(
-            f"\nSample size {sample_size} is larger than the population size {df.shape[0]}. using population instead.",
-            file=file, end=line_ending)
+        msg = f"Sample size {sample_size} is larger than the population size {df.shape[0]}. using population instead.{line_ending}"
         sample_df = df
 
-    return sample_df
+    return sample_df, msg
 
 
 def get_var_summary(var_stats: Optional[Dict[str, List[pd.Series]]] = None, df: Optional[pd.DataFrame] = None,
@@ -162,7 +157,7 @@ def get_var_summary(var_stats: Optional[Dict[str, List[pd.Series]]] = None, df: 
     :return: a summary table of data types of the given dataset
     """
     if not var_stats:
-        sample_df = get_a_sample(df, sample_size, random_state)
+        sample_df, _ = get_a_sample(df, sample_size, random_state)
         var_stats = get_variable_stats(sample_df)
 
     type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
