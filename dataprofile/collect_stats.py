@@ -94,7 +94,7 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
 
-    logger.info("Calculating statistics of each variable ...")
+    logger.info("Calculating statistics of each variable...")
     with multiprocessing.Pool(num_works) as executor:
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1]))
 
