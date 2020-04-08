@@ -5,6 +5,7 @@ from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 
 import pandas as pd
+import tqdm
 
 from dataprofile.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
@@ -24,15 +25,15 @@ def _get_actual_dtype(series: pd.Series) -> str:
         return 'Categorical'
 
 
-def _cal_var_stats(series: pd.Series, distinct_count: int, leng: int) -> Tuple[str, pd.Series]:
+def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
     """
     used to classify variable types regarding machine learning.
-
     :param series: target series
-    :param distinct_count: number of unique values in the target series
-    :param leng: the size of series
     :return: valuable type and calculated statistics
     """
+
+    distinct_count = series.nunique()
+    leng = len(series)
 
     if distinct_count == 0:
         dty_empty = base_stats(series)
@@ -91,15 +92,9 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     """
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
-    args = []
-
-    for col in df:
-        distinct_count = df[col].nunique()
-        leng = len(df[col])
-        args.append((df[col], distinct_count, leng))
 
     with multiprocessing.Pool(num_works) as executor:
-        results = executor.starmap(_cal_var_stats, args)
+        results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1]))
 
     for k, v in results:
         var_stats[k].append(v)
