@@ -1,10 +1,10 @@
 """Collect the statistics for each variable in the dataset."""
 
+import multiprocessing
 from collections import defaultdict
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 
 import pandas as pd
-from progress.bar import Bar
 
 from dataprofile.config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
@@ -24,69 +24,86 @@ def _get_actual_dtype(series: pd.Series) -> str:
         return 'Categorical'
 
 
-def get_variable_stats(df: pd.DataFrame) -> Dict[str, List[pd.Series]]:
+def _cal_var_stats(series: pd.Series, distinct_count: int, leng: int) -> Tuple[str, pd.Series]:
     """
-    Collect statistics from each variable.
+    used to classify variable types regarding machine learning.
+
+    :param series: target series
+    :param distinct_count: number of unique values in the target series
+    :param leng: the size of series
+    :return: valuable type and calculated statistics
+    """
+
+    if distinct_count == 0:
+        dty_empty = base_stats(series)
+        dty_empty['type'] = 'Useless'
+        dty_empty['data_type'] = 'Empty'
+        return 'Useless', dty_empty
+
+    elif distinct_count == 1:
+        dty_constant = base_stats(series)
+        dty_constant['type'] = 'Useless'
+        dty_constant['data_type'] = 'Constant'
+        return 'Useless', dty_constant
+
+    elif distinct_count == leng:
+        dty_unique = base_stats(series)
+        dty_unique['type'] = 'Useless'
+        dty_unique['data_type'] = 'Unique'
+        return 'Useless', dty_unique
+
+    elif distinct_count == 2:
+        dty_binary = binary_stats(series)
+        dty_binary['type'] = 'Binary'
+        dty_binary['data_type'] = _get_actual_dtype(series)
+        return 'Binary', dty_binary
+
+    elif pd.api.types.is_numeric_dtype(series):
+        dty_numerical = numerical_stats(series)
+        dty_numerical['type'] = 'Interval'
+        return 'Interval', dty_numerical
+
+    elif pd.api.types.is_datetime64_dtype(series):
+        dty_datetime = datetime_stats(series)
+        dty_datetime['type'] = 'Datetime'
+        return 'Datetime', dty_datetime
+
+    else:
+        try:
+            converted = pd.to_datetime(series)
+            dty_datetime = datetime_stats(pd.Series(converted))
+            dty_datetime['type'] = 'Datetime'
+            dty_datetime['data_type'] = _get_actual_dtype(series)
+            return 'Datetime', dty_datetime
+        except:
+            dty_categorical = categorical_stats(series)
+            dty_categorical['type'] = 'Nominal'
+            return 'Nominal', dty_categorical
+
+
+def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[pd.Series]]:
+    """
+    Collect types and statistics from each variable.
 
     :param df: the target dataset
+    :param num_works: number of cpu cores for multiprocessing
     :return: a dictionary contains statistics of all variables
     """
     var_stats = defaultdict(list)
-    bar = Bar('Profiling variables', max=df.shape[1])
+    num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
+    args = []
 
     for col in df:
-
         distinct_count = df[col].nunique()
         leng = len(df[col])
+        args.append((df[col], distinct_count, leng))
 
-        if distinct_count == 0:
-            dty_empty = base_stats(df[col])
-            dty_empty['type'] = 'Useless'
-            dty_empty['data_type'] = 'Empty'
-            var_stats['Useless'].append(dty_empty)
+    with multiprocessing.Pool(num_works) as executor:
+        results = executor.starmap(_cal_var_stats, args)
 
-        elif distinct_count == 1:
-            dty_constant = base_stats(df[col])
-            dty_constant['type'] = 'Useless'
-            dty_constant['data_type'] = 'Constant'
-            var_stats['Useless'].append(dty_constant)
+    for k, v in results:
+        var_stats[k].append(v)
 
-        elif distinct_count == leng:
-            dty_unique = base_stats(df[col])
-            dty_unique['type'] = 'Useless'
-            dty_unique['data_type'] = 'Unique'
-            var_stats['Useless'].append(dty_unique)
-
-        elif distinct_count == 2:
-            dty_binary = binary_stats(df[col])
-            dty_binary['type'] = 'Binary'
-            dty_binary['data_type'] = _get_actual_dtype(df[col])
-            var_stats['Binary'].append(dty_binary)
-
-        elif pd.api.types.is_numeric_dtype(df[col]):
-            dty_numerical = numerical_stats(df[col])
-            dty_numerical['type'] = 'Interval'
-            var_stats['Interval'].append(dty_numerical)
-
-        elif pd.api.types.is_datetime64_dtype(df[col]):
-            dty_datetime = datetime_stats(df[col])
-            dty_datetime['type'] = 'Datetime'
-            var_stats['Datetime'].append(dty_datetime)
-
-        else:
-            try:
-                converted = pd.to_datetime(df[col])
-                dty_datetime = datetime_stats(pd.Series(converted))
-                dty_datetime['type'] = 'Datetime'
-                dty_datetime['data_type'] = _get_actual_dtype(df[col])
-                var_stats['Datetime'].append(dty_datetime)
-            except:
-                dty_categorical = categorical_stats(df[col])
-                dty_categorical['type'] = 'Nominal'
-                var_stats['Nominal'].append(dty_categorical)
-
-        bar.next()
-    bar.finish()
     return var_stats
 
 
