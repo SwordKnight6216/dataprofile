@@ -105,7 +105,7 @@ def render_report(df: pd.DataFrame,
             logger.info("Getting 'Variable Statistics' ready...")
             report_str.append(' Variable Statistics '.center(padding_size2, '='))
             for key, item in var_stats.items():
-                logger.debug(f"Rendering statistics for {key} variables...")
+                logger.debug(f"Extracting statistics for {key} variables...")
                 report_str.append(f'{line_breaker}{key} variables:')
                 return_stats[f'var_stats_{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1).T
                 for i in range(len(var_stats[key]) // (var_per_row + 1) + 1):
