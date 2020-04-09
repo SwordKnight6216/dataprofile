@@ -4,9 +4,9 @@ import multiprocessing
 from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 
-from loguru import logger
 import pandas as pd
 import tqdm
+from loguru import logger
 
 from .config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
@@ -35,6 +35,7 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
 
     distinct_count = series.nunique()
     leng = len(series)
+    non_missing_cnt = series.count()
 
     if distinct_count == 0:
         dty_empty = base_stats(series)
@@ -42,7 +43,7 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
         dty_empty['data_type'] = 'Empty'
         return 'Useless', dty_empty
 
-    elif distinct_count == 1:
+    elif distinct_count == 1 and leng == non_missing_cnt:
         dty_constant = base_stats(series)
         dty_constant['type'] = 'Useless'
         dty_constant['data_type'] = 'Constant'
@@ -54,7 +55,7 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
         dty_unique['data_type'] = 'Unique'
         return 'Useless', dty_unique
 
-    elif distinct_count == 2:
+    elif distinct_count == 2 or (distinct_count == 1 and leng != non_missing_cnt):
         dty_binary = binary_stats(series)
         dty_binary['type'] = 'Binary'
         dty_binary['data_type'] = _get_actual_dtype(series)

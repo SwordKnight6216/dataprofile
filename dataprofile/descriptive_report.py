@@ -123,7 +123,7 @@ def render_report(df: pd.DataFrame,
                 return_stats['conf_matrix'] = []
                 for a, b in combinations(binary_vars, 2):
                     logger.debug(f"Calculating confusion matrix of {a} and {b}")
-                    confusion_matrix = pd.crosstab(sample_df[a], sample_df[b])
+                    confusion_matrix = pd.crosstab(sample_df[a].astype(str), sample_df[b].astype(str))
                     return_stats['conf_matrix'].append(confusion_matrix)
                     report_str.append(f"row:{a} - col:{b}")
                     report_str.append(tabulate(confusion_matrix, headers=confusion_matrix.columns,
