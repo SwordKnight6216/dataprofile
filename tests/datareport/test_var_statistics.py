@@ -26,21 +26,21 @@ def test_base_stats():
 
 
 def test_binary_stats():
-    test_series = pd.Series([None, False, np.nan, True, False, True])
+    test_series = pd.Series([None, False, np.nan, True, False, True, True])
     output = binary_stats(test_series)
     print(output)
-    expected_result = pd.Series({'count': 6,
-                                 'n_unique': 3,
-                                 'p_missing': '33.33%',
+    expected_result = pd.Series({'count': 7,
                                  'n_missing': 2,
-                                 'p_unique': '75.00%',
+                                 'p_missing': '28.57%',
+                                 'n_unique': 3,
+                                 'p_unique': '60.00%',
                                  'data_type': 'Binary',
-                                 'value1': True,
-                                 'n_value1': 2,
-                                 'p_value1': '33.33%',
-                                 'value2': False,
+                                 'value1': 'True',
+                                 'n_value1': 3,
+                                 'p_value1': '42.86%',
+                                 'value2': 'False',
                                  'n_value2': 2,
-                                 'p_value2': '33.33%'})
+                                 'p_value2': '28.57%'})
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
