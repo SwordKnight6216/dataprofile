@@ -117,6 +117,7 @@ def binary_stats(series: pd.Series) -> pd.Series:
     """
     stats = dict(base_stats(series))
     aggr = series.astype(str).value_counts()
+    aggr.drop('nan', inplace=True) if len(aggr) > 2 else None
 
     stats['data_type'] = 'Binary'
     stats['value1'] = aggr.index[0]
