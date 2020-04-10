@@ -86,10 +86,10 @@ def render_report(df: pd.DataFrame,
             logger.info("Getting 'Table statistics' ready...")
             table_stats = get_table_stats(sample_df, var_stats)
             report_str.append(' Table Statistics '.center(padding_size2, '='))
-            dt = pd.DataFrame(pd.Series(table_stats), columns=['count'])
-            return_stats['table_stats'] = dt
+            return_stats['table_stats'] = table_stats
             report_str.append(
-                tabulate(dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
+                tabulate(table_stats, headers='keys',
+                         tablefmt=table_fmt) if table_fmt != 'html' else table_stats.to_html())
             report_str.append(f'{line_breaker}')
 
         if prt_var_summary:
