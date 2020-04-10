@@ -1,4 +1,4 @@
-================================== Beginning of report ===================================<br><br>This following report is created by Gordon Chen on Tuesday, Apr 07, 2020<br><br>================ Table Statistics ================<br><table border="1" class="dataframe">
+================================== Beginning of report ===================================<br><br>This following report is created by Gordon Chen on Friday, Apr 10, 2020<br><br>================ Table Statistics ================<br><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -78,9 +78,9 @@
       <td>100.00%</td>
     </tr>
     <tr>
-      <th>Survived</th>
+      <th>Sex</th>
       <td>Binary</td>
-      <td>Numerical</td>
+      <td>Categorical</td>
       <td>891</td>
       <td>0</td>
       <td>0.00%</td>
@@ -88,9 +88,9 @@
       <td>0.22%</td>
     </tr>
     <tr>
-      <th>Sex</th>
+      <th>Survived</th>
       <td>Binary</td>
-      <td>Categorical</td>
+      <td>Numerical</td>
       <td>891</td>
       <td>0</td>
       <td>0.00%</td>
@@ -106,16 +106,6 @@
       <td>0.00%</td>
       <td>3</td>
       <td>0.34%</td>
-    </tr>
-    <tr>
-      <th>Age</th>
-      <td>Interval</td>
-      <td>Numerical</td>
-      <td>891</td>
-      <td>177</td>
-      <td>19.87%</td>
-      <td>88</td>
-      <td>12.32%</td>
     </tr>
     <tr>
       <th>SibSp</th>
@@ -138,6 +128,16 @@
       <td>0.79%</td>
     </tr>
     <tr>
+      <th>Age</th>
+      <td>Interval</td>
+      <td>Numerical</td>
+      <td>891</td>
+      <td>177</td>
+      <td>19.87%</td>
+      <td>88</td>
+      <td>12.32%</td>
+    </tr>
+    <tr>
       <th>Fare</th>
       <td>Interval</td>
       <td>Numerical</td>
@@ -158,16 +158,6 @@
       <td>76.43%</td>
     </tr>
     <tr>
-      <th>Cabin</th>
-      <td>Nominal</td>
-      <td>Categorical</td>
-      <td>891</td>
-      <td>687</td>
-      <td>77.10%</td>
-      <td>147</td>
-      <td>72.06%</td>
-    </tr>
-    <tr>
       <th>Embarked</th>
       <td>Nominal</td>
       <td>Categorical</td>
@@ -176,6 +166,16 @@
       <td>0.22%</td>
       <td>3</td>
       <td>0.34%</td>
+    </tr>
+    <tr>
+      <th>Cabin</th>
+      <td>Nominal</td>
+      <td>Categorical</td>
+      <td>891</td>
+      <td>687</td>
+      <td>77.10%</td>
+      <td>147</td>
+      <td>72.06%</td>
     </tr>
   </tbody>
 </table><br><br><br>============== Variable Statistics ===============<br><br>Useless variables:<br><table border="1" class="dataframe">
@@ -217,8 +217,8 @@
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Survived</th>
       <th>Sex</th>
+      <th>Survived</th>
     </tr>
   </thead>
   <tbody>
@@ -249,33 +249,33 @@
     </tr>
     <tr>
       <th>value1</th>
-      <td>0</td>
       <td>male</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>n_value1</th>
-      <td>549</td>
       <td>577</td>
+      <td>549</td>
     </tr>
     <tr>
       <th>p_value1</th>
-      <td>61.62%</td>
       <td>64.76%</td>
+      <td>61.62%</td>
     </tr>
     <tr>
       <th>value2</th>
-      <td>1</td>
       <td>female</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>n_value2</th>
-      <td>342</td>
       <td>314</td>
+      <td>342</td>
     </tr>
     <tr>
       <th>p_value2</th>
-      <td>38.38%</td>
       <td>35.24%</td>
+      <td>38.38%</td>
     </tr>
   </tbody>
 </table><br><br>Interval variables:<br><table border="1" class="dataframe">
@@ -283,9 +283,9 @@
     <tr style="text-align: right;">
       <th></th>
       <th>Pclass</th>
-      <th>Age</th>
       <th>SibSp</th>
       <th>Parch</th>
+      <th>Age</th>
       <th>Fare</th>
     </tr>
   </thead>
@@ -301,185 +301,185 @@
     <tr>
       <th>n_missing</th>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>177</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
     </tr>
     <tr>
       <th>p_missing</th>
       <td>0.00%</td>
+      <td>0.00%</td>
+      <td>0.00%</td>
       <td>19.87%</td>
-      <td>0.00%</td>
-      <td>0.00%</td>
       <td>0.00%</td>
     </tr>
     <tr>
       <th>n_unique</th>
       <td>3</td>
+      <td>7</td>
+      <td>7</td>
       <td>88</td>
-      <td>7</td>
-      <td>7</td>
       <td>248</td>
     </tr>
     <tr>
       <th>p_unique</th>
       <td>0.34%</td>
+      <td>0.79%</td>
+      <td>0.79%</td>
       <td>12.32%</td>
-      <td>0.79%</td>
-      <td>0.79%</td>
       <td>27.83%</td>
     </tr>
     <tr>
       <th>mean</th>
       <td>2.3086</td>
-      <td>29.6991</td>
-      <td>0.523</td>
+      <td>0.5230</td>
       <td>0.3816</td>
+      <td>29.6991</td>
       <td>32.2042</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.8361</td>
-      <td>14.5265</td>
       <td>1.1027</td>
       <td>0.8061</td>
+      <td>14.5265</td>
       <td>49.6934</td>
     </tr>
     <tr>
       <th>variance</th>
-      <td>0.699</td>
-      <td>211.019</td>
-      <td>1.216</td>
+      <td>0.6990</td>
+      <td>1.2160</td>
       <td>0.6497</td>
-      <td>2469.44</td>
+      <td>211.0191</td>
+      <td>2,469.4368</td>
     </tr>
     <tr>
       <th>min</th>
       <td>1</td>
-      <td>0.42</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
+      <td>0.4200</td>
+      <td>0.0000</td>
     </tr>
     <tr>
       <th>5%</th>
-      <td>1</td>
-      <td>4</td>
-      <td>0</td>
-      <td>0</td>
-      <td>7.225</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>4.0000</td>
+      <td>7.2250</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>2</td>
-      <td>20.125</td>
-      <td>0</td>
-      <td>0</td>
+      <td>2.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>20.1250</td>
       <td>7.9104</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>3</td>
-      <td>28</td>
-      <td>0</td>
-      <td>0</td>
+      <td>3.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>28.0000</td>
       <td>14.4542</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>3</td>
-      <td>38</td>
-      <td>1</td>
-      <td>0</td>
-      <td>31</td>
+      <td>3.0000</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+      <td>38.0000</td>
+      <td>31.0000</td>
     </tr>
     <tr>
       <th>95%</th>
-      <td>3</td>
-      <td>56</td>
-      <td>3</td>
-      <td>2</td>
-      <td>112.079</td>
+      <td>3.0000</td>
+      <td>3.0000</td>
+      <td>2.0000</td>
+      <td>56.0000</td>
+      <td>112.0791</td>
     </tr>
     <tr>
       <th>max</th>
       <td>3</td>
-      <td>80</td>
       <td>8</td>
       <td>6</td>
-      <td>512.329</td>
+      <td>80.0000</td>
+      <td>512.3292</td>
     </tr>
     <tr>
       <th>range</th>
       <td>2</td>
-      <td>79.58</td>
       <td>8</td>
       <td>6</td>
-      <td>512.329</td>
+      <td>79.5800</td>
+      <td>512.3292</td>
     </tr>
     <tr>
       <th>iqr</th>
-      <td>1</td>
-      <td>17.875</td>
-      <td>1</td>
-      <td>0</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+      <td>17.8750</td>
       <td>23.0896</td>
     </tr>
     <tr>
       <th>kurtosis</th>
-      <td>-1.28</td>
-      <td>0.1783</td>
+      <td>-1.2800</td>
       <td>17.8804</td>
       <td>9.7781</td>
+      <td>0.1783</td>
       <td>33.3981</td>
     </tr>
     <tr>
       <th>skewness</th>
       <td>-0.6305</td>
-      <td>0.3891</td>
       <td>3.6954</td>
       <td>2.7491</td>
+      <td>0.3891</td>
       <td>4.7873</td>
     </tr>
     <tr>
       <th>sum</th>
-      <td>2057</td>
-      <td>21205.2</td>
+      <td>2,057</td>
       <td>466</td>
       <td>340</td>
-      <td>28693.9</td>
+      <td>21,205.1700</td>
+      <td>28,693.9493</td>
     </tr>
     <tr>
       <th>mean_abs_dev</th>
-      <td>0.762</td>
-      <td>11.3229</td>
+      <td>0.7620</td>
       <td>0.7138</td>
       <td>0.5807</td>
+      <td>11.3229</td>
       <td>28.1637</td>
     </tr>
     <tr>
       <th>coff_of_var</th>
       <td>0.3621</td>
-      <td>0.4891</td>
       <td>2.1085</td>
       <td>2.1123</td>
+      <td>0.4891</td>
       <td>1.5431</td>
     </tr>
     <tr>
       <th>n_zeros</th>
       <td>0</td>
-      <td>0</td>
       <td>608</td>
       <td>678</td>
+      <td>0</td>
       <td>15</td>
     </tr>
     <tr>
       <th>p_zeros</th>
-      <td>0</td>
-      <td>0</td>
+      <td>0.0000</td>
       <td>0.6824</td>
       <td>0.7609</td>
+      <td>0.0000</td>
       <td>0.0168</td>
     </tr>
   </tbody>
@@ -488,8 +488,8 @@
     <tr style="text-align: right;">
       <th></th>
       <th>Ticket</th>
-      <th>Cabin</th>
       <th>Embarked</th>
+      <th>Cabin</th>
     </tr>
   </thead>
   <tbody>
@@ -502,86 +502,86 @@
     <tr>
       <th>n_missing</th>
       <td>0</td>
-      <td>687</td>
       <td>2</td>
+      <td>687</td>
     </tr>
     <tr>
       <th>p_missing</th>
       <td>0.00%</td>
-      <td>77.10%</td>
       <td>0.22%</td>
+      <td>77.10%</td>
     </tr>
     <tr>
       <th>n_unique</th>
       <td>681</td>
-      <td>147</td>
       <td>3</td>
+      <td>147</td>
     </tr>
     <tr>
       <th>p_unique</th>
       <td>76.43%</td>
-      <td>72.06%</td>
       <td>0.34%</td>
+      <td>72.06%</td>
     </tr>
     <tr>
       <th>mode</th>
-      <td>347082</td>
-      <td>B96 B98</td>
+      <td>CA. 2343</td>
       <td>S</td>
+      <td>B96 B98</td>
     </tr>
     <tr>
       <th>mode_freq</th>
       <td>7</td>
-      <td>4</td>
       <td>644</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>2nd_freq_value</th>
       <td>1601</td>
-      <td>G6</td>
       <td>C</td>
+      <td>G6</td>
     </tr>
     <tr>
       <th>2nd_freq</th>
       <td>7</td>
-      <td>4</td>
       <td>168</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>3rd_freq_value</th>
-      <td>CA. 2343</td>
-      <td>C23 C25 C27</td>
+      <td>347082</td>
       <td>Q</td>
+      <td>C23 C25 C27</td>
     </tr>
     <tr>
       <th>3rd_freq</th>
       <td>7</td>
-      <td>4</td>
       <td>77</td>
+      <td>4</td>
     </tr>
   </tbody>
-</table><br><br><br>================ Confusion Matrix ================<br>row:Survived - col:Sex<br><table border="1" class="dataframe">
+</table><br><br><br>================ Confusion Matrix ================<br>row:Sex - col:Survived<br><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>Sex</th>
-      <th>female</th>
-      <th>male</th>
+      <th>Survived</th>
+      <th>0</th>
+      <th>1</th>
     </tr>
     <tr>
-      <th>Survived</th>
+      <th>Sex</th>
       <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
+      <th>female</th>
       <td>81</td>
-      <td>468</td>
+      <td>233</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>233</td>
+      <th>male</th>
+      <td>468</td>
       <td>109</td>
     </tr>
   </tbody>
