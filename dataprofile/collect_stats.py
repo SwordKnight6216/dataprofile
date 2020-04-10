@@ -55,7 +55,7 @@ def _format_series_decor(original_func: Callable, max_size: int = MAX_STRING_SIZ
     """
     change the output format for different value type.
 
-    :param series:
+    :param original_func: target function to wrap
     :param max_size:
     :return:
     """
