@@ -26,16 +26,17 @@ def test_get_variable_stats():
 
 
 def test_get_table_stats():
-    table_stats = get_table_stats(test_df, get_variable_stats(test_df))
-    expected_result = {'n_row': 891,
-                       'n_col': 13,
-                       'n_missing_cell': 1757,
-                       'n_empty_row': 0,
-                       'n_duplicated_row': 0,
-                       'n_Interval_var': 5,
-                       'n_Binary_var': 2,
-                       'n_Useless_var': 3,
-                       'n_Nominal_var': 3, }
+    table_stats = get_table_stats(test_df, get_variable_stats(test_df))['count'].to_dict()
+    expected_result = {'n_row': '891',
+                       'n_col': '13',
+                       'n_missing_cell': '1,757',
+                       'n_empty_row': '0',
+                       'n_duplicated_row': '0',
+                       'n_Interval_var': '5',
+                       'n_Binary_var': '2',
+                       'n_Useless_var': '3',
+                       'n_Nominal_var': '3', }
+    print(table_stats)
     assert table_stats == expected_result
 
 
