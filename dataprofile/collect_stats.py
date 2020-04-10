@@ -2,7 +2,8 @@
 
 import multiprocessing
 from collections import defaultdict
-from typing import List, Dict, Optional, Tuple
+from functools import wraps
+from typing import List, Dict, Optional, Tuple, Callable
 
 import numpy
 import pandas as pd
@@ -27,7 +28,7 @@ def _get_actual_dtype(series: pd.Series) -> str:
         return 'Categorical'
 
 
-def _format_series(series: pd.Series, max_size: int = MAX_STRING_SIZE) -> pd.Series:
+def _format_series(original_func: Callable, max_size: int = MAX_STRING_SIZE) -> Callable:
     """
     change the output format for different value type.
 
@@ -47,9 +48,15 @@ def _format_series(series: pd.Series, max_size: int = MAX_STRING_SIZE) -> pd.Ser
             return f"{v[:max_size]}..."
         return v
 
-    return series.apply(_format_value)
+    @wraps(original_func)
+    def wrapped_func(*args, **kwargs):
+        type_, series = original_func(*args, **kwargs)
+        return type_, series.apply(_format_value)
+
+    return wrapped_func
 
 
+@_format_series
 def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
     """
     used to classify variable types regarding machine learning.
@@ -124,7 +131,7 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1]))
 
     for k, v in results:
-        var_stats[k].append(_format_series(v))
+        var_stats[k].append(v)
 
     return var_stats
 
@@ -146,7 +153,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     table_stats['n_duplicated_row'] = df.duplicated().sum()
     table_stats.update({'n_{}_var'.format(key): len(item) for key, item in var_stats.items()})
 
-    return pd.DataFrame(_format_series(pd.Series(table_stats)), columns=['count'])
+    return pd.DataFrame(pd.Series(table_stats), columns=['count'])
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
