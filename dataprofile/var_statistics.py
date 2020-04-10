@@ -3,8 +3,6 @@
 import numpy as np
 import pandas as pd
 
-from .config import MAX_STRING_SIZE
-
 
 def base_stats(series: pd.Series) -> pd.Series:
     """
@@ -53,13 +51,6 @@ def numerical_stats(series: pd.Series) -> pd.Series:
     stats['n_zeros'] = (stats['count'] - np.count_nonzero(series))
     stats['p_zeros'] = stats['n_zeros'] * 1.0 / stats['count']
 
-    # round the result
-    for key in stats.keys():
-        try:
-            stats[key] = round(stats[key], 4)
-        except:
-            pass
-
     return pd.Series(stats, name=series.name)
 
 
@@ -97,12 +88,12 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     stats = dict(base_stats(series))
     aggr = series.value_counts()
     stats['data_type'] = 'Categorical'
-    stats['mode'] = _str_truncate(aggr.index[0])
+    stats['mode'] = aggr.index[0]
     stats['mode_freq'] = aggr[0]
-    stats['2nd_freq_value'] = _str_truncate(aggr.index[1])
+    stats['2nd_freq_value'] = aggr.index[1]
     stats['2nd_freq'] = aggr[1]
     if len(aggr) > 2:
-        stats['3rd_freq_value'] = _str_truncate(aggr.index[2])
+        stats['3rd_freq_value'] = aggr.index[2]
         stats['3rd_freq'] = aggr[2]
 
     return pd.Series(stats, name=series.name)
@@ -129,13 +120,3 @@ def binary_stats(series: pd.Series) -> pd.Series:
     stats['p_value2'] = f"{stats['n_value2'] / stats['count']:.2%}"
 
     return pd.Series(stats, name=series.name)
-
-
-def _str_truncate(s: str, max_size: int = MAX_STRING_SIZE) -> str:
-    """
-    Truncate a string if it is very long
-    :param s:
-    :param max_size:
-    :return:
-    """
-    return f"{s[:max_size]}..." if len(s) > max_size else s

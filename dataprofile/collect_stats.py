@@ -4,11 +4,12 @@ import multiprocessing
 from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 
+import numpy
 import pandas as pd
 import tqdm
 from loguru import logger
 
-from .config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
+from .config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE, MAX_STRING_SIZE
 from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
 
 
@@ -24,6 +25,29 @@ def _get_actual_dtype(series: pd.Series) -> str:
         return 'Boolean'
     else:
         return 'Categorical'
+
+
+def _format_series(series: pd.Series, max_size: int = MAX_STRING_SIZE) -> pd.Series:
+    """
+    change the output format for different value type.
+
+    :param series:
+    :param max_size:
+    :return:
+    """
+
+    def _format_value(v):
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, numpy.int64) or isinstance(v, int):
+            return f"{v:,d}"
+        elif isinstance(v, numpy.float64) or isinstance(v, float):
+            return f"{v:,.4f}"
+        elif isinstance(v, str) and len(v) > max_size:
+            return f"{v[:max_size]}..."
+        return v
+
+    return series.apply(_format_value)
 
 
 def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
@@ -100,12 +124,12 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1]))
 
     for k, v in results:
-        var_stats[k].append(v)
+        var_stats[k].append(_format_series(v))
 
     return var_stats
 
 
-def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> Dict[str, int]:
+def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
     """
     Extract information from the target dataset.
 
@@ -122,7 +146,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     table_stats['n_duplicated_row'] = df.duplicated().sum()
     table_stats.update({'n_{}_var'.format(key): len(item) for key, item in var_stats.items()})
 
-    return table_stats
+    return pd.DataFrame(_format_series(pd.Series(table_stats)), columns=['count'])
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
