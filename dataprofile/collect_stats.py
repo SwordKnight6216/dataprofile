@@ -32,7 +32,7 @@ def _format_series(series: pd.Series, max_size: int = MAX_STRING_SIZE) -> pd.Ser
     """
     change the output format for different value type.
 
-    :param series:
+    :param series: target series
     :param max_size:
     :return:
     """
