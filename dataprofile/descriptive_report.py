@@ -57,7 +57,7 @@ def render_report(df: pd.DataFrame,
     :param prt_table_stats: if print the table statistics
     :param prt_var_summary: if print the variable summaries
     :param prt_var_stats: if print the variables statistics
-    :param prt_conf_matrix: if print the confusion matrix for binary varilables
+    :param prt_conf_matrix: if print the confusion matrix for binary variables
     :param sample_size: Number of rows to sample from the target dataframe
     :param var_per_row: number of columns of stats to print per row
     :param random_state: Random seed for the row sampler
