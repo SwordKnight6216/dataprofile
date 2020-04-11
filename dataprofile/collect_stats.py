@@ -63,7 +63,7 @@ def _format_series_decor(original_func: Callable, max_size: int = MAX_STRING_SIZ
     def _format_value(v):
         if isinstance(v, bool):
             return v
-        if isinstance(v, numpy.int64) or isinstance(v, int):
+        elif isinstance(v, numpy.int64) or isinstance(v, int):
             return f"{v:,d}"
         elif isinstance(v, numpy.float64) or isinstance(v, float):
             return f"{v:,.4f}"
