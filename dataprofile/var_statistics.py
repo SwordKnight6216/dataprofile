@@ -18,9 +18,9 @@ def base_stats(series: pd.Series) -> pd.Series:
     stats = {}
     stats['count'] = length
     stats['n_missing'] = length - count
-    stats['p_missing'] = f"{1 - count * 1.0 / length:.2%}"
+    stats['p_missing'] = f"{1 - count / length:.2%}"
     stats['n_unique'] = distinct_count if distinct_count else 'N/A'
-    stats['p_unique'] = f"{distinct_count * 1.0 / count:.2%}" if distinct_count else 'N/A'
+    stats['p_unique'] = f"{distinct_count / count:.2%}" if distinct_count else 'N/A'
 
     return pd.Series(stats, name=series.name)
 
@@ -49,7 +49,7 @@ def numerical_stats(series: pd.Series) -> pd.Series:
     stats['mean_abs_dev'] = series.mad()
     stats['coff_of_var'] = stats['std'] / stats['mean'] if stats['mean'] else np.NaN
     stats['n_zeros'] = (stats['count'] - np.count_nonzero(series))
-    stats['p_zeros'] = stats['n_zeros'] * 1.0 / stats['count']
+    stats['p_zeros'] = stats['n_zeros'] / stats['count']
 
     return pd.Series(stats, name=series.name)
 
