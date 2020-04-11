@@ -153,7 +153,7 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     log_info_header = datetime.datetime.today().strftime("%Y-%m-%d at %X|INFO|")
     with multiprocessing.Pool(num_works) as executor:
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1],
-                                 desc=f"{log_info_header}Profiling variables:",
+                                 desc=f"{log_info_header}Profiling variables",
                                  bar_format='{l_bar}{bar:40}{n_fmt}/{total_fmt}'))
 
     for k, v in results:
