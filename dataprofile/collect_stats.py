@@ -150,10 +150,10 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
 
-    fake_log_info = datetime.datetime.today().strftime("%Y-%m-%d at %X|INFO|")
+    log_info_header = datetime.datetime.today().strftime("%Y-%m-%d at %X|INFO|")
     with multiprocessing.Pool(num_works) as executor:
         results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1],
-                                 desc=f"{fake_log_info}Profiling variables:",
+                                 desc=f"{log_info_header}Profiling variables:",
                                  bar_format='{l_bar}{bar:40}{n_fmt}/{total_fmt}'))
 
     for k, v in results:
