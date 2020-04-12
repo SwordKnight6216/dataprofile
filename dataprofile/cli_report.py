@@ -7,7 +7,7 @@ import pandas as pd
 from colorama import Fore, init
 from loguru import logger
 
-from .config import DEFAULT_SAMPLE_SIZE, LOG_FILE
+from .config import DEFAULT_SAMPLE_SIZE, LOG_FILE, AUTHOR
 from .descriptive_report import render_report
 
 init(autoreset=True)
@@ -56,7 +56,7 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
     :param save_report_to_file:
     :return:
     """
-    logger.debug(f"Execution location: {Path('.').absolute()}")
+    logger.debug(f"{AUTHOR} executed at {Path('.').absolute()}")
     logger.debug(f"input args: {locals()}")
     try:
         logger.info(f"Loading data from {file}...")
