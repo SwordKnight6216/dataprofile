@@ -16,7 +16,7 @@ from .monitor import monitor_time_memory
 
 init(autoreset=True)
 logger.remove()
-logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}", level="INFO")
+logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}", level="WARNING")
 
 
 def _str_format(f_name: str) -> Tuple[str, str]:

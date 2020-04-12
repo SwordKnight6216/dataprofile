@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -10,6 +11,9 @@ from .config import DEFAULT_SAMPLE_SIZE
 from .descriptive_report import render_report
 
 init(autoreset=True)
+
+logger.remove()
+logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}", level="INFO")
 
 
 def _find_csv_file() -> Optional[Path]:
