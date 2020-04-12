@@ -7,13 +7,14 @@ import pandas as pd
 from colorama import Fore, init
 from loguru import logger
 
-from .config import DEFAULT_SAMPLE_SIZE
+from .config import DEFAULT_SAMPLE_SIZE, LOG_FILE
 from .descriptive_report import render_report
 
 init(autoreset=True)
-
 logger.remove()
 logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}", level="INFO")
+logger.add(LOG_FILE, format="{time:YYYY-MM-DD at HH:mm:ss} | {name: ^15} | {level} | {message}",
+           level="DEBUG", rotation="10 MB")
 
 
 def _find_csv_file() -> Optional[Path]:
@@ -55,6 +56,8 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
     :param save_report_to_file:
     :return:
     """
+    logger.debug(f"Execution location: {Path('.').absolute()}")
+    logger.debug(f"input args: {locals()}")
     try:
         logger.info(f"Loading data from {file}...")
         df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
