@@ -16,7 +16,7 @@ test_df['no_values'] = None
 
 def test_get_variable_stats():
     var_stats = get_variable_stats(test_df)
-    assert set(var_stats.keys()) == set(['Interval', 'Binary', 'Useless', 'Nominal'])
+    assert set(var_stats.keys()) == {'Interval', 'Binary', 'Useless', 'Nominal'}
     # check some statistics randomly
     assert len(var_stats['Interval']) == 5
     assert len(var_stats['Binary']) == 2
