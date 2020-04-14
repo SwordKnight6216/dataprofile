@@ -175,12 +175,11 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     """
 
     logger.info(f"Getting 'Table Statistics' ready...")
-    table_stats = {}
-    table_stats['n_row'] = df.shape[0]
-    table_stats['n_col'] = df.shape[1]
-    table_stats['n_missing_cell'] = df.isnull().sum().sum()
-    table_stats['n_empty_row'] = df.shape[0] - df.dropna(how='all').shape[0]
-    table_stats['n_duplicated_row'] = df.duplicated().sum()
+    table_stats = {'n_row': df.shape[0],
+                   'n_col': df.shape[1], 
+                   'n_missing_cell': df.isnull().sum().sum(),
+                   'n_empty_row': df.shape[0] - df.dropna(how='all').shape[0],
+                   'n_duplicated_row': df.duplicated().sum()}
     table_stats.update({'n_{}_var'.format(key): len(item) for key, item in var_stats.items()})
 
     return pd.DataFrame(_format_series(pd.Series(table_stats)), columns=['count'])
