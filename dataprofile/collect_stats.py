@@ -217,8 +217,8 @@ def get_confusion_matrix(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]
     binary_vars = [var.name for var in var_stats['Binary']]
     for a, b in combinations(binary_vars, 2):
         logger.debug(f"Calculating confusion matrix of {a} and {b}")
-    confusion_matrix = pd.crosstab(df[a].astype(str), df[b].astype(str))
-    cm_lt.append(confusion_matrix)
+        confusion_matrix = pd.crosstab(df[a].astype(str), df[b].astype(str))
+        cm_lt.append(confusion_matrix)
     return cm_lt
 
 

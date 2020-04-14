@@ -72,8 +72,7 @@ def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
     for key, item in df_profile[f'var_stats'].items():
         report_str.append(f'{line_breaker}{key} variables:')
         for i in range(len(df_profile[f'var_stats'][f'{key}']) // (var_per_row + 1) + 1):
-            dt = pd.DataFrame(item).T.iloc[:,
-                 i * var_per_row:(i + 1) * var_per_row]
+            dt = pd.DataFrame(item).T.iloc[:, i * var_per_row:(i + 1) * var_per_row]
             report_str.append(tabulate(
                 dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
     report_str.append(f'{line_breaker}')

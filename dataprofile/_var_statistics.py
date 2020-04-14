@@ -15,12 +15,11 @@ def base_stats(series: pd.Series) -> pd.Series:
     count = series.count()
     distinct_count = series.nunique()
 
-    stats = {}
-    stats['count'] = length
-    stats['n_missing'] = length - count
-    stats['p_missing'] = f"{1 - count / length:.2%}"
-    stats['n_unique'] = distinct_count if distinct_count else 'N/A'
-    stats['p_unique'] = f"{distinct_count / count:.2%}" if distinct_count else 'N/A'
+    stats = {'count': length,
+             'n_missing': length - count,
+             'p_missing': f"{1 - count / length:.2%}",
+             'n_unique': distinct_count if distinct_count else 'N/A',
+             'p_unique': f"{distinct_count / count:.2%}" if distinct_count else 'N/A'}
 
     return pd.Series(stats, name=series.name)
 
