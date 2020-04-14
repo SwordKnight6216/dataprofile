@@ -8,7 +8,7 @@ from colorama import Fore, init
 from loguru import logger
 
 from ._config import DEFAULT_SAMPLE_SIZE, LOG_FILE, AUTHOR
-from .descriptive_report import render_report
+from .reporting import render_report
 
 init(autoreset=True)
 logger.remove()

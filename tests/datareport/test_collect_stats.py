@@ -3,10 +3,10 @@ import os
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
-from dataprofile.collect_stats import get_a_sample
-from dataprofile.collect_stats import get_table_stats
-from dataprofile.collect_stats import get_var_summary
-from dataprofile.collect_stats import get_variable_stats
+from dataprofile.profiling import get_a_sample
+from dataprofile.profiling import get_table_stats
+from dataprofile.profiling import get_var_summary
+from dataprofile.profiling import get_variable_stats
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
