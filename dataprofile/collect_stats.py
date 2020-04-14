@@ -148,6 +148,8 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     :param num_works: number of cpu cores for multiprocessing
     :return: a dictionary contains statistics of all variables
     """
+
+    logger.info("Calculating statistics for each variable...")
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
 
@@ -172,6 +174,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     :return: a dictionary contains statistics of the target dataset
     """
 
+    logger.info(f"Getting 'Table Statistics' ready...")
     table_stats = {}
     table_stats['n_row'] = df.shape[0]
     table_stats['n_col'] = df.shape[1]
@@ -181,6 +184,42 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     table_stats.update({'n_{}_var'.format(key): len(item) for key, item in var_stats.items()})
 
     return pd.DataFrame(_format_series(pd.Series(table_stats)), columns=['count'])
+
+
+def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
+    """
+    Provide a summary table of data types of the given dataset.
+
+    :param var_stats: already get variable statistics
+    :return: a summary table of data types of the given dataset
+    """
+
+    logger.info("Getting 'Variable Summary' ready...")
+    type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
+    tmp_df_stats = []
+    for key, item in var_stats.items():
+        tmp_df_stats.append(pd.DataFrame(item)[type_stats])
+
+    return pd.concat(tmp_df_stats)
+
+
+def get_confusion_matrix(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> List[pd.DataFrame]:
+    """
+    Provide confusion matrices for all combination of binary variables.
+
+    :param df:
+    :param var_stats:
+    :return: a list of confusion matrices
+    """
+
+    logger.info("Getting 'Confusion Matrix' ready...")
+    cm_lt = []
+    binary_vars = [var.name for var in var_stats['Binary']]
+    for a, b in combinations(binary_vars, 2):
+        logger.debug(f"Calculating confusion matrix of {a} and {b}")
+    confusion_matrix = pd.crosstab(df[a].astype(str), df[b].astype(str))
+    cm_lt.append(confusion_matrix)
+    return cm_lt
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
@@ -206,24 +245,8 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     return sample_df
 
 
-def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
-    """
-    Provide a summary table of data types of the given dataset.
-
-    :param var_stats: already get variable statistics
-    :return: a summary table of data types of the given dataset
-    """
-
-    type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
-    tmp_df_stats = []
-    for key, item in var_stats.items():
-        tmp_df_stats.append(pd.DataFrame(item)[type_stats])
-
-    return pd.concat(tmp_df_stats)
-
-
-def get_df_profile(df: pd.DataFrame, num_works: int = -1) -> Dict[
-    str, Union[pd.DataFrame, list, Dict[str, pd.DataFrame]]]:
+def get_df_profile(df: pd.DataFrame, num_works: int = -1) \
+        -> Dict[str, Union[pd.DataFrame, list, Dict[str, pd.DataFrame]]]:
     """
     Collect all type of statistics together into one dictionary.
 
@@ -231,23 +254,21 @@ def get_df_profile(df: pd.DataFrame, num_works: int = -1) -> Dict[
     :param num_works:
     :return:
     """
+
+    logger.info("Collecting stats for data profile...")
     df_profile = {}
     var_stats = get_variable_stats(df, num_works)
 
     df_profile['table_stats'] = get_table_stats(df, var_stats)
     df_profile['var_summary'] = get_var_summary(var_stats)
+
     df_profile['var_stats'] = {}
+    logger.info("Getting 'Variable Statistics' ready...")
     for key, item in var_stats.items():
         logger.debug(f"Extracting statistics for {key} variables...")
         df_profile[f'var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1)
 
-    binary_vars = [var.name for var in var_stats['Binary']]
-    if len(binary_vars) > 1:
-        logger.info("Getting 'Confusion Matrix' ready...")
-        df_profile['conf_matrix'] = []
-        for a, b in combinations(binary_vars, 2):
-            logger.debug(f"Calculating confusion matrix of {a} and {b}")
-            confusion_matrix = pd.crosstab(df[a].astype(str), df[b].astype(str))
-            df_profile['conf_matrix'].append(confusion_matrix)
+    if 'Binary' in var_stats and len([var.name for var in var_stats['Binary']]) > 1:
+        df_profile['conf_matrix'] = get_confusion_matrix(df, var_stats)
 
     return df_profile
