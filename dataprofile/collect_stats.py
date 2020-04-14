@@ -225,6 +225,7 @@ def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
 def get_df_profile(df: pd.DataFrame, num_works: int = -1) -> Dict[
     str, Union[pd.DataFrame, list, Dict[str, pd.DataFrame]]]:
     """
+    Collect all type of statistics together into one dictionary.
 
     :param df:
     :param num_works:
@@ -238,7 +239,7 @@ def get_df_profile(df: pd.DataFrame, num_works: int = -1) -> Dict[
     df_profile['var_stats'] = {}
     for key, item in var_stats.items():
         logger.debug(f"Extracting statistics for {key} variables...")
-        df_profile[f'var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1).T
+        df_profile[f'var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1)
 
     binary_vars = [var.name for var in var_stats['Binary']]
     if len(binary_vars) > 1:
