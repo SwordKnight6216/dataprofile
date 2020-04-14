@@ -10,9 +10,9 @@ from loguru import logger
 from sklearn.base import BaseEstimator, TransformerMixin
 from tabulate import tabulate
 
-from .collect_stats import get_df_profile, get_a_sample
 from ._config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
-from .monitor import monitor_time_memory
+from .collect_stats import get_df_profile, get_a_sample
+from ._monitor import monitor_time_memory
 
 init(autoreset=True)
 logger.remove()
@@ -89,7 +89,7 @@ def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
     return report_str
 
 
-def print_report(df_profile, var_per_row) -> None:
+def print_report(df_profile, var_per_row):
     """
     Print report to screen.
 
@@ -102,7 +102,6 @@ def print_report(df_profile, var_per_row) -> None:
     report_str = profile_to_str(df_profile, var_per_row, table_fmt, line_breaker)
     print(line_breaker.join(report_str))
     logger.info("Report successfully rendered!")
-    return
 
 
 def save_report(df_profile, var_per_row, report_file: Optional[Union[str, Path]] = None) -> None:
