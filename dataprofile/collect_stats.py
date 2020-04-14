@@ -4,7 +4,8 @@ import datetime
 import multiprocessing
 from collections import defaultdict
 from functools import wraps
-from typing import List, Dict, Optional, Tuple, Callable
+from itertools import combinations
+from typing import List, Dict, Union, Tuple, Callable
 
 import numpy
 import pandas as pd
@@ -183,11 +184,10 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
 
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
-                 random_state: int = RANDOM_STATE, line_ending: str = '\n') -> Tuple[pd.DataFrame, str]:
+                 random_state: int = RANDOM_STATE) -> pd.DataFrame:
     """
     Provide the original dataset or a random sample of it.
 
-    :param line_ending:
     :param df: the target dataset
     :param sample_size: Number of rows to sample from the target dataframe
     :param random_state: Random seed for the row sampler
@@ -195,33 +195,24 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
     """
     try:
         sample_df = df.sample(sample_size, random_state=random_state)
-        msg = f'ATTN: The following statistics are based on {sample_size} samples ' \
-              f'out of {df.shape[0]} of the population.{line_ending}'
+        logger.info(f'ATTN: The following statistics are based on {sample_size} samples '
+                    f'out of {df.shape[0]} of the population.')
 
     except ValueError:
         logger.warning(f"Sample size {sample_size} is larger than the population size {df.shape[0]}. "
                        f"using population instead.")
         sample_df = df
-        msg = ""
 
-    return sample_df, msg
+    return sample_df
 
 
-def get_var_summary(var_stats: Optional[Dict[str, List[pd.Series]]] = None, df: Optional[pd.DataFrame] = None,
-                    sample_size: int = DEFAULT_SAMPLE_SIZE,
-                    random_state: int = RANDOM_STATE) -> pd.DataFrame:
+def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
     """
     Provide a summary table of data types of the given dataset.
 
     :param var_stats: already get variable statistics
-    :param df: the target dataset
-    :param sample_size: Number of rows to sample from the target dataframe
-    :param random_state: Random seed for the row sampler
     :return: a summary table of data types of the given dataset
     """
-    if not var_stats:
-        sample_df, _ = get_a_sample(df, sample_size, random_state)
-        var_stats = get_variable_stats(sample_df)
 
     type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
     tmp_df_stats = []
@@ -229,3 +220,33 @@ def get_var_summary(var_stats: Optional[Dict[str, List[pd.Series]]] = None, df: 
         tmp_df_stats.append(pd.DataFrame(item)[type_stats])
 
     return pd.concat(tmp_df_stats)
+
+
+def get_df_profile(df: pd.DataFrame, num_works: int = -1) -> Dict[
+    str, Union[pd.DataFrame, list, Dict[str, pd.DataFrame]]]:
+    """
+
+    :param df:
+    :param num_works:
+    :return:
+    """
+    df_profile = {}
+    var_stats = get_variable_stats(df, num_works)
+
+    df_profile['table_stats'] = get_table_stats(df, var_stats)
+    df_profile['var_summary'] = get_var_summary(var_stats)
+    df_profile['var_stats'] = {}
+    for key, item in var_stats.items():
+        logger.debug(f"Extracting statistics for {key} variables...")
+        df_profile[f'var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1).T
+
+    binary_vars = [var.name for var in var_stats['Binary']]
+    if len(binary_vars) > 1:
+        logger.info("Getting 'Confusion Matrix' ready...")
+        df_profile['conf_matrix'] = []
+        for a, b in combinations(binary_vars, 2):
+            logger.debug(f"Calculating confusion matrix of {a} and {b}")
+            confusion_matrix = pd.crosstab(df[a].astype(str), df[b].astype(str))
+            df_profile['conf_matrix'].append(confusion_matrix)
+
+    return df_profile

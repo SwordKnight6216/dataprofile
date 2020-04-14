@@ -71,8 +71,7 @@ def main(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SI
     else:
         report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
             0] + '.' + save_report_to_file if save_report_to_file else None
-        render_report(df, sample_size=sample_size, var_per_row=var_per_row, report_file=report_file_name,
-                      is_return_stats=False)
+        render_report(df, sample_size=sample_size, var_per_row=var_per_row, report_file=report_file_name)
 
 
 if __name__ == "__main__":
