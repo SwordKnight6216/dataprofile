@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
 
-from dataprofile.var_statistics import base_stats
-from dataprofile.var_statistics import binary_stats
-from dataprofile.var_statistics import categorical_stats
-from dataprofile.var_statistics import datetime_stats
-from dataprofile.var_statistics import numerical_stats
+from dataprofile._var_statistics import base_stats
+from dataprofile._var_statistics import binary_stats
+from dataprofile._var_statistics import categorical_stats
+from dataprofile._var_statistics import datetime_stats
+from dataprofile._var_statistics import numerical_stats
 
 TEST_FILE = '../../data/titanic/train.csv'
 test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))

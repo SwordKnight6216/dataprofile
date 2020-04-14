@@ -12,8 +12,8 @@ import pandas as pd
 import tqdm
 from loguru import logger
 
-from .config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE, MAX_STRING_SIZE
-from .var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
+from ._config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE, MAX_STRING_SIZE
+from ._var_statistics import binary_stats, categorical_stats, datetime_stats, numerical_stats, base_stats
 
 
 def _get_actual_dtype(series: pd.Series) -> str:

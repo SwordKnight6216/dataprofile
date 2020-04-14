@@ -7,7 +7,7 @@ import pandas as pd
 from colorama import Fore, init
 from loguru import logger
 
-from .config import DEFAULT_SAMPLE_SIZE, LOG_FILE, AUTHOR
+from ._config import DEFAULT_SAMPLE_SIZE, LOG_FILE, AUTHOR
 from .descriptive_report import render_report
 
 init(autoreset=True)
