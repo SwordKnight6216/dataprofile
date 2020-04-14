@@ -41,13 +41,13 @@ def test_get_table_stats():
 
 
 def test_get_a_sample():
-    sample, _ = get_a_sample(test_df, 100, 2018)
+    sample = get_a_sample(test_df, 100, 2018)
     assert sample.shape == (100, 13)
     assert sample.iloc[10, 5] == 21
 
 
 def test_get_data_type():
-    data_type = get_var_summary(df=test_df)
+    data_type = get_var_summary(get_variable_stats(df=test_df))
     expected_result = {'PassengerId': 'Unique',
                        'Pclass': 'Numerical',
                        'Age': 'Numerical',
