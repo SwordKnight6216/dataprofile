@@ -195,7 +195,7 @@ class ProfileReport(BaseEstimator, TransformerMixin):
             self._df_to_profile()
         print_report(self.df_profile, self._var_per_row)
 
-    def profile_to_file(self, report_file: str = None):
+    def save_report(self, report_file: str = None):
         if not report_file:
             report_file = self._report_file
         if not report_file:
@@ -205,6 +205,7 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         if not self.df_profile:
             self._df_to_profile()
         save_report(self.df_profile, self._var_per_row, report_file)
+        print(f"Report saved to {report_file}")
 
     def __str__(self):
         table_fmt = 'psql'
