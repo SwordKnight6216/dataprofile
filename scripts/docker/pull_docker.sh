@@ -1,1 +1,1 @@
-docker pull swordknight6216/dataprofile
+docker pull swordknight6216/dataprofile-slim
