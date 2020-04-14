@@ -176,7 +176,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
 
     logger.info(f"Getting 'Table Statistics' ready...")
     table_stats = {'n_row': df.shape[0],
-                   'n_col': df.shape[1], 
+                   'n_col': df.shape[1],
                    'n_missing_cell': df.isnull().sum().sum(),
                    'n_empty_row': df.shape[0] - df.dropna(how='all').shape[0],
                    'n_duplicated_row': df.duplicated().sum()}

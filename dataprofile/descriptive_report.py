@@ -164,11 +164,11 @@ class ProfileReport(BaseEstimator, TransformerMixin):
                  num_works: int = -1):
 
         self.df = df
-        self.sample_size = sample_size
-        self.var_per_row = var_per_row
-        self.random_state = random_state
-        self.report_file = report_file
-        self.num_works = num_works
+        self._sample_size = sample_size
+        self._var_per_row = var_per_row
+        self._random_state = random_state
+        self._report_file = report_file
+        self._num_works = num_works
         self.df_profile = None
 
     def fit(self):
@@ -183,31 +183,31 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         return self.df
 
     def _df_to_profile(self):
-        if self.sample_size > 0:
-            sample_df = get_a_sample(self.df, self.sample_size, self.random_state)
+        if self._sample_size > 0:
+            sample_df = get_a_sample(self.df, self._sample_size, self._random_state)
         else:
             sample_df = self.df
 
-        self.df_profile = get_df_profile(sample_df, self.num_works)
+        self.df_profile = get_df_profile(sample_df, self._num_works)
 
     def show_report(self):
         if not self.df_profile:
             self._df_to_profile()
-        print_report(self.df_profile, self.var_per_row)
+        print_report(self.df_profile, self._var_per_row)
 
     def profile_to_file(self, report_file: str = None):
         if not report_file:
-            report_file = self.report_file
+            report_file = self._report_file
         if not report_file:
             raise ValueError("file name cannot be None!")
         if report_file.split('.')[-1] not in ['md', 'html', 'txt']:
             raise NotImplementedError("file type doesn't support!")
         if not self.df_profile:
             self._df_to_profile()
-        save_report(self.df_profile, self.var_per_row, report_file)
+        save_report(self.df_profile, self._var_per_row, report_file)
 
     def __str__(self):
         table_fmt = 'psql'
         line_breaker = '\n'
-        report_str = profile_to_str(self.df_profile, self.var_per_row, table_fmt, line_breaker)
+        report_str = profile_to_str(self.df_profile, self._var_per_row, table_fmt, line_breaker)
         return line_breaker.join(report_str)
