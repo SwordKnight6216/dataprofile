@@ -254,6 +254,9 @@ def get_df_profile(df: pd.DataFrame, num_works: int = -1) \
     :return:
     """
 
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("only pandas DataFrames can be profiled! ")
+
     logger.info("Collecting stats for data profile...")
     df_profile = {}
     var_stats = get_variable_stats(df, num_works)
