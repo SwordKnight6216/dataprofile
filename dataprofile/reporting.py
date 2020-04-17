@@ -11,7 +11,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from tabulate import tabulate
 
 from ._config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
-from .profiling import get_df_profile, get_a_sample
+from ._profiling import get_df_profile, get_a_sample
 from ._monitor import monitor_time_memory
 
 init(autoreset=True)

@@ -2,7 +2,7 @@
 It can be used as a standalone module as well."""
 
 from .reporting import render_report, ProfileReport
-from .profiling import get_var_summary, get_df_profile
+from ._profiling import get_var_summary, get_df_profile
 
 __all__ = [
     'render_report',
