@@ -8,6 +8,7 @@ import pandas as pd
 from colorama import Fore, init
 from loguru import logger
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.exceptions import NotFittedError, ChangedBehaviorWarning
 from tabulate import tabulate
 
 from ._config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
@@ -156,54 +157,123 @@ class ProfileReport(BaseEstimator, TransformerMixin):
      for a given pandas dataframe.
     """
 
-    def __init__(self, df: pd.DataFrame,
+    def __init__(self,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
                  random_state: int = RANDOM_STATE,
-                 report_file: Optional[Union[str, Path]] = None,
                  num_works: int = -1):
 
-        self.df = df
         self._sample_size = sample_size
         self._var_per_row = var_per_row
         self._random_state = random_state
-        self._report_file = report_file
         self._num_works = num_works
         self.df_profile = None
+        self._is_new_arg = False
 
-    def fit(self):
+    @property
+    def sample_size(self):
+        return self._sample_size
+
+    @sample_size.setter
+    def sample_size(self, new_sample_size):
+        self._sample_size = new_sample_size
+        self._is_new_arg = True
+        print(f"sample size set to {self._sample_size}")
+
+    @property
+    def var_per_row(self):
+        return self._var_per_row
+
+    @var_per_row.setter
+    def var_per_row(self, new_var_per_row):
+        self._var_per_row = new_var_per_row
+        self._is_new_arg = True
+        print(f"sample size set to {self._var_per_row}")
+
+    @property
+    def num_works(self):
+        return self._num_works
+
+    @num_works.setter
+    def num_works(self, new_num_works):
+        self._num_works = new_num_works
+        self._is_new_arg = True
+        print(f"sample size set to {self._num_works}")
+
+    @property
+    def random_state(self):
+        return self._random_state
+
+    @random_state.setter
+    def random_state(self, new_random_state):
+        self._random_state = new_random_state
+        self._is_new_arg = True
+        print(f"sample size set to {self._random_state}")
+
+    def _check_fitted(self):
+        """
+        Check if the data profile file has been rendered.
+
+        :return:
+        """
         if not self.df_profile:
-            self._df_to_profile()
+            raise NotFittedError
+
+    def _check_new_args(self):
+        """
+        Check if the arguments have been updated since last fit.
+
+        :return:
+        """
+        if self._is_new_arg:
+            raise ChangedBehaviorWarning("new args inputted after last fit!")
+
+    def fit(self, df: pd.DataFrame):
+        self._df_to_profile(df)
+        self._is_new_arg = False
         return self
 
-    def transform(self):
-        if not self.df_profile:
-            self._df_to_profile()
+    def transform(self, df: pd.DataFrame):
+        self._check_fitted()
+        self._check_new_args()
         self.show_report()
-        return self.df
+        return df
 
-    def _df_to_profile(self):
+    def _df_to_profile(self, df: pd.DataFrame):
+        """
+        Get the data profile.
+
+        :param df:
+        :return:
+        """
         if self._sample_size > 0:
-            sample_df = get_a_sample(self.df, self._sample_size, self._random_state)
+            sample_df = get_a_sample(df, self._sample_size, self._random_state)
         else:
-            sample_df = self.df
+            sample_df = df
 
         self.df_profile = get_df_profile(sample_df, self._num_works)
 
     def show_report(self):
-        if not self.df_profile:
-            self._df_to_profile()
+        """
+        Print the data profile to the screen.
+
+        :return:
+        """
+        self._check_fitted()
+        self._check_new_args()
         print_report(self.df_profile, self._var_per_row)
 
-    def save_report(self, report_file: str = None):
-        if not report_file:
-            report_file = self._report_file
-        if not report_file:
-            raise ValueError("file name cannot be None!")
+    def save_report(self, report_file: str):
+        """
+        Save the data profile to as file.
+
+        :param report_file:
+        :return:
+        """
         if report_file.split('.')[-1] not in ['md', 'html', 'txt']:
             raise NotImplementedError("file type doesn't support!")
-        if not self.df_profile:
-            self._df_to_profile()
+        self._check_fitted()
+        self._check_new_args()
         save_report(self.df_profile, self._var_per_row, report_file)
         print(f"Report saved to {report_file}")
 
