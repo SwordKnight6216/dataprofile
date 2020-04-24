@@ -3,11 +3,8 @@ import os
 import pandas as pd
 import pytest
 
-from .._profiling import get_a_sample
-from .._profiling import get_table_stats
-from .._profiling import get_var_summary
-from .._profiling import get_variable_stats
-from .._profiling import _get_actual_dtype, _format_value
+from .._profiling import _get_actual_dtype, _format_value, _cal_var_stats
+from .._profiling import get_a_sample, get_df_profile, get_table_stats, get_var_summary, get_variable_stats
 
 
 @pytest.fixture()
@@ -65,6 +62,12 @@ def test_get_a_sample(test_df):
     assert sample.iloc[10, 5] == 21
 
 
+def test_get_a_sample_exception(test_df):
+    # with pytest.raises(ValueError):
+    sample = get_a_sample(test_df, test_df.shape[0] + 10, 2018)
+    assert sample.shape == test_df.shape
+
+
 def test_get_data_type(test_df):
     data_type = get_var_summary(get_variable_stats(df=test_df))
     expected_result = {'PassengerId': 'Unique',
@@ -81,3 +84,25 @@ def test_get_data_type(test_df):
                        'Embarked': 'Categorical',
                        'no_values': 'Empty'}
     assert dict(data_type['data_type']) == expected_result
+
+
+def test_get_df_profile_type_error():
+    with pytest.raises(TypeError):
+        get_df_profile('test')
+
+
+def test_get_df_profile(test_df):
+    result = get_df_profile(test_df)
+    assert 'table_stats' in result
+    assert 'var_summary' in result
+    assert 'var_stats' in result
+
+
+@pytest.mark.parametrize("test_input, expected",
+                         [(pd.Series([1, 2, 3, 4, 5]), 'Useless'),
+                          (pd.Series([True, False, True, False, False]), 'Binary'),
+                          (pd.Series([1, 0, 0, 0, 1, 1, 1, 0]), 'Binary'),
+                          (pd.Series([True, 'False', 18]), 'Useless'),
+                          (pd.Series(['True', 'False', 'True', 'False', '18']), 'Nominal')])
+def test__cal_var_stats(test_input, expected):
+    assert expected == _cal_var_stats(test_input)[0]
