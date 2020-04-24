@@ -2,18 +2,20 @@ import os
 
 import pandas as pd
 import pytest
-from pandas.api.types import is_numeric_dtype
 
-from dataprofile._profiling import get_a_sample
-from dataprofile._profiling import get_table_stats
-from dataprofile._profiling import get_var_summary
-from dataprofile._profiling import get_variable_stats
+from .._profiling import get_a_sample
+from .._profiling import get_table_stats
+from .._profiling import get_var_summary
+from .._profiling import get_variable_stats
 from .._profiling import _get_actual_dtype, _format_value
 
-TEST_FILE = '../../data/titanic/train.csv'
-test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
-# add an empty column for testing purpose
-test_df['no_values'] = None
+
+@pytest.fixture()
+def test_df():
+    test_file = '../../data/titanic/train.csv'
+    test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), test_file))
+    test_df['no_values'] = None
+    return test_df
 
 
 @pytest.mark.parametrize("test_input, expected",
@@ -31,7 +33,7 @@ def test__format_value(test_input, max_size, expected):
     assert _format_value(test_input, max_size) == expected
 
 
-def test_get_variable_stats():
+def test_get_variable_stats(test_df):
     var_stats = get_variable_stats(test_df)
     assert set(var_stats.keys()) == {'Interval', 'Binary', 'Useless', 'Nominal'}
     # check some statistics randomly
@@ -39,10 +41,10 @@ def test_get_variable_stats():
     assert len(var_stats['Binary']) == 2
     assert len(var_stats['Nominal']) == 3
     assert len(var_stats['Useless']) == 3
-    assert is_numeric_dtype(test_df[var_stats['Interval'][1].name])
+    assert pd.api.types.is_numeric_dtype(test_df[var_stats['Interval'][1].name])
 
 
-def test_get_table_stats():
+def test_get_table_stats(test_df):
     table_stats = get_table_stats(test_df, get_variable_stats(test_df))['count'].to_dict()
     expected_result = {'n_row': '891',
                        'n_col': '13',
@@ -57,13 +59,13 @@ def test_get_table_stats():
     assert table_stats == expected_result
 
 
-def test_get_a_sample():
+def test_get_a_sample(test_df):
     sample = get_a_sample(test_df, 100, 2018)
     assert sample.shape == (100, 13)
     assert sample.iloc[10, 5] == 21
 
 
-def test_get_data_type():
+def test_get_data_type(test_df):
     data_type = get_var_summary(get_variable_stats(df=test_df))
     expected_result = {'PassengerId': 'Unique',
                        'Pclass': 'Numerical',

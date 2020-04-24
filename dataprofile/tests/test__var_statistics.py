@@ -2,19 +2,24 @@ import os
 
 import numpy as np
 import pandas as pd
+import pytest
 from pandas.testing import assert_series_equal
 
-from dataprofile._var_statistics import base_stats
-from dataprofile._var_statistics import binary_stats
-from dataprofile._var_statistics import categorical_stats
-from dataprofile._var_statistics import datetime_stats
-from dataprofile._var_statistics import numerical_stats
-
-TEST_FILE = '../../data/titanic/train.csv'
-test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), TEST_FILE))
+from .._var_statistics import base_stats
+from .._var_statistics import binary_stats
+from .._var_statistics import categorical_stats
+from .._var_statistics import datetime_stats
+from .._var_statistics import numerical_stats
 
 
-def test_base_stats():
+@pytest.fixture()
+def test_df():
+    test_file = '../../data/titanic/train.csv'
+    test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), test_file))
+    return test_df
+
+
+def test_base_stats(test_df):
     output = base_stats(test_df['Cabin'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 147,
@@ -43,7 +48,7 @@ def test_binary_stats():
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
-def test_numerical_stats():
+def test_numerical_stats(test_df):
     output = numerical_stats(test_df['Age'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 88,
@@ -120,7 +125,7 @@ def test_constant_stats():
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
-def test_unique_stats():
+def test_unique_stats(test_df):
     output = base_stats(test_df['Name'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 891,
@@ -131,7 +136,7 @@ def test_unique_stats():
     assert_series_equal(output.sort_index(), expected_result.sort_index())
 
 
-def test_categorical_stats():
+def test_categorical_stats(test_df):
     output = categorical_stats(test_df['Embarked'])
     expected_result = pd.Series({'count': 891,
                                  'n_unique': 3,
