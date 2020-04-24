@@ -5,7 +5,7 @@ import multiprocessing
 from collections import defaultdict
 from functools import wraps
 from itertools import combinations
-from typing import List, Dict, Union, Tuple, Callable
+from typing import List, Dict, Union, Tuple, Callable, Any
 
 import numpy
 import pandas as pd
@@ -30,48 +30,44 @@ def _get_actual_dtype(series: pd.Series) -> str:
         return 'Categorical'
 
 
-def _format_series(series: pd.Series, max_size: int = MAX_STRING_SIZE) -> pd.Series:
+def _format_value(v: Any, max_size: int = MAX_STRING_SIZE) -> str:
+    """
+    Convert any input value to an appropriate str output
+
+    :param v: input value
+    :param max_size: max number of chars to display
+    :return: changed string
+    """
+
+    if isinstance(v, bool):
+        return str(v)
+    if isinstance(v, numpy.int64) or isinstance(v, int):
+        return f"{v:,d}"
+    elif isinstance(v, numpy.float64) or isinstance(v, float):
+        return f"{v:,.4f}"
+    elif isinstance(v, str) and len(v) > max_size:
+        return f"{v[:max_size]}..."
+    return v
+
+
+def _format_series(series: pd.Series) -> pd.Series:
     """
     change the output format for different value type.
 
     :param series: target series
-    :param max_size:
     :return:
     """
-
-    def _format_value(v):
-        if isinstance(v, bool):
-            return v
-        if isinstance(v, numpy.int64) or isinstance(v, int):
-            return f"{v:,d}"
-        elif isinstance(v, numpy.float64) or isinstance(v, float):
-            return f"{v:,.4f}"
-        elif isinstance(v, str) and len(v) > max_size:
-            return f"{v[:max_size]}..."
-        return v
 
     return series.apply(_format_value)
 
 
-def _format_series_decor(original_func: Callable, max_size: int = MAX_STRING_SIZE) -> Callable:
+def _format_series_decor(original_func: Callable) -> Callable:
     """
     change the output format for different value type.
 
     :param original_func: target function to wrap
-    :param max_size:
     :return:
     """
-
-    def _format_value(v):
-        if isinstance(v, bool):
-            return v
-        elif isinstance(v, numpy.int64) or isinstance(v, int):
-            return f"{v:,d}"
-        elif isinstance(v, numpy.float64) or isinstance(v, float):
-            return f"{v:,.4f}"
-        elif isinstance(v, str) and len(v) > max_size:
-            return f"{v[:max_size]}..."
-        return v
 
     @wraps(original_func)
     def wrapped_func(*args, **kwargs):
