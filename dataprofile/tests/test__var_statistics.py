@@ -28,7 +28,6 @@ def test_base_stats():
 def test_binary_stats():
     test_series = pd.Series([None, False, np.nan, True, False, True, True])
     output = binary_stats(test_series)
-    print(output)
     expected_result = pd.Series({'count': 7,
                                  'n_missing': 2,
                                  'p_missing': '28.57%',
