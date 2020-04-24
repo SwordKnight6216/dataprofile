@@ -22,10 +22,10 @@ def _get_actual_dtype(series: pd.Series) -> str:
     :param series:
     :return: the name of actual data type in the given series
     """
-    if pd.api.types.is_numeric_dtype(series):
-        return 'Numerical'
-    elif pd.api.types.is_bool_dtype(series):
+    if pd.api.types.is_bool_dtype(series):
         return 'Boolean'
+    elif pd.api.types.is_numeric_dtype(series):
+        return 'Numerical'
     else:
         return 'Categorical'
 
