@@ -1,3 +1,5 @@
+"""A module for monitoring profiling performance."""
+
 import time
 import tracemalloc
 from functools import wraps

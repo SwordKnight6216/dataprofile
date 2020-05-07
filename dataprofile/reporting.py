@@ -1,4 +1,5 @@
 """print or save a report of overall statistics and detailed statistics for a given dataset."""
+
 import sys
 from datetime import date
 from pathlib import Path
@@ -12,8 +13,8 @@ from sklearn.exceptions import NotFittedError, ChangedBehaviorWarning
 from tabulate import tabulate
 
 from ._config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
-from ._profiling import get_df_profile, get_a_sample
 from ._monitor import monitor_time_memory
+from ._profiling import get_df_profile, get_a_sample
 
 init(autoreset=True)
 logger.remove()

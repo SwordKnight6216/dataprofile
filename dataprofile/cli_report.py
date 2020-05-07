@@ -1,3 +1,5 @@
+"""This module contains code for CLI run reports."""
+
 import sys
 from pathlib import Path
 from typing import Optional
