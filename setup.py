@@ -1,6 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 from Cython.Build import cythonize
-
+from Cython.Distutils import build_ext
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -25,5 +25,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    #ext_modules=cythonize('dataprofile/_var_statistics.pyx')
+    cmdclass={'build_ext': build_ext},
+    ext_modules=[Extension('dataprofile._var_statistics',
+                            ['dataprofile/_var_statistics.pyx'])]
 )
