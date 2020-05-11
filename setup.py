@@ -1,4 +1,6 @@
-import setuptools
+from setuptools import setup, find_packages
+from Cython.Build import cythonize
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -6,7 +8,7 @@ with open("README.md", "r") as fh:
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-setuptools.setup(
+setup(
     name="dataprofile",
     version="2.1.0",
     author="Gordon Chen",
@@ -15,7 +17,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SwordKnight6216/dataprofile",
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     install_requires=required,
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -23,4 +25,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    #ext_modules=cythonize('dataprofile/_var_statistics.pyx')
 )

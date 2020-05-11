@@ -1,6 +1,6 @@
 ================================== Beginning of report ===================================
 
-This following report is created by Gordon Chen on Friday, Apr 10, 2020
+This following report is created by Gordon Chen on Monday, May 11, 2020
 
 ================ Table Statistics ================
 +------------------+---------+
@@ -31,8 +31,8 @@ This following report is created by Gordon Chen on Friday, Apr 10, 2020
 | Parch       | Interval | Numerical   |     891 |           0 | 0.00%       |          7 | 0.79%      |
 | Age         | Interval | Numerical   |     891 |         177 | 19.87%      |         88 | 12.32%     |
 | Fare        | Interval | Numerical   |     891 |           0 | 0.00%       |        248 | 27.83%     |
-| Cabin       | Nominal  | Categorical |     891 |         687 | 77.10%      |        147 | 72.06%     |
 | Embarked    | Nominal  | Categorical |     891 |           2 | 0.22%       |          3 | 0.34%      |
+| Cabin       | Nominal  | Categorical |     891 |         687 | 77.10%      |        147 | 72.06%     |
 | Ticket      | Nominal  | Categorical |     891 |           0 | 0.00%       |        681 | 76.43%     |
 +-------------+----------+-------------+---------+-------------+-------------+------------+------------+
 
@@ -98,21 +98,21 @@ Interval variables:
 +--------------+----------+---------+---------+-------------+-------------+
 
 Nominal variables:
-+----------------+-------------+------------+----------+
-|                | Cabin       | Embarked   | Ticket   |
-|----------------+-------------+------------+----------|
-| count          | 891         | 891        | 891      |
-| n_missing      | 687         | 2          | 0        |
-| p_missing      | 77.10%      | 0.22%      | 0.00%    |
-| n_unique       | 147         | 3          | 681      |
-| p_unique       | 72.06%      | 0.34%      | 76.43%   |
-| mode           | B96 B98     | S          | CA. 2343 |
-| mode_freq      | 4           | 644        | 7        |
-| 2nd_freq_value | G6          | C          | 1601     |
-| 2nd_freq       | 4           | 168        | 7        |
-| 3rd_freq_value | C23 C25 C27 | Q          | 347082   |
-| 3rd_freq       | 4           | 77         | 7        |
-+----------------+-------------+------------+----------+
++----------------+------------+-------------+----------+
+|                | Embarked   | Cabin       | Ticket   |
+|----------------+------------+-------------+----------|
+| count          | 891        | 891         | 891      |
+| n_missing      | 2          | 687         | 0        |
+| p_missing      | 0.22%      | 77.10%      | 0.00%    |
+| n_unique       | 3          | 147         | 681      |
+| p_unique       | 0.34%      | 72.06%      | 76.43%   |
+| mode           | S          | B96 B98     | CA. 2343 |
+| mode_freq      | 644        | 4           | 7        |
+| 2nd_freq_value | C          | G6          | 347082   |
+| 2nd_freq       | 168        | 4           | 7        |
+| 3rd_freq_value | Q          | C23 C25 C27 | 1601     |
+| 3rd_freq       | 77         | 4           | 7        |
++----------------+------------+-------------+----------+
 
 
 ================ Confusion Matrix ================

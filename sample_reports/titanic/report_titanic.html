@@ -1,4 +1,4 @@
-================================== Beginning of report ===================================<br><br>This following report is created by Gordon Chen on Friday, Apr 10, 2020<br><br>================ Table Statistics ================<br><table border="1" class="dataframe">
+================================== Beginning of report ===================================<br><br>This following report is created by Gordon Chen on Monday, May 11, 2020<br><br>================ Table Statistics ================<br><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -78,9 +78,9 @@
       <td>100.00%</td>
     </tr>
     <tr>
-      <th>Sex</th>
+      <th>Survived</th>
       <td>Binary</td>
-      <td>Categorical</td>
+      <td>Numerical</td>
       <td>891</td>
       <td>0</td>
       <td>0.00%</td>
@@ -88,9 +88,9 @@
       <td>0.22%</td>
     </tr>
     <tr>
-      <th>Survived</th>
+      <th>Sex</th>
       <td>Binary</td>
-      <td>Numerical</td>
+      <td>Categorical</td>
       <td>891</td>
       <td>0</td>
       <td>0.00%</td>
@@ -148,6 +148,16 @@
       <td>27.83%</td>
     </tr>
     <tr>
+      <th>Cabin</th>
+      <td>Nominal</td>
+      <td>Categorical</td>
+      <td>891</td>
+      <td>687</td>
+      <td>77.10%</td>
+      <td>147</td>
+      <td>72.06%</td>
+    </tr>
+    <tr>
       <th>Ticket</th>
       <td>Nominal</td>
       <td>Categorical</td>
@@ -166,16 +176,6 @@
       <td>0.22%</td>
       <td>3</td>
       <td>0.34%</td>
-    </tr>
-    <tr>
-      <th>Cabin</th>
-      <td>Nominal</td>
-      <td>Categorical</td>
-      <td>891</td>
-      <td>687</td>
-      <td>77.10%</td>
-      <td>147</td>
-      <td>72.06%</td>
     </tr>
   </tbody>
 </table><br><br><br>============== Variable Statistics ===============<br><br>Useless variables:<br><table border="1" class="dataframe">
@@ -217,8 +217,8 @@
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Sex</th>
       <th>Survived</th>
+      <th>Sex</th>
     </tr>
   </thead>
   <tbody>
@@ -249,33 +249,33 @@
     </tr>
     <tr>
       <th>value1</th>
-      <td>male</td>
       <td>0</td>
+      <td>male</td>
     </tr>
     <tr>
       <th>n_value1</th>
-      <td>577</td>
       <td>549</td>
+      <td>577</td>
     </tr>
     <tr>
       <th>p_value1</th>
-      <td>64.76%</td>
       <td>61.62%</td>
+      <td>64.76%</td>
     </tr>
     <tr>
       <th>value2</th>
-      <td>female</td>
       <td>1</td>
+      <td>female</td>
     </tr>
     <tr>
       <th>n_value2</th>
-      <td>314</td>
       <td>342</td>
+      <td>314</td>
     </tr>
     <tr>
       <th>p_value2</th>
-      <td>35.24%</td>
       <td>38.38%</td>
+      <td>35.24%</td>
     </tr>
   </tbody>
 </table><br><br>Interval variables:<br><table border="1" class="dataframe">
@@ -487,9 +487,9 @@
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Cabin</th>
       <th>Ticket</th>
       <th>Embarked</th>
-      <th>Cabin</th>
     </tr>
   </thead>
   <tbody>
@@ -501,87 +501,87 @@
     </tr>
     <tr>
       <th>n_missing</th>
+      <td>687</td>
       <td>0</td>
       <td>2</td>
-      <td>687</td>
     </tr>
     <tr>
       <th>p_missing</th>
+      <td>77.10%</td>
       <td>0.00%</td>
       <td>0.22%</td>
-      <td>77.10%</td>
     </tr>
     <tr>
       <th>n_unique</th>
+      <td>147</td>
       <td>681</td>
       <td>3</td>
-      <td>147</td>
     </tr>
     <tr>
       <th>p_unique</th>
+      <td>72.06%</td>
       <td>76.43%</td>
       <td>0.34%</td>
-      <td>72.06%</td>
     </tr>
     <tr>
       <th>mode</th>
+      <td>B96 B98</td>
       <td>CA. 2343</td>
       <td>S</td>
-      <td>B96 B98</td>
     </tr>
     <tr>
       <th>mode_freq</th>
+      <td>4</td>
       <td>7</td>
       <td>644</td>
-      <td>4</td>
     </tr>
     <tr>
       <th>2nd_freq_value</th>
-      <td>1601</td>
-      <td>C</td>
       <td>G6</td>
+      <td>347082</td>
+      <td>C</td>
     </tr>
     <tr>
       <th>2nd_freq</th>
+      <td>4</td>
       <td>7</td>
       <td>168</td>
-      <td>4</td>
     </tr>
     <tr>
       <th>3rd_freq_value</th>
-      <td>347082</td>
-      <td>Q</td>
       <td>C23 C25 C27</td>
+      <td>1601</td>
+      <td>Q</td>
     </tr>
     <tr>
       <th>3rd_freq</th>
+      <td>4</td>
       <td>7</td>
       <td>77</td>
-      <td>4</td>
     </tr>
   </tbody>
-</table><br><br><br>================ Confusion Matrix ================<br>row:Sex - col:Survived<br><table border="1" class="dataframe">
+</table><br><br><br>================ Confusion Matrix ================<br>row:Survived - col:Sex<br><table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>Survived</th>
-      <th>0</th>
-      <th>1</th>
+      <th>Sex</th>
+      <th>female</th>
+      <th>male</th>
     </tr>
     <tr>
-      <th>Sex</th>
+      <th>Survived</th>
       <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>female</th>
+      <th>0</th>
       <td>81</td>
-      <td>233</td>
+      <td>468</td>
     </tr>
     <tr>
-      <th>male</th>
-      <td>468</td>
+      <th>1</th>
+      <td>233</td>
       <td>109</td>
     </tr>
   </tbody>
