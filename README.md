@@ -22,11 +22,10 @@ pip install -e .
     ```
 2. from command line
    ```shell script
-   python dataprofile/scripts/cli_report.py 
+   dataprofile_py
    ```
 3. from docker
    ```shell script
-   docker pull swordknight6216/dataprofile
    docker run -ti --rm -v $(pwd):/home/dp_user/data swordknight6216/dataprofile
    ```
 

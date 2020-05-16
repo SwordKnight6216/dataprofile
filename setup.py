@@ -11,7 +11,8 @@ setuptools.setup(
     version="2.1.0",
     author="Gordon Chen",
     author_email="GordonChen.GoBlue@gmail.com",
-    description="This package generates statistical reports for given pandas DataFrames or CSV files in standalone model",
+    description="This package generates statistical reports for given pandas DataFrames "
+                "or CSV files in standalone model",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SwordKnight6216/dataprofile",
