@@ -11,6 +11,7 @@ setuptools.setup(
     version="2.1.0",
     author="Gordon Chen",
     author_email="GordonChen.GoBlue@gmail.com",
+    license="GNU Affero General Public License v3.0",
     description="This package generates statistical reports for given pandas DataFrames "
                 "or CSV files in standalone model",
     long_description=long_description,
