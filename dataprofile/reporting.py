@@ -87,6 +87,7 @@ def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
                                        showindex=confusion_matrix.index.to_list(),
                                        tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
     report_str.append(' End of report '.center(padding_size, '='))
+    report_str.append(' Author of Dataprofile: Gordon Chen (GordonChen.GoBlue@gmail.com) '.center(padding_size, '='))
     return report_str
 
 
