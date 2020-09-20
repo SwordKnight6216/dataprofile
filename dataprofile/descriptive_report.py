@@ -130,6 +130,8 @@ def render_report(df: pd.DataFrame,
                                                showindex=confusion_matrix.index.to_list(),
                                                tablefmt=table_fmt) if table_fmt != 'html' else confusion_matrix.to_html())
         report_str.append(' End of report '.center(padding_size, '='))
+        report_str.append(
+            ' Author of Dataprofile: Gordon Chen (GordonChen.GoBlue@gmail.com) '.center(padding_size, '='))
 
     except Exception as e:
         logger.exception(Fore.RED + f'{e}\nReport not rendered successfully!', backtrace=False, diagnose=False)
