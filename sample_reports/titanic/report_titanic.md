@@ -2,7 +2,7 @@
 
 
 
-This following report is created by Gordon Chen on Friday, Apr 10, 2020
+This following report is created by Gordon Chen on Sunday, Sep 20, 2020
 
 
 
@@ -30,16 +30,16 @@ This following report is created by Gordon Chen on Friday, Apr 10, 2020
 |:------------|:---------|:------------|--------:|------------:|:------------|-----------:|:-----------|
 | PassengerId | Useless  | Unique      |     891 |           0 | 0.00%       |        891 | 100.00%    |
 | Name        | Useless  | Unique      |     891 |           0 | 0.00%       |        891 | 100.00%    |
-| Survived    | Binary   | Numerical   |     891 |           0 | 0.00%       |          2 | 0.22%      |
 | Sex         | Binary   | Categorical |     891 |           0 | 0.00%       |          2 | 0.22%      |
+| Survived    | Binary   | Numerical   |     891 |           0 | 0.00%       |          2 | 0.22%      |
 | Pclass      | Interval | Numerical   |     891 |           0 | 0.00%       |          3 | 0.34%      |
 | Parch       | Interval | Numerical   |     891 |           0 | 0.00%       |          7 | 0.79%      |
 | SibSp       | Interval | Numerical   |     891 |           0 | 0.00%       |          7 | 0.79%      |
 | Fare        | Interval | Numerical   |     891 |           0 | 0.00%       |        248 | 27.83%     |
 | Age         | Interval | Numerical   |     891 |         177 | 19.87%      |         88 | 12.32%     |
-| Cabin       | Nominal  | Categorical |     891 |         687 | 77.10%      |        147 | 72.06%     |
 | Embarked    | Nominal  | Categorical |     891 |           2 | 0.22%       |          3 | 0.34%      |
 | Ticket      | Nominal  | Categorical |     891 |           0 | 0.00%       |        681 | 76.43%     |
+| Cabin       | Nominal  | Categorical |     891 |         687 | 77.10%      |        147 | 72.06%     |
 
 
 
@@ -63,19 +63,19 @@ Useless variables:
 
 Binary variables:
 
-|           | Survived   | Sex    |
-|:----------|:-----------|:-------|
-| count     | 891        | 891    |
-| n_missing | 0          | 0      |
-| p_missing | 0.00%      | 0.00%  |
-| n_unique  | 2          | 2      |
-| p_unique  | 0.22%      | 0.22%  |
-| value1    | 0          | male   |
-| n_value1  | 549        | 577    |
-| p_value1  | 61.62%     | 64.76% |
-| value2    | 1          | female |
-| n_value2  | 342        | 314    |
-| p_value2  | 38.38%     | 35.24% |
+|           | Sex    | Survived   |
+|:----------|:-------|:-----------|
+| count     | 891    | 891        |
+| n_missing | 0      | 0          |
+| p_missing | 0.00%  | 0.00%      |
+| n_unique  | 2      | 2          |
+| p_unique  | 0.22%  | 0.22%      |
+| value1    | male   | 0          |
+| n_value1  | 577    | 549        |
+| p_value1  | 64.76% | 61.62%     |
+| value2    | female | 1          |
+| n_value2  | 314    | 342        |
+| p_value2  | 35.24% | 38.38%     |
 
 
 
@@ -112,19 +112,19 @@ Interval variables:
 
 Nominal variables:
 
-|                | Cabin       | Embarked   | Ticket   |
-|:---------------|:------------|:-----------|:---------|
-| count          | 891         | 891        | 891      |
-| n_missing      | 687         | 2          | 0        |
-| p_missing      | 77.10%      | 0.22%      | 0.00%    |
-| n_unique       | 147         | 3          | 681      |
-| p_unique       | 72.06%      | 0.34%      | 76.43%   |
-| mode           | B96 B98     | S          | CA. 2343 |
-| mode_freq      | 4           | 644        | 7        |
-| 2nd_freq_value | G6          | C          | 1601     |
-| 2nd_freq       | 4           | 168        | 7        |
-| 3rd_freq_value | C23 C25 C27 | Q          | 347082   |
-| 3rd_freq       | 4           | 77         | 7        |
+|                | Embarked   | Ticket   | Cabin       |
+|:---------------|:-----------|:---------|:------------|
+| count          | 891        | 891      | 891         |
+| n_missing      | 2          | 0        | 687         |
+| p_missing      | 0.22%      | 0.00%    | 77.10%      |
+| n_unique       | 3          | 681      | 147         |
+| p_unique       | 0.34%      | 76.43%   | 72.06%      |
+| mode           | S          | CA. 2343 | C23 C25 C27 |
+| mode_freq      | 644        | 7        | 4           |
+| 2nd_freq_value | C          | 1601     | B96 B98     |
+| 2nd_freq       | 168        | 7        | 4           |
+| 3rd_freq_value | Q          | 347082   | G6          |
+| 3rd_freq       | 77         | 7        | 4           |
 
 
 
@@ -132,11 +132,13 @@ Nominal variables:
 
 ================ Confusion Matrix ================
 
-row:Survived - col:Sex
+row:Sex - col:Survived
 
-|    |   female |   male |
-|---:|---------:|-------:|
-|  0 |       81 |    468 |
-|  1 |      233 |    109 |
+|        |   0 |   1 |
+|:-------|----:|----:|
+| female |  81 | 233 |
+| male   | 468 | 109 |
 
 ===================================== End of report ======================================
+
+============ Author of Dataprofile: Gordon Chen (GordonChen.GoBlue@gmail.com) ============
