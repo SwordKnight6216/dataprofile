@@ -91,19 +91,19 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
 
     if distinct_count == 0:
         dty_empty = base_stats(series)
-        dty_empty['type'] = 'Useless'
+        dty_empty['type'] = 'ZeroVar'
         dty_empty['data_type'] = 'Empty'
         return 'Useless', dty_empty
 
     elif distinct_count == 1 and leng == non_missing_cnt:
         dty_constant = base_stats(series)
-        dty_constant['type'] = 'Useless'
+        dty_constant['type'] = 'ZeroVar'
         dty_constant['data_type'] = 'Constant'
         return 'Useless', dty_constant
 
-    elif distinct_count == leng:
+    elif distinct_count == leng and not pd.api.types.is_numeric_dtype(series):
         dty_unique = base_stats(series)
-        dty_unique['type'] = 'Useless'
+        dty_unique['type'] = 'Unique'
         dty_unique['data_type'] = 'Unique'
         return 'Useless', dty_unique
 
