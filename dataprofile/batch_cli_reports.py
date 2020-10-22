@@ -54,7 +54,7 @@ def render_reports_for_all(target_dir: str = os.getcwd(), file_suffix: str = ".c
     files = find_files(target_dir, file_suffix)
     for f in files:
         print(f)
-    text = input(f"Continue to generate reports for the {len(files)} files? Y/N") or "N"
+    text = input(f"Continue to generate reports for the {len(files)} files? Y/N \n") or "N"
     if text == "Y":
         cnt = 0
         for _, _, f in files:
