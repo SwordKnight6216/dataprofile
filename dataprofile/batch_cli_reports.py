@@ -29,7 +29,7 @@ def _human_readable_size(n_bytes: int) -> str:
     return f"{f} {units[i]}"
 
 
-def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List[Tuple[str, str]]:
+def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List[Tuple[str, int, str]]:
     """Find target type of files in target folder and its sub folders.
 
     :param target_dir:
@@ -42,7 +42,7 @@ def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List
             filepath = os.path.join(subdir, filename)
             filepath = "." + filepath[len(target_dir):]
             if filepath.endswith(file_suffix):
-                f_size = _human_readable_size(os.path.getsize(filepath))
-                print(f_size, filepath)
-                output.append((f_size, filepath))
+                f_size_original = os.path.getsize(filepath)
+                f_size = _human_readable_size(f_size_original)
+                output.append((f_size, f_size_original, filepath))
     return output
