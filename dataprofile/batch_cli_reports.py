@@ -58,6 +58,12 @@ def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List
               show_default=True,
               help='file type (html ,txt, or markdown) to store the report.')
 def render_reports_for_all(target_dir: str = os.getcwd(), report_type: str = ".txt"):
+    """Render given type reports for all CSV files find in current directory and sub directory.
+
+    :param target_dir: 
+    :param report_type:
+    :return:
+    """
     files = find_files(target_dir)
     for f in files:
         print(f)
