@@ -5,8 +5,7 @@ import pandas as pd
 
 
 def base_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute common summary statistics of a variable.
+    """Compute common summary statistics of a variable.
 
     :param series: The variable to describe
     :return: descriptive statistics
@@ -25,8 +24,7 @@ def base_stats(series: pd.Series) -> pd.Series:
 
 
 def numerical_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a numerical variable.
+    """Compute summary statistics of a numerical variable.
 
     :param series: The variable to describe
     :return: descriptive statistics
@@ -54,8 +52,7 @@ def numerical_stats(series: pd.Series) -> pd.Series:
 
 
 def datetime_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a date variable.
+    """Compute summary statistics of a date variable.
 
     :param series: The variable to describe
     :return: descriptive statistics
@@ -78,8 +75,7 @@ def datetime_stats(series: pd.Series) -> pd.Series:
 
 
 def categorical_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a categorical variable.
+    """Compute summary statistics of a categorical variable.
 
     :param series: The variable to describe
     :return: descriptive statistics
@@ -99,8 +95,7 @@ def categorical_stats(series: pd.Series) -> pd.Series:
 
 
 def binary_stats(series: pd.Series) -> pd.Series:
-    """
-    Compute summary statistics of a boolean variable.
+    """Compute summary statistics of a boolean variable.
 
     :param series: The variable to describe
     :return: descriptive statistics
