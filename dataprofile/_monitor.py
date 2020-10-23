@@ -9,13 +9,17 @@ from loguru import logger
 
 
 def monitor_time_memory(original_func):
+    """Monitor command computational consumptions.
+
+    :param original_func:
+    :return:
+    """
+
     @wraps(original_func)
     def wrapped_func(*args, **kwargs):
         time_start = time.time()
         tracemalloc.start()
-
         func = original_func(*args, **kwargs)
-
         current, peak = tracemalloc.get_traced_memory()
         time_end = time.time() - time_start
         tracemalloc.stop()

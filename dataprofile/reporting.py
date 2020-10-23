@@ -22,8 +22,7 @@ logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}",
 
 
 def _str_format(f_name: str) -> Tuple[str, str]:
-    """
-    Base on the name of the file to store output, return correct table and line breaker format
+    """Base on the name of the file to store output, return correct table and line breaker format.
 
     :param f_name: target file name
     :return: table and line breaker format

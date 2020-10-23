@@ -1,3 +1,5 @@
+"""File to configure wheel build."""
+
 import setuptools
 
 with open("README.md", "r") as fh:

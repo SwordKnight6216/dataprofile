@@ -17,7 +17,7 @@ from ._var_statistics import binary_stats, categorical_stats, datetime_stats, nu
 
 
 def _get_actual_dtype(series: pd.Series) -> str:
-    """
+    """Get the actual data type.
 
     :param series:
     :return: the name of actual data type in the given series
@@ -31,13 +31,12 @@ def _get_actual_dtype(series: pd.Series) -> str:
 
 
 def _format_value(v: Any, max_size: int = MAX_STRING_SIZE) -> str:
-    """Convert any input value to an appropriate str output
+    """Convert any input value to an appropriate str output.
 
     :param v: input value
     :param max_size: max number of chars to display
     :return: changed string
     """
-
     if isinstance(v, bool):
         return str(v)
     if isinstance(v, numpy.int64) or isinstance(v, int):
@@ -55,7 +54,6 @@ def _format_series(series: pd.Series) -> pd.Series:
     :param series: target series
     :return:
     """
-
     return series.apply(_format_value)
 
 
@@ -81,7 +79,6 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
     :param series: target series
     :return: valuable type and calculated statistics
     """
-
     distinct_count = series.nunique()
     leng = len(series)
     non_missing_cnt = series.count()
@@ -140,7 +137,6 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     :param num_works: number of cpu cores for multiprocessing
     :return: a dictionary contains statistics of all variables
     """
-
     logger.info("Calculating statistics for each variable...")
     var_stats = defaultdict(list)
     num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
@@ -164,7 +160,6 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     :param var_stats: statistics from each variable
     :return: a dictionary contains statistics of the target dataset
     """
-
     logger.info(f"Getting 'Table Statistics' ready...")
     table_stats = {'n_row': df.shape[0],
                    'n_col': df.shape[1],
@@ -182,7 +177,6 @@ def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
     :param var_stats: already get variable statistics
     :return: a summary table of data types of the given dataset
     """
-
     logger.info("Getting 'Variable Summary' ready...")
     type_stats = ['type', 'data_type', 'count', 'n_missing', 'p_missing', 'n_unique', 'p_unique']
     tmp_df_stats = []
@@ -199,7 +193,6 @@ def get_confusion_matrix(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]
     :param var_stats:
     :return: a list of confusion matrices
     """
-
     logger.info("Getting 'Confusion Matrix' ready...")
     cm_lt = []
     binary_vars = [var.name for var in var_stats['Binary']]
@@ -240,7 +233,6 @@ def get_df_profile(df: pd.DataFrame, num_works: int = -1) \
     :param num_works:
     :return:
     """
-
     if not isinstance(df, pd.DataFrame):
         raise TypeError("only pandas DataFrames can be profiled! ")
 
