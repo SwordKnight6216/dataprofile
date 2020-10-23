@@ -20,8 +20,8 @@ logger.add(LOG_FILE, format="{time:YYYY-MM-DD at HH:mm:ss} | {name: ^15} | {leve
 
 
 def _find_csv_file() -> Optional[Path]:
-    """
-    return the first CSV file found in the current directory
+    """Return the first CSV file found in the current directory.
+
     :return:
     """
     csv_lt = list(Path().glob('*.csv'))
@@ -49,7 +49,7 @@ def _find_csv_file() -> Optional[Path]:
               help='file type (html ,txt, or markdown) to store the report, skip if not needed')
 def render_single_file_report(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6,
                               save_report_to_file: str = '') -> None:
-    """
+    """Render given type report for the target file.
 
     :param encoding:
     :param file:

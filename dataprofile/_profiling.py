@@ -31,8 +31,7 @@ def _get_actual_dtype(series: pd.Series) -> str:
 
 
 def _format_value(v: Any, max_size: int = MAX_STRING_SIZE) -> str:
-    """
-    Convert any input value to an appropriate str output
+    """Convert any input value to an appropriate str output
 
     :param v: input value
     :param max_size: max number of chars to display
@@ -51,8 +50,7 @@ def _format_value(v: Any, max_size: int = MAX_STRING_SIZE) -> str:
 
 
 def _format_series(series: pd.Series) -> pd.Series:
-    """
-    change the output format for different value type.
+    """Change the output format for different value type.
 
     :param series: target series
     :return:
@@ -62,8 +60,7 @@ def _format_series(series: pd.Series) -> pd.Series:
 
 
 def _format_series_decor(original_func: Callable) -> Callable:
-    """
-    change the output format for different value type.
+    """Change the output format for different value type.
 
     :param original_func: target function to wrap
     :return:
@@ -79,8 +76,8 @@ def _format_series_decor(original_func: Callable) -> Callable:
 
 @_format_series_decor
 def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
-    """
-    used to classify variable types regarding machine learning.
+    """Used to classify variable types regarding machine learning.
+
     :param series: target series
     :return: valuable type and calculated statistics
     """
@@ -137,8 +134,7 @@ def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
 
 
 def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[pd.Series]]:
-    """
-    Collect types and statistics from each variable.
+    """Collect types and statistics from each variable.
 
     :param df: the target dataset
     :param num_works: number of cpu cores for multiprocessing
@@ -162,8 +158,7 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
 
 
 def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
-    """
-    Extract information from the target dataset.
+    """Extract information from the target dataset.
 
     :param df: the target dataset
     :param var_stats: statistics from each variable
@@ -182,8 +177,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
 
 
 def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
-    """
-    Provide a summary table of data types of the given dataset.
+    """Provide a summary table of data types of the given dataset.
 
     :param var_stats: already get variable statistics
     :return: a summary table of data types of the given dataset
@@ -199,8 +193,7 @@ def get_var_summary(var_stats: Dict[str, List[pd.Series]]) -> pd.DataFrame:
 
 
 def get_confusion_matrix(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> List[pd.DataFrame]:
-    """
-    Provide confusion matrices for all combination of binary variables.
+    """Provide confusion matrices for all combination of binary variables.
 
     :param df:
     :param var_stats:
@@ -219,8 +212,7 @@ def get_confusion_matrix(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]
 
 def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
                  random_state: int = RANDOM_STATE) -> pd.DataFrame:
-    """
-    Provide the original dataset or a random sample of it.
+    """Provide the original dataset or a random sample of it.
 
     :param df: the target dataset
     :param sample_size: Number of rows to sample from the target dataframe
@@ -242,8 +234,7 @@ def get_a_sample(df: pd.DataFrame, sample_size: int = DEFAULT_SAMPLE_SIZE,
 
 def get_df_profile(df: pd.DataFrame, num_works: int = -1) \
         -> Dict[str, Union[pd.DataFrame, list, Dict[str, pd.DataFrame]]]:
-    """
-    Collect all type of statistics together into one dictionary.
+    """Collect all type of statistics together into one dictionary.
 
     :param df:
     :param num_works:
