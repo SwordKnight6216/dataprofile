@@ -43,8 +43,7 @@ def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List
     for subdir, dirs, files in os.walk(target_dir):
         for filename in files:
             filepath_full = os.path.join(subdir, filename)
-            filepath = "." + filepath_full[len(target_dir):]
-            if filepath.endswith(file_suffix):
+            if filepath_full.endswith(file_suffix):
                 f_size_original = os.path.getsize(filepath_full)
                 f_size = _human_readable_size(f_size_original)
                 output.append((f_size, f_size_original, filepath_full))
