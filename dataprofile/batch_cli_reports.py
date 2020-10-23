@@ -4,12 +4,12 @@ import os
 import sys
 from typing import List, Tuple
 
+import click
 import pandas as pd
 from loguru import logger
 
 from ._config import LOG_FILE
 from .reporting import render_report
-from .cli_report import render_single_file_report
 
 logger.remove()
 logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}", level="INFO")
@@ -51,23 +51,28 @@ def find_files(target_dir: str = os.getcwd(), file_suffix: str = ".csv") -> List
     return output
 
 
-def render_reports_for_all(target_dir: str = os.getcwd(), file_suffix: str = "csv", report_type: str = ".txt"):
-    files = find_files(target_dir, file_suffix)
+@click.command()
+@click.option('-t', '--report_type',
+              prompt='file type to store the report.',
+              required=False, default='.txt', type=click.Choice(['.html', '.txt', '.md']),
+              show_default=True,
+              help='file type (html ,txt, or markdown) to store the report.')
+def render_reports_for_all(target_dir: str = os.getcwd(), report_type: str = ".txt"):
+    files = find_files(target_dir)
     for f in files:
         print(f)
-    text = input(f"Continue to generate reports for the {len(files)} files? Y/N \n") or "N"
+    text = input(f"Continue to generate reports for the {len(files)} files? Y/N \t") or "N"
     if text == "Y":
         cnt = 0
         for _, _, f in files:
-            render_single_file_report(f, save_report_to_file=file_suffix)
-            # try:
-            #     df = pd.read_csv(f)
-            #     report_file = f[:-len(file_suffix)] + report_type
-            #     logger.info(f"\nRender Report for {f}...")
-            #     render_report(df, report_file=report_file)
-            #     cnt += 1
-            # except UnicodeDecodeError:
-            #     logger.warning(f"{f} skipped due to UnicodeDecodeError!")
+            try:
+                df = pd.read_csv(f)
+                report_file = f[:f.rfind(".")] + report_type
+                logger.info(f"\nRender Report for {f}...")
+                render_report(df, report_file=report_file)
+                cnt += 1
+            except UnicodeDecodeError:
+                logger.warning(f"{f} skipped due to UnicodeDecodeError!")
         logger.info(f"Summary: {cnt} reports successfully rendered, {len(files) - cnt} failed.")
     else:
         print("Aborted!")
