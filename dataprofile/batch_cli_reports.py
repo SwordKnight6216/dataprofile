@@ -61,8 +61,8 @@ def render_reports_for_all(target_dir: str = os.getcwd(), report_type: str = ".t
     files = find_files(target_dir)
     for f in files:
         print(f)
-    text = input(f"Continue to generate reports for the {len(files)} files? Y/N \t") or "N"
-    if text == "Y":
+    is_render = input(f"Continue to generate reports for the {len(files)} files? Y/[N] \t") or "N"
+    if is_render == "Y":
         cnt = 0
         for _, _, f in files:
             try:
