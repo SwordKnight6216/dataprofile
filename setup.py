@@ -25,6 +25,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    entry_points={'console_scripts': ['dataprofile_single=dataprofile.cli_report:main',
+    entry_points={'console_scripts': ['dataprofile_single=dataprofile.cli_report:render_single_file_report',
                                       'dataprofile_all=dataprofile.batch_cli_reports:render_reports_for_all']}
 )
