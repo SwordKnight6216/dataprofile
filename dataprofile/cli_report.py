@@ -47,8 +47,8 @@ def _find_csv_file() -> Optional[Path]:
               required=False, default='', type=click.Choice(['', 'html', 'txt', 'md']),
               show_default=True,
               help='file type (html ,txt, or markdown) to store the report, skip if not needed')
-def render_single_file_report(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SIZE, var_per_row: int = 6,
-                              save_report_to_file: str = '') -> None:
+def render_single_file_report(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SIZE,
+                              var_per_row: int = 6, save_report_to_file: str = '') -> None:
     """Render given type report for the target file.
 
     :param encoding:

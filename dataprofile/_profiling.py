@@ -74,7 +74,7 @@ def _format_series_decor(original_func: Callable) -> Callable:
 
 @_format_series_decor
 def _cal_var_stats(series: pd.Series) -> Tuple[str, pd.Series]:
-    """Used to classify variable types regarding machine learning.
+    """Classify variable types regarding machine learning.
 
     :param series: target series
     :return: valuable type and calculated statistics
@@ -160,7 +160,7 @@ def get_table_stats(df: pd.DataFrame, var_stats: Dict[str, List[pd.Series]]) -> 
     :param var_stats: statistics from each variable
     :return: a dictionary contains statistics of the target dataset
     """
-    logger.info(f"Getting 'Table Statistics' ready...")
+    logger.info("Getting 'Table Statistics' ready...")
     table_stats = {'n_row': df.shape[0],
                    'n_col': df.shape[1],
                    'n_missing_cell': df.isnull().sum().sum(),
@@ -247,7 +247,7 @@ def get_df_profile(df: pd.DataFrame, num_works: int = -1) \
     logger.info("Getting 'Variable Statistics' ready...")
     for key, item in var_stats.items():
         logger.debug(f"Extracting statistics for {key} variables...")
-        df_profile[f'var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1)
+        df_profile['var_stats'][f'{key}'] = pd.DataFrame(item).drop(['data_type', 'type'], axis=1)
 
     if 'Binary' in var_stats and len([var.name for var in var_stats['Binary']]) > 1:
         df_profile['conf_matrix'] = get_confusion_matrix(df, var_stats)

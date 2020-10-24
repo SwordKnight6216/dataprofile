@@ -22,7 +22,7 @@ logger.add(sys.stdout, format="{time:YYYY-MM-DD at HH:mm:ss}|{level}|{message}",
 
 
 def _str_format(f_name: str) -> Tuple[str, str]:
-    """Base on the name of the file to store output, return correct table and line breaker format.
+    """Return correct table and line breaker format base on the name of the file to store output.
 
     :param f_name: target file name
     :return: table and line breaker format
@@ -40,7 +40,7 @@ def _str_format(f_name: str) -> Tuple[str, str]:
 
 
 def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
-                   var_per_row: int = 6, table_fmt='psql', line_breaker='\n') -> List[str]:
+                   var_per_row: int = 6, table_fmt: str = 'psql', line_breaker: str = '\n') -> List[str]:
     """
     Convert all statistics to a list of strings.
 
@@ -70,9 +70,9 @@ def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
     report_str.append(f'{line_breaker}')
 
     report_str.append(' Variable Statistics '.center(padding_size2, '='))
-    for key, item in df_profile[f'var_stats'].items():
+    for key, item in df_profile['var_stats'].items():
         report_str.append(f'{line_breaker}{key} variables:')
-        for i in range(len(df_profile[f'var_stats'][f'{key}']) // (var_per_row + 1) + 1):
+        for i in range(len(df_profile['var_stats'][f'{key}']) // (var_per_row + 1) + 1):
             dt = pd.DataFrame(item).T.iloc[:, i * var_per_row:(i + 1) * var_per_row]
             report_str.append(tabulate(
                 dt, headers='keys', tablefmt=table_fmt) if table_fmt != 'html' else dt.to_html())
@@ -90,7 +90,7 @@ def profile_to_str(df_profile: Dict[str, Union[pd.DataFrame, list]],
     return report_str
 
 
-def print_report(df_profile, var_per_row):
+def print_report(df_profile, var_per_row) -> None:
     """
     Print report to screen.
 
@@ -153,17 +153,20 @@ def render_report(df: pd.DataFrame,
 
 
 class ProfileReport(BaseEstimator, TransformerMixin):
-    """
-    A Scikit learn pipeline compatible class that can print to screen or save a profile report to a file
-     for a given pandas dataframe.
-    """
+    """print to screen or save a profile report to a file for a given pandas dataframe."""
 
     def __init__(self,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
                  random_state: int = RANDOM_STATE,
-                 num_works: int = -1):
+                 num_works: int = -1) -> None:
+        """Initialize class.
 
+        :param sample_size:
+        :param var_per_row:
+        :param random_state:
+        :param num_works:
+        """
         self._sample_size = sample_size
         self._var_per_row = var_per_row
         self._random_state = random_state
@@ -172,46 +175,46 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         self._is_new_arg = False
 
     @property
-    def sample_size(self):
+    def sample_size(self) -> int:
         return self._sample_size
 
     @sample_size.setter
-    def sample_size(self, new_sample_size):
+    def sample_size(self, new_sample_size) -> None:
         self._sample_size = new_sample_size
         self._is_new_arg = True
         print(f"sample size set to {self._sample_size}")
 
     @property
-    def var_per_row(self):
+    def var_per_row(self) -> int:
         return self._var_per_row
 
     @var_per_row.setter
-    def var_per_row(self, new_var_per_row):
+    def var_per_row(self, new_var_per_row) -> None:
         self._var_per_row = new_var_per_row
         self._is_new_arg = True
         print(f"sample size set to {self._var_per_row}")
 
     @property
-    def num_works(self):
+    def num_works(self) -> int:
         return self._num_works
 
     @num_works.setter
-    def num_works(self, new_num_works):
+    def num_works(self, new_num_works) -> None:
         self._num_works = new_num_works
         self._is_new_arg = True
         print(f"sample size set to {self._num_works}")
 
     @property
-    def random_state(self):
+    def random_state(self) -> int:
         return self._random_state
 
     @random_state.setter
-    def random_state(self, new_random_state):
+    def random_state(self, new_random_state) -> None:
         self._random_state = new_random_state
         self._is_new_arg = True
         print(f"sample size set to {self._random_state}")
 
-    def _check_fitted(self):
+    def _check_fitted(self) -> None:
         """
         Check if the data profile file has been rendered.
 
@@ -220,7 +223,7 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         if not self.df_profile:
             raise NotFittedError
 
-    def _check_new_args(self):
+    def _check_new_args(self) -> None:
         """
         Check if the arguments have been updated since last fit.
 
@@ -234,13 +237,13 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         self._is_new_arg = False
         return self
 
-    def transform(self, df: pd.DataFrame):
+    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         self._check_fitted()
         self._check_new_args()
         self.show_report()
         return df
 
-    def _df_to_profile(self, df: pd.DataFrame):
+    def _df_to_profile(self, df: pd.DataFrame) -> None:
         """
         Get the data profile.
 
@@ -254,7 +257,7 @@ class ProfileReport(BaseEstimator, TransformerMixin):
 
         self.df_profile = get_df_profile(sample_df, self._num_works)
 
-    def show_report(self):
+    def show_report(self) -> None:
         """
         Print the data profile to the screen.
 
@@ -264,7 +267,7 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         self._check_new_args()
         print_report(self.df_profile, self._var_per_row)
 
-    def save_report(self, report_file: str):
+    def save_report(self, report_file: str) -> None:
         """
         Save the data profile to as file.
 

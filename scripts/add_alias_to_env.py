@@ -1,3 +1,5 @@
+"""Add the system alias to use the Render report function directly."""
+
 import sys
 from pathlib import Path
 
@@ -9,10 +11,7 @@ dotfiles = ['.zshrc', '.bashrc', '.bash_profile']
 
 for file in dotfiles:
     dotfile = Path(Path().home(), file)
-    try:
-        with open(dotfile, "a") as f:
-            f.write(cmd)
-            print(f"successfully create the cmd alias datareport in {dotfile}")
-            break
-    except:
-        pass
+    with open(dotfile, "a") as f:
+        f.write(cmd)
+        print(f"successfully create the cmd alias datareport in {dotfile}")
+        break

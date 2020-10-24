@@ -1,6 +1,4 @@
-"""print or save a report of overall statistics and detailed statistics for a given dataset.
-It can be used as a standalone module as well.
-"""
+"""print or save a report of overall statistics and detailed statistics for a given dataset."""
 
 from ._profiling import get_var_summary, get_df_profile
 from .batch_cli_reports import render_reports_for_all
