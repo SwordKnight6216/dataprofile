@@ -22,7 +22,8 @@ pip install -e .
     ```
 2. from command line
    ```shell script
-   dataprofile_py
+   dataprofile_single
+   dataprofile_all
    ```
 3. from docker
    ```shell script
