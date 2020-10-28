@@ -238,8 +238,6 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
-        self._check_fitted()
-        self._check_new_args()
         self.show_report()
         return df
 
