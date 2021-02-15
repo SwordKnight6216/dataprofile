@@ -1,18 +1,8 @@
-import os
-
 import pandas as pd
 import pytest
 
 from .._profiling import _get_actual_dtype, _format_value, _cal_var_stats
 from .._profiling import get_a_sample, get_df_profile, get_table_stats, get_var_summary, get_variable_stats
-
-
-@pytest.fixture()
-def test_df():
-    test_file = '../../data/titanic/train.csv'
-    test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), test_file))
-    test_df['no_values'] = None
-    return test_df
 
 
 @pytest.mark.parametrize("test_input, expected",
