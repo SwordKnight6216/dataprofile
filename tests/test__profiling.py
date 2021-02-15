@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from .._profiling import _get_actual_dtype, _format_value, _cal_var_stats
-from .._profiling import get_a_sample, get_df_profile, get_table_stats, get_var_summary, get_variable_stats
+from dataprofile._profiling import _get_actual_dtype, _format_value, _cal_var_stats
+from dataprofile._profiling import get_a_sample, get_df_profile, get_table_stats, get_var_summary, get_variable_stats
 
 
 @pytest.mark.parametrize("test_input, expected",

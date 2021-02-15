@@ -5,16 +5,16 @@ import pandas as pd
 import pytest
 from pandas.testing import assert_series_equal
 
-from .._var_statistics import base_stats
-from .._var_statistics import binary_stats
-from .._var_statistics import categorical_stats
-from .._var_statistics import datetime_stats
-from .._var_statistics import numerical_stats
+from dataprofile._var_statistics import base_stats
+from dataprofile._var_statistics import binary_stats
+from dataprofile._var_statistics import categorical_stats
+from dataprofile._var_statistics import datetime_stats
+from dataprofile._var_statistics import numerical_stats
 
 
 @pytest.fixture()
 def test_df():
-    test_file = '../../data/titanic/train.csv'
+    test_file = '../data/titanic/train.csv'
     test_df = pd.read_csv(os.path.join(os.path.dirname(__file__), test_file))
     return test_df
 
