@@ -13,29 +13,33 @@ authors = [
 license = {text = "GNU Affero General Public License v3.0"}
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: GNU AGPLv3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 dependencies = [
-    "scikit-learn",
-    "numpy",
-    "pandas",
-    "tabulate",
-    "click",
-    "tqdm",
-    "colorama",
-    "loguru",
+    "scikit-learn>=1.0.0,<1.4.0",
+    "numpy>=1.20.0",
+    "pandas>=2.0.0",
+    "tabulate>=0.8.0",
+    "click>=8.0.0",
+    "tqdm>=4.65.0",
+    "colorama>=0.4.0",
+    "loguru>=0.7.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
-    "flake8",
-    "pytest-cov",
-    "flake8-docstrings",
-    "flake8-bandit",
-    "mypy",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "flake8>=6.0.0",
+    "flake8-docstrings>=1.7.0",
+    "flake8-bandit>=4.1.1",
+    "mypy>=1.0.0",
 ]
 
 [project.scripts]

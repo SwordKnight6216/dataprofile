@@ -1,20 +1,25 @@
-"""print or save a report of overall statistics and detailed statistics for a given dataset."""
+"""Print or save a report of overall statistics and detailed statistics for a given dataset."""
 
 import sys
 from datetime import date
 from pathlib import Path
 from typing import Optional, Union, Dict, Tuple, List
+import warnings
 
 import pandas as pd
 from colorama import Fore, init
 from loguru import logger
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.exceptions import NotFittedError, ChangedBehaviorWarning
-from tabulate import tabulate
+from sklearn.exceptions import NotFittedError
 
-from ._config import DEFAULT_SAMPLE_SIZE, AUTHOR, RANDOM_STATE
 from ._monitor import monitor_time_memory
+from ._config import DEFAULT_SAMPLE_SIZE, RANDOM_STATE
 from ._profiling import get_df_profile, get_a_sample
+
+# Custom warning for changed behavior
+class ChangedBehaviorWarning(UserWarning):
+    """Warning for changed behavior after fitting."""
+    pass
 
 init(autoreset=True)
 logger.remove()
@@ -124,22 +129,12 @@ def save_report(df_profile, var_per_row, report_file: Optional[Union[str, Path]]
 
 @monitor_time_memory
 def render_report(df: pd.DataFrame,
-                  sample_size: int = DEFAULT_SAMPLE_SIZE,
-                  var_per_row: int = 6,
-                  random_state: int = RANDOM_STATE,
-                  report_file: Optional[Union[str, Path]] = None,
-                  num_works: int = -1) -> None:
-    """
-    Print to screen or save a profile report to a file for a given pandas dataframe.
-
-    :param df:
-    :param sample_size:
-    :param var_per_row:
-    :param random_state:
-    :param report_file:
-    :param num_works:
-    :return:
-    """
+                 sample_size: int = DEFAULT_SAMPLE_SIZE,
+                 var_per_row: int = 6,
+                 random_state: int = RANDOM_STATE,
+                 report_file: Optional[Union[str, Path]] = None,
+                 num_works: int = -1) -> None:
+    """Print to screen or save a profile report to a file for a given pandas dataframe."""
     if sample_size > 0:
         sample_df = get_a_sample(df, sample_size, random_state)
     else:
@@ -153,25 +148,19 @@ def render_report(df: pd.DataFrame,
 
 
 class ProfileReport(BaseEstimator, TransformerMixin):
-    """print to screen or save a profile report to a file for a given pandas dataframe."""
+    """Print to screen or save a profile report to a given pandas dataframe."""
 
     def __init__(self,
                  sample_size: int = DEFAULT_SAMPLE_SIZE,
                  var_per_row: int = 6,
                  random_state: int = RANDOM_STATE,
                  num_works: int = -1) -> None:
-        """Initialize class.
-
-        :param sample_size:
-        :param var_per_row:
-        :param random_state:
-        :param num_works:
-        """
+        """Initialize class."""
         self._sample_size = sample_size
         self._var_per_row = var_per_row
         self._random_state = random_state
         self._num_works = num_works
-        self.df_profile = None
+        self.df_profile: Optional[Dict] = None
         self._is_new_arg = False
 
     @property
@@ -232,14 +221,16 @@ class ProfileReport(BaseEstimator, TransformerMixin):
         if self._is_new_arg:
             raise ChangedBehaviorWarning("new args inputted after last fit!")
 
-    def fit(self, df: pd.DataFrame):
-        self._df_to_profile(df)
+    def fit(self, X: pd.DataFrame, y=None):
+        """Fit the profiler to the data."""
+        self._df_to_profile(X)
         self._is_new_arg = False
         return self
 
-    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame, y=None) -> pd.DataFrame:
+        """Transform the data (shows report and returns original data)."""
         self.show_report()
-        return df
+        return X
 
     def _df_to_profile(self, df: pd.DataFrame) -> None:
         """

@@ -43,11 +43,10 @@ def numerical_stats(series: pd.Series) -> pd.Series:
     stats['kurtosis'] = series.kurt()
     stats['skewness'] = series.skew()
     stats['sum'] = series.sum()
-    stats['mean_abs_dev'] = series.mad()
+    # Replace mad() with manual calculation
+    stats['mean_abs_dev'] = (series - series.mean()).abs().mean()
     stats['coff_of_var'] = stats['std'] / stats['mean'] if stats['mean'] else np.NaN
-    stats['n_zeros'] = (stats['count'] - np.count_nonzero(series))
-    stats['p_zeros'] = stats['n_zeros'] / stats['count']
-
+    
     return pd.Series(stats, name=series.name)
 
 
@@ -84,12 +83,12 @@ def categorical_stats(series: pd.Series) -> pd.Series:
     aggr = series.value_counts()
     stats['data_type'] = 'Categorical'
     stats['mode'] = aggr.index[0]
-    stats['mode_freq'] = aggr[0]
+    stats['mode_freq'] = aggr.iloc[0]  # Using iloc instead of integer indexing
     stats['2nd_freq_value'] = aggr.index[1]
-    stats['2nd_freq'] = aggr[1]
+    stats['2nd_freq'] = aggr.iloc[1]  # Using iloc instead of integer indexing
     if len(aggr) > 2:
         stats['3rd_freq_value'] = aggr.index[2]
-        stats['3rd_freq'] = aggr[2]
+        stats['3rd_freq'] = aggr.iloc[2]  # Using iloc instead of integer indexing
 
     return pd.Series(stats, name=series.name)
 

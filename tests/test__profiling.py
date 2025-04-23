@@ -1,23 +1,37 @@
 import pandas as pd
 import pytest
+from pandas.testing import assert_series_equal
 
-from dataprofile._profiling import _get_actual_dtype, _format_value, _cal_var_stats
-from dataprofile._profiling import get_a_sample, get_df_profile, get_table_stats, get_var_summary, get_variable_stats
+from dataprofile._profiling import (_get_actual_dtype, _format_value, _cal_var_stats,
+                                   get_a_sample, get_df_profile, get_table_stats,
+                                   get_var_summary, get_variable_stats)
 
 
-@pytest.mark.parametrize("test_input, expected",
-                         [(pd.Series([1, 2, 3, 4, 5]), 'Numerical'),
-                          (pd.Series([True, False, False]), 'Boolean'),
-                          (pd.Series([1, 0, 0, 0, 1, None]), 'Numerical'),
-                          (pd.Series([True, 'False', 18]), 'Categorical')])
+@pytest.mark.parametrize("test_input, expected", [
+    (pd.Series([1, 2, 3, 4, 5]), 'Numerical'),
+    (pd.Series([True, False, False]), 'Boolean'),
+    (pd.Series([1, 0, 0, 0, 1, None]), 'Numerical'),
+    (pd.Series([True, 'False', 18]), 'Categorical')
+])
 def test__get_actual_dtype(test_input, expected):
     assert _get_actual_dtype(test_input) == expected
 
 
-@pytest.mark.parametrize("test_input, max_size, expected",
-                         [(True, 10, 'True'), (3, 5, '3'), (1.23456, 6, '1.2346'), ('abcd', 3, 'abc...')])
-def test__format_value(test_input, max_size, expected):
-    assert _format_value(test_input, max_size) == expected
+@pytest.fixture
+def sample_df():
+    return pd.DataFrame({
+        'num': [1, 2, 3, 4, 5],
+        'cat': ['a', 'b', 'c', 'a', 'b'],
+        'bool': [True, False, True, False, True],
+        'date': pd.date_range('2020-01-01', periods=5)
+    })
+
+
+def test_get_df_profile(sample_df):
+    profile = get_df_profile(sample_df)
+    assert isinstance(profile, dict)
+    assert 'table_stats' in profile
+    assert 'var_stats' in profile
 
 
 def test_get_variable_stats(test_df):

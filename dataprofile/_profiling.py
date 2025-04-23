@@ -17,16 +17,29 @@ from ._var_statistics import binary_stats, categorical_stats, datetime_stats, nu
 
 
 def _get_actual_dtype(series: pd.Series) -> str:
-    """Get the actual data type.
+    """Get the actual data type of a series.
 
-    :param series:
-    :return: the name of actual data type in the given series
+    :param series: target series
+    :return: actual data type
     """
-    if pd.api.types.is_bool_dtype(series):
-        return 'Boolean'
-    elif pd.api.types.is_numeric_dtype(series):
-        return 'Numerical'
-    else:
+    try:
+        if pd.api.types.is_bool_dtype(series):
+            return 'Boolean'
+        elif pd.api.types.is_numeric_dtype(series):
+            return 'Numerical'
+        elif pd.api.types.is_datetime64_any_dtype(series):
+            return 'Datetime'
+        
+        # Try to convert to datetime with a specific format first
+        try:
+            pd.to_datetime(series, format='%Y-%m-%d')
+            return 'Datetime'
+        except (ValueError, TypeError):
+            pass
+            
+        # If all else fails, treat as categorical
+        return 'Categorical'
+    except Exception:
         return 'Categorical'
 
 
@@ -139,13 +152,23 @@ def get_variable_stats(df: pd.DataFrame, num_works: int = -1) -> Dict[str, List[
     """
     logger.info("Calculating statistics for each variable...")
     var_stats = defaultdict(list)
-    num_works = multiprocessing.cpu_count() if num_works < 1 else num_works
-
-    log_info_header = datetime.datetime.today().strftime("%Y-%m-%d at %X|INFO|")
-    with multiprocessing.Pool(num_works) as executor:
-        results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, (df[x] for x in df)), total=df.shape[1],
-                                 desc=f"{log_info_header}Profiling variables",
-                                 bar_format='{l_bar}{bar:40}{n_fmt}/{total_fmt}'))
+    
+    # Use only 1 process if num_works is 1 or less
+    if num_works <= 1:
+        results = [_cal_var_stats(df[x]) for x in tqdm.tqdm(df.columns, 
+                                                           desc="Profiling variables",
+                                                           bar_format='{l_bar}{bar:40}{n_fmt}/{total_fmt}')]
+    else:
+        # Use 'spawn' method instead of 'fork' for better compatibility
+        ctx = multiprocessing.get_context('spawn')
+        num_works = ctx.cpu_count() if num_works < 1 else num_works
+        
+        with ctx.Pool(num_works) as executor:
+            results = list(tqdm.tqdm(executor.imap_unordered(_cal_var_stats, 
+                                                           (df[x] for x in df)),
+                                   total=df.shape[1],
+                                   desc="Profiling variables",
+                                   bar_format='{l_bar}{bar:40}{n_fmt}/{total_fmt}'))
 
     for k, v in results:
         var_stats[k].append(v)

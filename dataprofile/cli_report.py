@@ -1,4 +1,4 @@
-"""This module contains code for CLI run reports."""
+"""CLI module for generating reports."""
 
 import sys
 from pathlib import Path
@@ -29,52 +29,33 @@ def _find_csv_file() -> Optional[Path]:
 
 
 @click.command()
-@click.option('-f', '--file', prompt='target cvs file', required=True, help='cvs format is required',
-              default=_find_csv_file(),
-              show_default=True)
-@click.option('-e', '--encoding', prompt='file encoding type', required=False, help='correct encoding is required',
-              default='utf8',
-              show_default=True)
-@click.option('--sample_size', prompt='How big is your sample size? skip if sampling is not needed', required=False,
-              default=DEFAULT_SAMPLE_SIZE,
-              show_default=True,
-              help='the size of sample in the analysis')
-@click.option('--var_per_row', prompt='How many variables to show per row?', required=False, default=6,
-              show_default=True,
-              help='number of variables to show per row')
-@click.option('-t', '--save_report_to_file',
-              prompt='file type to store the report, skip if not needed or choose one from',
-              required=False, default='', type=click.Choice(['', 'html', 'txt', 'md']),
-              show_default=True,
-              help='file type (html ,txt, or markdown) to store the report, skip if not needed')
-def render_single_file_report(file: str, encoding: str = 'utf8', sample_size: int = DEFAULT_SAMPLE_SIZE,
-                              var_per_row: int = 6, save_report_to_file: str = '') -> None:
-    """Render given type report for the target file.
-
-    :param encoding:
-    :param file:
-    :param sample_size:
-    :param var_per_row:
-    :param save_report_to_file:
-    :return:
-    """
-    logger.debug(f"{AUTHOR} executed at {Path('.').absolute()}")
-    logger.debug(f"input args: {locals()}")
+@click.option('--file', type=click.Path(exists=True, path_type=Path), help='CSV file to profile')
+@click.option('--encoding', default='utf-8', help='File encoding')
+@click.option('--sample-size', default=DEFAULT_SAMPLE_SIZE, help='Sample size for profiling')
+@click.option('--var-per-row', default=6, help='Variables per row in output')
+@click.option('--save-report-to-file', is_flag=True, help='Save report to file')
+def main(file: Optional[Path], encoding: str, sample_size: int,
+         var_per_row: int, save_report_to_file: bool) -> None:
+    """Generate profile report for CSV file."""
     try:
-        logger.info(f"Loading data from {file}...")
-        df = pd.read_csv(Path(file), low_memory=False, encoding=encoding)
-    except FileNotFoundError:
-        logger.error(Fore.RED + "Target file doesn't exist! Profiling stopped!")
-    except UnicodeDecodeError:
-        logger.error(
-            Fore.RED + f"This file is not encoded in {encoding}! Correct encoding is required! Profiling stopped!")
+        if file is None:
+            file = _find_csv_file()
+            if file is None:
+                raise click.UsageError("No CSV file found in current directory")
+        
+        logger.info(f"Loading data from {file}")
+        df = pd.read_csv(file, low_memory=False, encoding=encoding)
+        
+        report_file = None
+        if save_report_to_file:
+            report_file = file.with_name(f"report_{file.stem}.txt")
+        
+        render_report(df, sample_size, var_per_row, report_file=report_file)
+        
     except Exception as e:
-        logger.error(Fore.RED + f"{e}! Profiling stopped!")
-    else:
-        report_file_name = 'report_' + str(file).split('/')[-1].split('.')[
-            0] + '.' + save_report_to_file if save_report_to_file else None
-        render_report(df, sample_size=sample_size, var_per_row=var_per_row, report_file=report_file_name)
+        logger.error(f"{Fore.RED}{str(e)}")
+        sys.exit(1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     render_single_file_report()
