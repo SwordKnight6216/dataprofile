@@ -1,0 +1,24 @@
+name: dataprofile_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.6
+  - scikit-learn<1.4.0
+  - numpy
+  - pandas>=2.0.0
+  - tabulate
+  - click
+  - tqdm
+  - colorama
+  - loguru
+  # Dev dependencies
+  - pytest
+  - flake8
+  - pytest-cov
+  - flake8-docstrings
+  - flake8-bandit
+  - mypy
+  - pip
+  - pip:
+    - -e .  # Install the current package in editable mode

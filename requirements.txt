@@ -1,8 +1,0 @@
-scikit-learn
-numpy
-pandas
-tabulate
-click
-tqdm
-colorama
-loguru

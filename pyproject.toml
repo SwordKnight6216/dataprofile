@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataprofile"
+version = "2.1.0"
+description = "This package generates statistical reports for given pandas DataFrames or CSV files in standalone model"
+readme = "README.md"
+authors = [
+    {name = "Gordon Chen", email = "GordonChen.GoBlue@gmail.com"},
+]
+license = {text = "GNU Affero General Public License v3.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: GNU AGPLv3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "scikit-learn",
+    "numpy",
+    "pandas",
+    "tabulate",
+    "click",
+    "tqdm",
+    "colorama",
+    "loguru",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "flake8",
+    "pytest-cov",
+    "flake8-docstrings",
+    "flake8-bandit",
+    "mypy",
+]
+
+[project.scripts]
+dataprofile_single = "dataprofile.cli_report:render_single_file_report"
+dataprofile_all = "dataprofile.batch_cli_reports:render_reports_for_all"
+
+[tool.setuptools]
+packages = ["dataprofile"]
+package-dir = {"" = "."}
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(message)s"
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_no_return = true
+strict_optional = true
+no_implicit_optional = true
+disallow_any_generics = true
+warn_redundant_casts = true
+warn_unused_configs = true
+show_traceback = true
+
+[[tool.mypy.overrides]]
+module = [
+    "numpy.*",
+    "pandas.*",
+    "matplotlib.*",
+    "sklearn.*",
+    "colorama.*",
+    "tqdm.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "dataprofile.tests.*"
+ignore_errors = true
+
+[tool.flake8]
+max-line-length = 120
+exclude = ".git,.tox,.mypy_cache,.env,env,venv,dist,build,docs,notebook,sample_reports,data,tests"
+ignore = "D104,W503,S404,S603,S607"
+per-file-ignores = "tests/*:D100,D103,S101"
